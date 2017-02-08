@@ -45,15 +45,15 @@ let Button = React.createClass({
 	render: function() {
 		if (!this.props.active) {
 			return(
-				<button onClick={this.handleClick} style={inactiveButtonStyle}>
+				<div onClick={this.handleClick} style={inactiveButtonStyle}>
 					{this.props.name}
-				</button>
+				</div>
 			);
 		} else {
 			return (
-				<button onClick={this.handleClick} style={activeButtonStyle}>
+				<div onClick={this.handleClick} style={activeButtonStyle}>
 					{this.props.name}
-				</button>
+				</div>
 			);
 		}
 	},

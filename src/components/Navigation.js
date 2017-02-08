@@ -15,21 +15,12 @@ let navigationStyle = {
 }
 
 let innerContainerStyle = {
-	flex: 1
+	flex: 1,
+	display: "flex",
+	flexDirection: "column",
+	alignItems: "center",
+	width: "100%"
 }
-/*
-	<ButtonGroup justified>
-		<ButtonGroup>
-			<Button>Profile</Button>
-		</ButtonGroup>
-		<ButtonGroup>
-			<Button>Rooms</Button>
-		</ButtonGroup>
-		<ButtonGroup>
-			<Button>My Library</Button>
-		</ButtonGroup>
-	</ButtonGroup>
-*/
 
 let Navigation = React.createClass({
 	render: function() {

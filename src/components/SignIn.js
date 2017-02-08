@@ -71,7 +71,7 @@ let SignIn = React.createClass({
 				{errorText}
 				<input style={formStyle} type="text" value={this.state.email} placeholder="Email" onChange={this.handleUsernameChange} />
 				<input style={formStyle} type="password" value={this.state.password} placeholder="Password" onChange={this.handlePasswordChange} />
-				<button style={buttonStyle} onClick={this.handleSubmit}>Login</button>
+				<button style={buttonStyle} className="animated bounceIn" onClick={this.handleSubmit}>Login</button>
 			</div>
 		);
 	},
