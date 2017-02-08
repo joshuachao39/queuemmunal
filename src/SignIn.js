@@ -36,6 +36,9 @@ let buttonStyle = {
 };
 
 let divStyle = {
+	fontFamily: "Quicksand",
+	fontSize: 30,
+	color: "#3066BE",
 	height: "100%",
 	width: "100%",
 	display: "flex",
@@ -54,6 +57,7 @@ let SignIn = React.createClass({
 		return (
 			<div style={divStyle}>
 				<img src={logo} className="App-logo" alt="logo" />
+				Queuemunnal
 				{errorText}
 				<input style={formStyle} type="text" value={this.state.value} placeholder="Email" onChange={this.handleUsernameChange} />
 				<input style={formStyle} type="password" value={this.state.value} placeholder="Password" onChange={this.handlePasswordChange} />

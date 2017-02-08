@@ -16,7 +16,14 @@ const desktopTextStyle = {
 const innerContainerStyle = {
 	display: "flex",
 	flexFlow: "column nowrap",
-	textAlign: "center"
+	justifyContent: "center",
+	alignItems: "center"
+}
+const titleStyle = {
+	fontFamily: "Quicksand",
+	fontSize: 30,
+	color: "#3066BE",
+	margin: "auto 20",
 }
 
 var DesktopContainer = React.createClass({
@@ -24,6 +31,7 @@ var DesktopContainer = React.createClass({
       		return (
       			<div style={innerContainerStyle}>
 	      			<img src={logo} className="App-logo" alt="logo" />
+	      			<p style={titleStyle}>Error! Incorrect page size! </p>
 	      			<div style={desktopTextStyle}>
 	      				Sorry! Please resize to a verticle mobile size!
 	      			</div>
