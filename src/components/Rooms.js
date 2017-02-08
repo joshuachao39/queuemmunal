@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import '../styles/animations.css';
 import exit from '../assets/closeIcon.svg';
 import $ from 'jquery';
+import { browserHistory } from 'react-router';
 
 let buttonStyle = {
 	background: "#FF6D7F",
@@ -13,11 +14,13 @@ let buttonStyle = {
 	fontSize: 16,
 	color: "white",
 	width: "75%",
-	height: "100%",
+	height: 45,
 	paddingTop: 10,
 	paddingBottom: 10,
 	display: "flex",
 	justifyContent: "center",
+	alignItems: "center",
+	marginBottom: 15
 }
 
 let titleStyle = {
@@ -36,7 +39,7 @@ let titleStyle = {
 
 
 let containerStyle = {
-	height: 45,
+	height: "100%",
 	width: "100%",
 	display: "flex",
 	flexFlow: "column nowrap",
@@ -76,6 +79,10 @@ export default React.createClass({
 				<div onClick={this.createRoom} style={buttonStyle} className="animated bounceIn">
 					Create a Room
 				</div>
+				<div onClick={this.enterRoom} style={buttonStyle} className="animated bounceIn">
+					Enter a Room
+				</div>
+
 				<Modal
 					isOpen={this.state.createModalIsOpen}
 					contentLabel="Create Room Modal"
@@ -102,6 +109,9 @@ export default React.createClass({
 		this.setState({
 			createModalIsOpen: true
 		});
+	},
+	enterRoom: function() {
+		browserHistory.push('/mobile/rooms/room1');
 	},
 	closeModal: function() {
 		this.setState({
