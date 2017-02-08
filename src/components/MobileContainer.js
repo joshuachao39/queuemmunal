@@ -2,7 +2,11 @@ import React from "react";
 import '../styles/App.css';
 import SignIn from './SignIn';
 import Navigation from './Navigation';
-import { Router, Route, browserHistory } from 'react-router';
+import Rooms from './Rooms';
+import Profile from './Profile';
+import Library from './Library';
+
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 
 /* let routes = {
@@ -17,7 +21,11 @@ var MobileContainer = React.createClass({
 		return (
 			<Router history={browserHistory}>
 				<Route path="/" component={SignIn} />
-				<Route path="mobile" component={Navigation} /> 
+				<Route path="mobile" component={Navigation}>
+					<IndexRoute component={Rooms} />
+					<Route path="Profile" component={Profile} />
+					<Route path="My Library" component={Library} />
+				</Route> 
 			</Router>
 		);
 	}
