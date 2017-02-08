@@ -1,7 +1,7 @@
 import React from 'react';
 import MobileContainer from './MobileContainer'
 import DesktopContainer from './DesktopContainer'
-import './App.css';
+import '../styles/App.css';
 import $ from 'jquery';
 
 var App = React.createClass({
