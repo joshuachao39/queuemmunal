@@ -48,29 +48,51 @@ let divStyle = {
 	backgroundColor: "#F4F4F8"
 };
 
+let errorStyle = {
+	fontSize: 15,
+	color: "#FF6D7F",
+	fontFamily: "Quicksand",
+	maxWidth: "80vw",
+	textAlign: "center"
+}
+
+
+
 let SignIn = React.createClass({
 	render: function() {
 		let errorText = null;
 		if (this.state.errorLoggingIn) {
-			errorText = <p> Sorry, we couldn't find that user in our database. Try again? </p>
+			errorText = <p style={errorStyle}> Sorry, we couldn't find that user in our database. Try again? </p>
 		}
 		return (
 			<div style={divStyle}>
 				<img src={logo} className="App-logo" alt="logo" />
 				Queuemunnal
 				{errorText}
-				<input style={formStyle} type="text" value={this.state.value} placeholder="Email" onChange={this.handleUsernameChange} />
-				<input style={formStyle} type="password" value={this.state.value} placeholder="Password" onChange={this.handlePasswordChange} />
+				<input style={formStyle} type="text" value={this.state.email} placeholder="Email" onChange={this.handleUsernameChange} />
+				<input style={formStyle} type="password" value={this.state.password} placeholder="Password" onChange={this.handlePasswordChange} />
 				<button style={buttonStyle} onClick={this.handleSubmit}>Login</button>
 			</div>
 		);
 	},
 	handleSubmit: function(event) {
-		const auth = firebase.auth();
+		/*const auth = firebase.auth();
 		const promise = auth.signInWithEmailAndPassword(this.state.email, this.state.password);
 		promise
-			.then(this.props.router.push('/home'))
-			.catch(e => this.setState({errorLoggingIn: true}));
+			.catch(e => this.setState({errorLoggingIn: true}))
+			// .then(this.props.router.push('/home'));
+		auth.onAuthStateChanged( user => {
+			if (user) {
+				this.props.router.push('/home');
+			}
+		}); */
+
+		// hardcode a user first i guess
+		if (this.state.email == "joshchao@email.com" && this.state.password == "Password") {
+			this.props.router.push('/mobile');
+		} else {
+			this.setState({errorLoggingIn: true, email: '', password: ''});
+		}
 	},
 	handleUsernameChange: function(event) {
 		this.setState({email: event.target.value});
