@@ -6,7 +6,8 @@ import { browserHistory } from 'react-router';
 let roomStyle = {
     padding: "10px",
     margin: "1px",
-    height: "80px",
+    height: "70px",
+    fontFamily: "Quicksand"
 }
 
 let glyphStyle = {
@@ -26,8 +27,8 @@ class RoomListObject extends React.Component {
     render () {
         return (
             <ListGroupItem style={roomStyle} onClick={this.enterRoom}>
-                <h4>{this.props.name}</h4>
-                <p>{this.props.count} roommates</p>
+                <p style={{fontSize: 20, color: "#070707", marginBottom: 5, marginLeft: 5}}>{this.props.name}</p>
+                <p style={{fontSize: 13, color: "6F6F6F", marginLeft: 5}}>{this.props.count} roommates</p>
                 <Glyphicon style={glyphStyle} glyph="chevron-right"/>
             </ListGroupItem>
         )

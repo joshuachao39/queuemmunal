@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import $ from 'jquery';
-import {ListGroup, FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
 
 import RoomListObject from './RoomListObject'
@@ -13,20 +13,19 @@ import '../../node_modules/animate.css';
 let buttonStyle = {
     background: "#FF6D7F",
     boxShadow: "0 3px 6px 3px rgba(0,0,0,0.24)",
-    borderRadius: 100,
+    borderRadius: "50%",
     fontFamily: "Quicksand",
     fontSize: 16,
     color: "white",
-    width: "75%",
-    height: 45,
-    paddingTop: 10,
-    paddingBottom: 10,
+    width: 90,
+    height: 90,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 15,
-    position: "absolute",
-    bottom: "120px"
+    position: "fixed",
+    left: $(window).width() - 90 - 25,
+    top: $(window).height() - 90 - (($(window).height() / 480) * 50) - 25
 }
 
 let titleStyle = {
@@ -85,8 +84,18 @@ let listStyle = {
 }
 
 let searchStyle = {
-    width: "90%"
-}
+	/* Field: */
+	background: "#FFFFFF",
+	border: "0 solid rgba(77,77,77,0.78)",
+	fontFamily: "Quicksand",
+	fontSize: 14,
+	color: "#C7C7CD",
+	letterSpacing: -0.08,
+	padding: 10,
+	width: "90vw",
+	marginBottom: 20,
+	borderRadius: 15
+};
 
 let rooms = [
     {name: "HYPEROOM", count: 205},
@@ -97,6 +106,7 @@ let rooms = [
     {name: "Raging", count:4}]
 
 
+/*
 function FieldGroup({ id, label, help, ...props }) {
     return (
         <FormGroup style={searchStyle} controlId={id}>
@@ -104,7 +114,7 @@ function FieldGroup({ id, label, help, ...props }) {
             <FormControl {...props} />
         </FormGroup>
     );
-}
+} */
 
 
 
@@ -116,19 +126,21 @@ export default React.createClass({
         })
         return (
             <div style={containerStyle}>
-
+            	{/*}
                 <FieldGroup
                     id="formControlsText"
                     type="text"
                     placeholder="Search"
-                />
+                /> */}
+
+                <input style={searchStyle} type="text" placeholder="Search for room ID or keyword..." />
 
                 <ListGroup style={listStyle}>
                     {roomComponents}
                 </ListGroup>
 
                 <div onClick={this.createRoom} style={buttonStyle} className="animated bounceIn">
-                    Create a Room
+                    <Glyphicon style={{fontSize: 30}} glyph="plus" />
                 </div>
 
                 <Modal
