@@ -66,6 +66,11 @@ li:focus > a {
 	border-bottom: 1px solid #3066BE;
 }
 
+/* SWITCH */
+.switch {
+	margin-right: 25px;
+}
+
 
 
 

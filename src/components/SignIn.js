@@ -67,7 +67,7 @@ let SignIn = React.createClass({
 		return (
 			<div style={divStyle}>
 				<img src={logo} className="App-logo" alt="logo" />
-				Queuemunnal
+				Queuemmunal
 				{errorText}
 				<input style={formStyle} type="text" value={this.state.email} placeholder="Email" onChange={this.handleUsernameChange} />
 				<input style={formStyle} type="password" value={this.state.password} placeholder="Password" onChange={this.handlePasswordChange} />
