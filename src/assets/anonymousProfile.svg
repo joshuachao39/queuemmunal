@@ -1,0 +1,20 @@
+
+<svg width="195px" height="194px" viewBox="0 0 195 194" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M97.0652468,193.673083 C150.672902,193.673083 194.130494,150.317887 194.130494,96.8365415 C194.130494,43.3551964 150.672902,0 97.0652468,0 C43.4575913,0 0,43.3551964 0,96.8365415 C0,150.317887 43.4575913,193.673083 97.0652468,193.673083 Z" id="path-1"></path>
+    </defs>
+    <g id="User-Icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Oval-6" fill="#CACCCC" xlink:href="#path-1"></use>
+        <g mask="url(#mask-2)" fill="#F7FAFA">
+            <g transform="translate(25.000000, 41.000000)">
+                <path d="M143.043522,163.093122 C143.043522,118.0562 111.022139,81.5465612 71.5217608,81.5465612 C32.021383,81.5465612 0,118.0562 0,163.093122" id="Oval-9"></path>
+                <path d="M71.5217608,91.7398814 C94.0934053,91.7398814 112.391338,71.2032094 112.391338,45.8699407 C112.391338,20.536672 94.0934053,0 71.5217608,0 C48.9501164,0 30.6521832,20.536672 30.6521832,45.8699407 C30.6521832,71.2032094 48.9501164,91.7398814 71.5217608,91.7398814 Z" id="Oval-8"></path>
+            </g>
+        </g>
+    </g>
+</svg>

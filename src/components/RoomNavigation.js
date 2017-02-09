@@ -17,8 +17,8 @@ let RoomNavigation = React.createClass({
 		return(
 			<div style={outerContainer}>
 				<Nav bsClass="roomNavigationTabBar" bsStyle="pills" activeKey={this.state.activeKey} onSelect={this.handleSelect}>
-					<NavItem eventKey={1} href="#">Queue</NavItem>
-					<NavItem eventKey={2} href="#">Roommates</NavItem>
+					<NavItem eventKey={1}>Queue</NavItem>
+					<NavItem eventKey={2}>Roommates</NavItem>
 				</Nav>
 				{this.props.children}
 			</div>
