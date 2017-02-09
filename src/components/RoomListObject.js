@@ -12,7 +12,7 @@ let roomStyle = {
 
 let glyphStyle = {
     position: "absolute",
-    right: "20",
+    right: "20px",
     top: "50%",
     size: "150%"
 }
