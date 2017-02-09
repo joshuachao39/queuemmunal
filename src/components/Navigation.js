@@ -23,6 +23,7 @@ let innerContainerStyle = {
 	height: "100%"
 }
 
+
 let Navigation = React.createClass({
 	render: function() {
 		console.log(this.state.activePage);

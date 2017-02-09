@@ -88,7 +88,7 @@ let SignIn = React.createClass({
 		}); */
 
 		// hardcode a user first i guess
-		if (this.state.email == "joshchao@email.com" && this.state.password == "Password") {
+		if (this.state.email == "username" && this.state.password == "password") {
 			this.props.router.push('/mobile');
 		} else {
 			this.setState({errorLoggingIn: true, email: '', password: ''});
