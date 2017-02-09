@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../node_modules/animate.css';
 import Modal from 'react-modal';
-import '../styles/animations.css';
+import '../styles/styles.css';
 import exit from '../assets/closeIcon.svg';
 import $ from 'jquery';
 import { browserHistory } from 'react-router';

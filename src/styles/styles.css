@@ -1,0 +1,71 @@
+.exitStyle {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    height: 40px;
+}
+
+.roomNavigationTabBar {
+	width: 90%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	padding: 0;
+	border: 1px solid #3066BE;
+	border-radius: 4px;
+	height: 35px;
+	margin-bottom: 20px;
+}
+
+
+
+.roomNavigationTabBar li {
+	list-style: none;
+	flex: 1;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+li > a {
+	font-family: "Quicksand";
+	flex: 1;
+}
+
+li:hover > a {
+	text-decoration: none;
+}
+
+li.active {
+	background: #3066BE;
+}
+
+li.active > a {
+	color: white;
+	text-decoration: none;
+}
+
+li:focus > a {
+	text-decoration: none;
+	background: blue;
+}
+
+
+
+/* BOOTSTRAP MODAL SHIT */
+
+/* FOR WIDTH OF MODAL */
+.modal-dialog {
+	margin: 40px;
+}
+
+/* MODAL HEADER (LINE) */
+.modal-header-style {
+	padding: 25px;
+	border-bottom: 1px solid #3066BE;
+}
+
+
+
+
