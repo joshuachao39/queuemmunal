@@ -49,7 +49,7 @@ export default React.createClass({
 						  width: "100%",
 						  position: "absolute"
 						}}>
-				<img className="animated pulse" style={{borderRadius: "50%"}} src={profileToBeRendered} alt="Profile Photo" width={$(window).width() * 0.8}/>
+				<img className="animated pulse" style={{borderRadius: "50%"}} src={profileToBeRendered} alt="Profile Photo" width={$(window).width() * 0.6}/>
 				<div style={{fontFamily: "Quicksand", fontSize: 36, width: "100%", textAlign: "center"}}>
 					{name}
 					<div style={{marginTop: 20, 

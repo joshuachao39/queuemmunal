@@ -102,8 +102,7 @@ let rooms = [
     {name:"Slow Jazz", count: 59},
     {name: "Kpop Party", count: 23},
     {name: "Glitch Mob", count:15},
-    {name: "ALL CAPS", count: 9},
-    {name: "Raging", count:4}]
+    {name: "ALL CAPS", count: 9}]
 
 
 /*
