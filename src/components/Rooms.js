@@ -23,9 +23,9 @@ let buttonStyle = {
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 15,
-    position: "fixed",
-    left: $(window).width() - 90 - 25,
-    top: $(window).height() - 90 - (($(window).height() / 480) * 50) - 25
+    position: "absolute",
+    bottom: 15,
+    right: 15
 }
 
 let titleStyle = {
