@@ -10,6 +10,7 @@ import '../styles/styles.css';
 import '../../node_modules/animate.css';
 
 
+/* the lower right hand button must be set to position absolute, not fixed, in order to work */
 let buttonStyle = {
     background: "#FF6D7F",
     boxShadow: "0 3px 6px 3px rgba(0,0,0,0.24)",
