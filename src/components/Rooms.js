@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import $ from 'jquery';
 import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
-import Infinite from 'react-infinite';
 import ReactList from 'react-list';
 
 import RoomListObject from './RoomListObject'
@@ -162,7 +161,7 @@ export default React.createClass({
                             <Nav bsClass="addRoomTabBar" bsStyle="pills" activeKey={this.state.createRoomActiveKey} onSelect={this.handleCreateRoomSelect}>
                                 <NavItem eventKey={1}>Private </NavItem>
                                 <NavItem eventKey={2}>Public </NavItem>
-                            </Nav> 
+                            </Nav>
                             <div>
                                 SUPP
                             </div>
@@ -193,9 +192,6 @@ export default React.createClass({
         this.setState({
             createModalIsOpen: true
         });
-    },
-    enterRoom: function() {
-        browserHistory.push('/mobile/rooms/room1');
     },
     closeModal: function() {
         this.setState({

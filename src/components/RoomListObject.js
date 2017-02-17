@@ -36,7 +36,7 @@ class RoomListObject extends React.Component {
 
     enterRoom (e) {
         e.preventDefault();
-        browserHistory.push('/mobile/rooms/room1');
+        browserHistory.push('/mobile/rooms/'+this.props.name);
     }
 }
 
