@@ -85,7 +85,7 @@ let formStyle = {
 
 let containerStyle = {
     width: "100%",
-    height: "100%",
+    // maybe add height 100% here for modal
     display: "flex",
     flexFlow: "column nowrap",
     justifyContent: "center",
