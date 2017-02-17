@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import $ from 'jquery';
 import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
-import Infinite from 'react-infinite';
 import ReactList from 'react-list';
 
 import RoomListObject from './RoomListObject'
@@ -31,6 +30,22 @@ let buttonStyle = {
     right: 15
 }
 
+let createRoomButtonStyle = {
+    /* Button Background: */
+    background: "#FF6D7F",
+    borderRadius: 80,
+    /* Login: */
+    fontFamily: "Quicksand",
+    fontSize: 18,
+    color: "#FFFFFF",
+    letterSpacing: 0,
+    width: "50vw",
+    border: "none",
+    paddingTop: 7,
+    paddingBottom: 7,
+    marginTop: 40
+};
+
 let titleStyle = {
     width: "100%",
     height: ($(window).height() / 480) * 25,
@@ -44,6 +59,26 @@ let titleStyle = {
     alignItems: "center",
     marginBottom: 20
 }
+
+let addRoomHeadingStyle = {
+    marginTop: 5,
+    marginBottom: 4,
+    fontSize: 16,
+    fontWeight: "bold"
+}
+
+let formStyle = {
+    /* Field: */
+    background: "#FFFFFF",
+    border: "0 solid rgba(77,77,77,0.78)",
+    /* Text within the field */
+    fontFamily: "Quicksand",
+    fontSize: 14,
+    color: "#C7C7CD",
+    letterSpacing: -0.08,
+    padding: 10,
+    width: "100%"
+};
 
 
 let containerStyle = {
@@ -69,13 +104,15 @@ let createRoomModalStyle = {
 }
 
 let contentStyle = {
-    flex: 1,
     height: "100%",
-    width: "100%"
+    width: "100%",
+    display: "flex",
+    flexFlow: "column nowrap",
+    justifyContent: "space-around",
+    alignItems: "center"
 }
 
 let exitContainerStyle = {
-    height: 24,
     width: "100%"
 }
 
@@ -106,11 +143,7 @@ let rooms = [
     {name:"Slow Jazz", count: 59},
     {name: "Kpop Party", count: 23},
     {name: "Glitch Mob", count:15},
-    {name: "ALL CAPS", count: 9},
-    {name: "Room 5", count: 5},
-    {name: "Room 6", count: 6},
-    {name: "Room 7", count: 7},
-    {name: "Room 8", count: 8}]
+    {name: "ALL CAPS", count: 9}]
 
 
 /*
@@ -137,7 +170,7 @@ export default React.createClass({
 
                 <input style={searchStyle} type="text" placeholder="Search for room ID or keyword..." />
 
-                <div style={{overflow: "auto", maxHeight: "500", minHeight: "500", width: "90%", background: "#FFF", borderRadius: 15}}>
+                <div style={{overflow: "auto", maxHeight: "500px", minHeight: "500px", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={rooms.length} type="uniform" />
                 </div>
 
@@ -163,11 +196,15 @@ export default React.createClass({
                                 <NavItem eventKey={1}>Private </NavItem>
                                 <NavItem eventKey={2}>Public </NavItem>
                             </Nav> 
-                            <div>
-                                SUPP
-                            </div>
                         </div>
-                        <div style={contentStyle}></div>
+                        <div style={contentStyle}>
+                            <div style={{width: "100%"}}>
+                                <p style={addRoomHeadingStyle}>Name</p>
+                                <input style={formStyle} type="text" value={this.state.addRoomName} placeholder="Enter your room name here" onChange={this.handleNameChange} />
+                            </div>
+                            <button style={createRoomButtonStyle} onClick={this.handleCreateRoom}>Create your room!</button>
+                            {/* ADD MORE SHIT HERE LATER! */}
+                        </div>
                     </div>
                 </Modal>
             </div>
@@ -176,7 +213,10 @@ export default React.createClass({
     getInitialState: function() {
         return ({
             createModalIsOpen: false,
-            createRoomActiveKey: 1
+            createRoomActiveKey: 1,
+            addRoomName: "",
+            addRoomRoommateCap: 50,
+            addRoomSongCap: -1
         });
     },
     renderItem(index, key) {
@@ -188,6 +228,16 @@ export default React.createClass({
                 createRoomActiveKey: eventKey
             });
         }
+    },
+    handleCreateRoom: function() {
+        this.closeModal();
+        rooms.unshift({name: this.state.addRoomName, count: 1});
+        this.setState({
+            addRoomName: ""
+        })
+    },
+    handleNameChange: function(event) {
+        this.setState({addRoomName: event.target.value});
     },
     createRoom: function() {
         this.setState({
