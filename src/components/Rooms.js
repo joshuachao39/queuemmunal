@@ -1,8 +1,10 @@
 import React from 'react';
 import Modal from 'react-modal';
 import $ from 'jquery';
-import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon} from 'react-bootstrap'
+import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
+import Infinite from 'react-infinite';
+import ReactList from 'react-list';
 
 import RoomListObject from './RoomListObject'
 import exit from '../assets/closeIcon.svg';
@@ -46,10 +48,11 @@ let titleStyle = {
 
 let containerStyle = {
     width: "100%",
+    height: "100%",
     display: "flex",
     flexFlow: "column nowrap",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
 
 }
 
@@ -78,10 +81,10 @@ let exitContainerStyle = {
 
 let listStyle = {
     width: "90%",
-    justifyContent: "center",
+    /*justifyContent: "center",
     alignContent: "center",
     margin: 0,
-    overflowY: "scroll"
+    overflowY: "scroll" */
 }
 
 let searchStyle = {
@@ -103,7 +106,11 @@ let rooms = [
     {name:"Slow Jazz", count: 59},
     {name: "Kpop Party", count: 23},
     {name: "Glitch Mob", count:15},
-    {name: "ALL CAPS", count: 9}]
+    {name: "ALL CAPS", count: 9},
+    {name: "Room 5", count: 5},
+    {name: "Room 6", count: 6},
+    {name: "Room 7", count: 7},
+    {name: "Room 8", count: 8}]
 
 
 /*
@@ -121,23 +128,22 @@ function FieldGroup({ id, label, help, ...props }) {
 export default React.createClass({
 
     render: function() {
-        let roomComponents = rooms.map ((element, index) => {
-            return <RoomListObject name={element.name} count={element.count} key={index}/>
+        let roomComponents = [];
+        rooms.map ((element, index) => {
+            roomComponents.push(<RoomListObject name={element.name} count={element.count} key={index}/>);
         })
         return (
             <div style={containerStyle}>
-            	{/*}
-                <FieldGroup
-                    id="formControlsText"
-                    type="text"
-                    placeholder="Search"
-                /> */}
 
                 <input style={searchStyle} type="text" placeholder="Search for room ID or keyword..." />
 
-                <ListGroup style={listStyle}>
-                    {roomComponents}
-                </ListGroup>
+                <div style={{overflow: "auto", maxHeight: "500", minHeight: "500", width: "90%", background: "#FFF", borderRadius: 15}}>
+                    <ReactList itemRenderer={this.renderItem} length={rooms.length} type="uniform" />
+                </div>
+
+                {/* <Infinite containerHeight={500} elementHeight={50} className="listStyle">
+                    { roomComponents }
+                </Infinite> */}
 
                 <div onClick={this.createRoom} style={buttonStyle} className="animated bounceIn">
                     <Glyphicon style={{fontSize: 30}} glyph="plus" />
@@ -153,6 +159,13 @@ export default React.createClass({
                             <div style={titleStyle}>
                                 CREATE A ROOM
                             </div>
+                            <Nav bsClass="addRoomTabBar" bsStyle="pills" activeKey={this.state.createRoomActiveKey} onSelect={this.handleCreateRoomSelect}>
+                                <NavItem eventKey={1}>Private </NavItem>
+                                <NavItem eventKey={2}>Public </NavItem>
+                            </Nav> 
+                            <div>
+                                SUPP
+                            </div>
                         </div>
                         <div style={contentStyle}></div>
                     </div>
@@ -162,8 +175,19 @@ export default React.createClass({
     },
     getInitialState: function() {
         return ({
-            createModalIsOpen: false
+            createModalIsOpen: false,
+            createRoomActiveKey: 1
         });
+    },
+    renderItem(index, key) {
+        return <RoomListObject name={rooms[index].name} count={rooms[index].count} key={key} />
+    },
+    handleCreateRoomSelect: function(eventKey) {
+        if (this.state.createRoomActiveKey != eventKey) {
+            this.setState({
+                createRoomActiveKey: eventKey
+            });
+        }
     },
     createRoom: function() {
         this.setState({

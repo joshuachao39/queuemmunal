@@ -1,13 +1,13 @@
-import React from 'react'
-import {ListGroupItem, Glyphicon} from 'react-bootstrap'
+import React from 'react';
+import { Glyphicon } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 
 
 let roomStyle = {
     padding: "10px",
-    margin: "1px",
-    height: "70px",
-    fontFamily: "Quicksand"
+    margin: "auto",
+    fontFamily: "Quicksand",
+    borderBottom: "1px solid #C7C7C7"
 }
 
 let glyphStyle = {
@@ -26,11 +26,10 @@ class RoomListObject extends React.Component {
 
     render () {
         return (
-            <ListGroupItem style={roomStyle} onClick={this.enterRoom}>
+            <div style={roomStyle} onClick={this.enterRoom}>
                 <p style={{fontSize: 20, color: "#070707", marginBottom: 5, marginLeft: 5}}>{this.props.name}</p>
                 <p style={{fontSize: 13, color: "6F6F6F", marginLeft: 5}}>{this.props.count} roommates</p>
-                <Glyphicon style={glyphStyle} glyph="chevron-right"/>
-            </ListGroupItem>
+            </div>
         )
 
     }

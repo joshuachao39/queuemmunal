@@ -27,7 +27,7 @@ let innerContainerStyle = {
 
 let Navigation = React.createClass({
 	render: function() {
-		console.log(this.state.activePage);
+		// console.log(this.state.activePage);
 		return (
 			<div style={navigationStyle}>
 				<TitleBar title={this.state.activePage} />
@@ -39,7 +39,7 @@ let Navigation = React.createClass({
 		);
 	},
 	tabBarChange: function(newPage) {
-		console.log("switching to " + newPage);
+		// console.log("switching to " + newPage);
 		this.setState({
 			activePage: newPage
 		});
