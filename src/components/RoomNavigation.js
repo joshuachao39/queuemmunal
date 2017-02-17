@@ -35,7 +35,7 @@ let RoomNavigation = React.createClass({
 				activeKey: eventKey
 			});
 			if (eventKey === 1) {
-				browserHistory.push('/mobile/rooms/'+this.props.params.roomName+'/queue');
+				browserHistory.push('/mobile/rooms/'+this.props.params.roomName);
 			} else {
 				browserHistory.push('/mobile/rooms/'+this.props.params.roomName+'/roommates');
 			}
