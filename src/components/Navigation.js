@@ -25,18 +25,32 @@ let innerContainerStyle = {
 }
 
 
+
+
 let Navigation = React.createClass({
 	render: function() {
 		// console.log(this.state.activePage);
+		const childrenWithProps = React.Children.map(this.props.children,
+     		(child) => React.cloneElement(child, {
+       			changeTitleBarCallback: this.changeTitleFromChild
+     		})
+    	);
+
 		return (
 			<div style={navigationStyle}>
-				<TitleBar title={this.state.activePage} />
+				<TitleBar changeTitleBarCallback={this.changeTitleFromChild} title={this.state.activePage} showBackButton={this.state.showBackButton}/>
 				<div style={innerContainerStyle}>
-					{this.props.children}
+					{childrenWithProps}
 				</div>
 				<BottomNavBar callbackParent={this.tabBarChange} />
 			</div>
 		);
+	},
+	changeTitleFromChild: function(titleState) {
+		this.setState({
+			activePage: titleState.title,
+			showBackButton: titleState.showBackButton
+		});
 	},
 	tabBarChange: function(newPage) {
 		// console.log("switching to " + newPage);
@@ -50,7 +64,8 @@ let Navigation = React.createClass({
 	},
 	getInitialState: function() {
 		return({
-			activePage: "Rooms"
+			activePage: "Rooms",
+			showBackButton: false
 		});
 	}
 

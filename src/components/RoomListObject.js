@@ -28,7 +28,7 @@ class RoomListObject extends React.Component {
         return (
             <div style={roomStyle} onClick={this.enterRoom}>
                 <p style={{fontSize: 20, color: "#070707", marginBottom: 5, marginLeft: 5}}>{this.props.name}</p>
-                <p style={{fontSize: 13, color: "6F6F6F", marginLeft: 5}}>{this.props.count} roommates</p>
+                <p style={{fontSize: 13, color: "#6F6F6F", marginLeft: 5}}>{this.props.count} roommates</p>
             </div>
         )
 
@@ -36,6 +36,11 @@ class RoomListObject extends React.Component {
 
     enterRoom (e) {
         e.preventDefault();
+        let titleState = {
+            title: this.props.name,
+            showBackButton: true
+        }
+        this.props.changeTitleBarCallback(titleState);
         browserHistory.push('/mobile/rooms/'+this.props.name);
     }
 }

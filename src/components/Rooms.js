@@ -11,6 +11,8 @@ import '../styles/styles.css';
 import '../../node_modules/animate.css';
 
 
+
+
 /* the lower right hand button must be set to position absolute, not fixed, in order to work */
 let buttonStyle = {
     background: "#FF6D7F",
@@ -138,12 +140,51 @@ let searchStyle = {
 	borderRadius: 15
 };
 
-let rooms = [
-    {name: "HYPEROOM", count: 205},
-    {name:"Slow Jazz", count: 59},
-    {name: "Kpop Party", count: 23},
-    {name: "Glitch Mob", count:15},
-    {name: "ALL CAPS", count: 9}]
+let data = { "rooms": [
+                {
+                    "name": "HYPEROOM", 
+                    "count": 205,
+                    "songs": [
+
+                    ] 
+                },
+                {
+                    "name":"Slow Jazz", 
+                    "count": 59,
+                    "songs": [
+
+                    ]
+                },
+                {
+                    "name": "Kpop Party", 
+                    "count": 23,
+                    "songs": [
+
+                    ]
+                },
+                {   "name": "Glitch Mob", 
+                    "count":15,
+                    "songs": [
+
+                    ]
+                },
+                {
+                    "name": "ALL CAPS", 
+                    "count": 9,
+                    "songs": [
+
+                    ]
+                }
+            ]};
+
+/*
+fs.readFile('../data/data.json', 'utf8', function readFileCallback(err, payload) {
+    if (err) {
+        console.log(err);
+    } else {
+        data = JSON.parse(payload);
+    }
+}) */
 
 
 /*
@@ -161,17 +202,17 @@ function FieldGroup({ id, label, help, ...props }) {
 export default React.createClass({
 
     render: function() {
-        let roomComponents = [];
-        rooms.map ((element, index) => {
-            roomComponents.push(<RoomListObject name={element.name} count={element.count} key={index}/>);
-        })
+        /*let roomComponents = [];
+        data["rooms"].map ((element, index) => {
+            roomComponents.push(<RoomListObject name={element.name} count={element.count} songs={element.songs} key={index}/>);
+        }) */
         return (
             <div style={containerStyle}>
 
                 <input style={searchStyle} type="text" placeholder="Search for room ID or keyword..." />
 
                 <div style={{overflow: "auto", maxHeight: "500px", minHeight: "500px", width: "90%", background: "#FFF", borderRadius: 15}}>
-                    <ReactList itemRenderer={this.renderItem} length={rooms.length} type="uniform" />
+                    <ReactList itemRenderer={this.renderItem} length={data["rooms"].length} type="uniform" />
                 </div>
 
                 {/* <Infinite containerHeight={500} elementHeight={50} className="listStyle">
@@ -222,7 +263,7 @@ export default React.createClass({
         });
     },
     renderItem(index, key) {
-        return <RoomListObject name={rooms[index].name} count={rooms[index].count} key={key} />
+        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} name={data["rooms"][index].name} count={data["rooms"][index].count} songs={data["rooms"][index].songs} key={key} />
     },
     handleCreateRoomSelect: function(eventKey) {
         if (this.state.createRoomActiveKey != eventKey) {
@@ -233,7 +274,8 @@ export default React.createClass({
     },
     handleCreateRoom: function() {
         this.closeModal();
-        rooms.unshift({name: this.state.addRoomName, count: 1});
+        data.rooms.unshift({name: this.state.addRoomName, count: 1});
+
         this.setState({
             addRoomName: ""
         })

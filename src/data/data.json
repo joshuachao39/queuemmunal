@@ -1,0 +1,38 @@
+{
+	"rooms":[
+		{
+			"name": "HYPEROOM", 
+		 	"count": 205,
+		 	"songs": [
+
+		 	] 
+		},
+	 	{
+	 		"name":"Slow Jazz", 
+	 		"count": 59,
+	 		"songs": [
+
+	 		]
+	 	},
+	 	{
+	 		"name": "Kpop Party", 
+	 		"count": 23,
+	 		"songs": [
+
+	 		]
+	 	},
+	    {	"name": "Glitch Mob", 
+	    	"count":15,
+	    	"songs": [
+
+	    	]
+	    },
+	    {
+	    	"name": "ALL CAPS", 
+	    	"count": 9,
+	    	"songs": [
+
+	    	]
+	    }
+	]
+}
