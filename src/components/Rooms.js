@@ -198,12 +198,14 @@ export default React.createClass({
                             </Nav> 
                         </div>
                         <div style={contentStyle}>
-                            <div style={{width: "100%"}}>
-                                <p style={addRoomHeadingStyle}>Name</p>
-                                <input style={formStyle} type="text" value={this.state.addRoomName} placeholder="Enter your room name here" onChange={this.handleNameChange} />
-                            </div>
-                            <button style={createRoomButtonStyle} onClick={this.handleCreateRoom}>Create your room!</button>
+                            <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", justifyContent: "space-around", alignItems: "center"}}>
+                                <div style={{width: "100%"}}>
+                                    <p style={addRoomHeadingStyle}>Name</p>
+                                    <input style={formStyle} type="text" value={this.state.addRoomName} placeholder="Enter your room name here" onChange={this.handleNameChange} />
+                                </div>
+                                <button style={createRoomButtonStyle} onClick={this.handleCreateRoom}>Create your room!</button>
                             {/* ADD MORE SHIT HERE LATER! */}
+                            </div>
                         </div>
                     </div>
                 </Modal>
@@ -243,9 +245,6 @@ export default React.createClass({
         this.setState({
             createModalIsOpen: true
         });
-    },
-    enterRoom: function() {
-        browserHistory.push('/mobile/rooms/room1');
     },
     closeModal: function() {
         this.setState({

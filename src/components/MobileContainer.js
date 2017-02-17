@@ -13,7 +13,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 
 /* let routes = {
-	path: '/', 
+	path: '/',
 	component: SignIn,
 	childRoutes: [
 		{ path: '/home', component: Home }
@@ -26,15 +26,13 @@ var MobileContainer = React.createClass({
 				<Route path="/" component={SignIn} />
 				<Route path="mobile" component={Navigation}>
 					<IndexRoute component={Rooms} />
+                    <Route path="/mobile/rooms/:roomName" component={RoomNavigation}>
+                        <IndexRoute component={Queue} />
+                        <Route path="/mobile/rooms/:roomName/roommates" component={Roommates} />
+                    </Route>
 					<Route path="Profile" component={Profile} />
 					<Route path="My Library" component={Library} />
-					<Route path="rooms" component={RoomNavigation}>
-						<Route path="room1">
-							<IndexRoute component={Queue} />
-							<Route path="roommates" component={Roommates} />
-						</Route>
-					</Route>
-				</Route> 
+				</Route>
 			</Router>
 		);
 	}
