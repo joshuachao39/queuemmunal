@@ -1,5 +1,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import {updateRoom} from '../redux/actions'
 
 let buttonStyle = {
 	background: "#FF6D7F",
@@ -24,10 +26,21 @@ let Roommates = React.createClass({
 				<div style={buttonStyle} onClick={this.leaveRoom} className="animated bounceIn">Leave this room</div>
 			</div>
 		);
-	}, 
+	},
 	leaveRoom: function() {
 		browserHistory.push('/mobile');
+        this.props.removeRoom();
 	}
 });
 
-export default Roommates;
+
+function mapDispatchToProps (dispatch) {
+    return {
+        removeRoom: () => {
+            dispatch (updateRoom (undefined));
+        }
+    }
+}
+
+const RoommatesContainer = connect (null, mapDispatchToProps) (Roommates);
+export default RoommatesContainer;
