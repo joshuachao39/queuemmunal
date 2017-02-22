@@ -13,7 +13,7 @@ export const UPDATE_ROOM = 'UPDATE_ROOM';
 
 export function updateRoom (roomName) {
     return {
-        type: UPDATE_COURSE,
+        type: UPDATE_ROOM,
         roomName: roomName
     }
 }
@@ -25,8 +25,8 @@ export function logOut () {
 }
 
 
-export function logOut () {
+export function logIn () {
     return {
-        type: LOG_OUT
+        type: LOG_IN
     };
 }

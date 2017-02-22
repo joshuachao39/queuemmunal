@@ -1,3 +1,5 @@
+import {LOG_OUT, LOG_IN, UPDATE_ROOM} from './actions';
+
 /**
 * state of the app
 * loggedIn: true if user is logged in, false otherwise
