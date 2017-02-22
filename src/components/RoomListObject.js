@@ -49,7 +49,8 @@ class RoomListObject extends React.Component {
 function mapDispatchToProps (dispatch) {
     return {
         setRoom: (roomName) => {
-            dispatch (updateRoom(roomName))
+            console.log ("updating to"+roomName);
+            dispatch (updateRoom(roomName));
         }
     };
 }

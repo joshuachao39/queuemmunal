@@ -14,7 +14,7 @@ export const UPDATE_DIMENSIONS = 'UPDATE_DIMENSIONS';
 export function updateRoom (roomName) {
     return {
         type: UPDATE_ROOM,
-        roomName: roomName
+        currentRoom: roomName
     }
 }
 

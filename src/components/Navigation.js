@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import BottomNavBar from './BottomNavBar';
 import TitleBar from './TitleBar';
-import ReactPlayer from 'react-player';
+import MusicPlayer from './MusicPlayer';
 import $ from 'jquery';
 
 
@@ -31,12 +31,19 @@ let innerContainerStyle = {
 
 let Navigation = React.createClass({
 	render: function() {
-		// console.log(this.state.activePage);
+		console.log("CURRENT ROOM: " + this.props.currentRoom);
 		const childrenWithProps = React.Children.map(this.props.children,
      		(child) => React.cloneElement(child, {
        			changeTitleBarCallback: this.changeTitleFromChild
      		})
     	);
+
+    	let musicPlayer;
+
+    	if (this.props.currentRoom != undefined) {
+    		musicPlayer = <MusicPlayer />
+    	}
+
 
 		return (
 			<div style={navigationStyle}>
@@ -45,13 +52,7 @@ let Navigation = React.createClass({
 					
 					{childrenWithProps}
 				</div>
-				<ReactPlayer url='https://soundcloud.com/wevinkang/daytime-disco' 
-								 playing 
-								 soundcloudConfig={{showArtwork: true}}
-								 width={this.props.width}
-								 height={this.props.height / 12}
-
-				/>
+				{musicPlayer}
 				<BottomNavBar callbackParent={this.tabBarChange} />
 			</div>
 		);
@@ -84,7 +85,8 @@ let Navigation = React.createClass({
 function mapStateToProps (state, ownProps) {
 	return {
 		height: state.height,
-		width: state.width
+		width: state.width,
+		currentRoom: state.currentRoom
 	}
 }
 
