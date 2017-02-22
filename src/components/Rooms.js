@@ -142,34 +142,34 @@ let searchStyle = {
 
 let data = { "rooms": [
                 {
-                    "name": "HYPEROOM", 
+                    "name": "HYPEROOM",
                     "count": 205,
                     "songs": [
 
-                    ] 
+                    ]
                 },
                 {
-                    "name":"Slow Jazz", 
+                    "name":"Slow Jazz",
                     "count": 59,
                     "songs": [
 
                     ]
                 },
                 {
-                    "name": "Kpop Party", 
+                    "name": "Kpop Party",
                     "count": 23,
                     "songs": [
 
                     ]
                 },
-                {   "name": "Glitch Mob", 
+                {   "name": "Glitch Mob",
                     "count":15,
                     "songs": [
 
                     ]
                 },
                 {
-                    "name": "ALL CAPS", 
+                    "name": "ALL CAPS",
                     "count": 9,
                     "songs": [
 
@@ -215,10 +215,6 @@ export default React.createClass({
                     <ReactList itemRenderer={this.renderItem} length={data["rooms"].length} type="uniform" />
                 </div>
 
-                {/* <Infinite containerHeight={500} elementHeight={50} className="listStyle">
-                    { roomComponents }
-                </Infinite> */}
-
                 <div onClick={this.createRoom} style={buttonStyle} className="animated bounceIn">
                     <Glyphicon style={{fontSize: 30}} glyph="plus" />
                 </div>
@@ -236,7 +232,7 @@ export default React.createClass({
                             <Nav bsClass="addRoomTabBar" bsStyle="pills" activeKey={this.state.createRoomActiveKey} onSelect={this.handleCreateRoomSelect}>
                                 <NavItem eventKey={1}>Private </NavItem>
                                 <NavItem eventKey={2}>Public </NavItem>
-                            </Nav> 
+                            </Nav>
                         </div>
                         <div style={contentStyle}>
                             <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", justifyContent: "space-around", alignItems: "center"}}>

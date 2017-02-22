@@ -17,6 +17,7 @@ var config = {
 
  Firebase.initializeApp(config);
 
+
  let App = React.createClass({
  	render() {
     if (this.state.width > 480 || this.state.width > this.state.height) {

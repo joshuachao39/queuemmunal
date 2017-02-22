@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Glyphicon } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
-
+import {updateRoom} from '../redux/actions';
 
 let roomStyle = {
     padding: "10px",
@@ -31,11 +32,11 @@ class RoomListObject extends React.Component {
                 <p style={{fontSize: 13, color: "#6F6F6F", marginLeft: 5}}>{this.props.count} roommates</p>
             </div>
         )
-
     }
 
     enterRoom (e) {
         e.preventDefault();
+        this.props.setRoom (this.props.name);
         let titleState = {
             title: this.props.name,
             showBackButton: true
@@ -45,5 +46,13 @@ class RoomListObject extends React.Component {
     }
 }
 
+function mapDispatchToProps (dispatch) {
+    return {
+        setRoom: (roomName) => {
+            dispatch (updateRoom(roomName))
+        }
+    };
+}
 
-export default RoomListObject;
+const RoomListObjectContainer = connect (null, mapDispatchToProps)(RoomListObject)
+export default RoomListObjectContainer;
