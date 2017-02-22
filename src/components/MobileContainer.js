@@ -9,8 +9,16 @@ import Queue from './Queue';
 import Roommates from './Roommates';
 import RoomNavigation from './RoomNavigation';
 
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import appReducers from '../redux/reducers'
+
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
+
+// initializing the store
+let store = createStore (appReducers);
+console.log (store.getState());
 
 /* let routes = {
 	path: '/',
@@ -19,21 +27,24 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 		{ path: '/home', component: Home }
 	]
 }; */
+
 var MobileContainer = React.createClass({
 	render: function() {
 		return (
-			<Router history={browserHistory}>
-				<Route path="/" component={SignIn} />
-				<Route path="mobile" component={Navigation}>
-					<IndexRoute component={Rooms} />
-                    <Route path="/mobile/rooms/:roomName" component={RoomNavigation}>
-                        <IndexRoute component={Queue} />
-                        <Route path="/mobile/rooms/:roomName/roommates" component={Roommates} />
-                    </Route>
-					<Route path="Profile" component={Profile} />
-					<Route path="My Library" component={Library} />
-				</Route>
-			</Router>
+            <Provider store={store} >
+    			<Router history={browserHistory}>
+    				<Route path="/" component={SignIn} />
+    				<Route path="mobile" component={Navigation}>
+    					<IndexRoute component={Rooms} />
+                        <Route path="/mobile/rooms/:roomName" component={RoomNavigation}>
+                            <IndexRoute component={Queue} />
+                            <Route path="/mobile/rooms/:roomName/roommates" component={Roommates} />
+                        </Route>
+    					<Route path="Profile" component={Profile} />
+    					<Route path="My Library" component={Library} />
+    				</Route>
+    			</Router>
+            </Provider>
 		);
 	}
 });
