@@ -10,7 +10,8 @@ import './styles/index.css';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import appReducers from './redux/reducers'
-import Firebase from 'firebase';
+import firebase from 'firebase';
+import 'firebase/database';
 
 // initializing the store
 let store = createStore (appReducers);
@@ -23,7 +24,7 @@ var config = {
     messagingSenderId: "376397752355"
   };
 
- Firebase.initializeApp(config);
+ firebase.initializeApp(config);
 
 
  let App = React.createClass({
@@ -54,6 +55,7 @@ var config = {
       height: $(window).height()
     });
     this.props.updateStateDimensions (this.state.width, this.state.height);
+    store.getState();
   },
   componentWillMount() {
     this.updateDimensions();

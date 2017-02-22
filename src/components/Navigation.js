@@ -53,6 +53,7 @@ let Navigation = React.createClass({
 					{childrenWithProps}
 				</div>
 				{musicPlayer}
+				
 				<BottomNavBar callbackParent={this.tabBarChange} />
 			</div>
 		);
