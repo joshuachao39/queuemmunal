@@ -10,20 +10,7 @@ import Roommates from './Roommates';
 import RoomNavigation from './RoomNavigation';
 import SignUp from './SignUp';
 
-
-
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-
-
-
-
-/* let routes = {
-	path: '/',
-	component: SignIn,
-	childRoutes: [
-		{ path: '/home', component: Home }
-	]
-}; */
 
 var MobileContainer = React.createClass({
 	render: function() {

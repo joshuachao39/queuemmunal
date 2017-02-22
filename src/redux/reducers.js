@@ -36,7 +36,7 @@ function appReducers (state, action) {
 
     case UPDATE_ROOM: {
         return Object.assign ({}, state, {
-            currentCourse: action.room
+            currentRoom: action.currentRoom
         });
     }
 
