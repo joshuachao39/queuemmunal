@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import BottomNavBar from './BottomNavBar';
 import TitleBar from './TitleBar';
+import ReactPlayer from 'react-player';
 import $ from 'jquery';
 
 
@@ -40,8 +42,16 @@ let Navigation = React.createClass({
 			<div style={navigationStyle}>
 				<TitleBar changeTitleBarCallback={this.changeTitleFromChild} title={this.state.activePage} showBackButton={this.state.showBackButton}/>
 				<div style={innerContainerStyle}>
+					
 					{childrenWithProps}
 				</div>
+				<ReactPlayer url='https://soundcloud.com/wevinkang/daytime-disco' 
+								 playing 
+								 soundcloudConfig={{showArtwork: true}}
+								 width={this.props.width}
+								 height={this.props.height / 12}
+
+				/>
 				<BottomNavBar callbackParent={this.tabBarChange} />
 			</div>
 		);
@@ -71,4 +81,12 @@ let Navigation = React.createClass({
 
 });
 
-export default Navigation;
+function mapStateToProps (state, ownProps) {
+	return {
+		height: state.height,
+		width: state.width
+	}
+}
+
+const NavigationContainer = connect (mapStateToProps)(Navigation);
+export default NavigationContainer;

@@ -9,16 +9,12 @@ import Queue from './Queue';
 import Roommates from './Roommates';
 import RoomNavigation from './RoomNavigation';
 
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import appReducers from '../redux/reducers'
+
 
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 
-// initializing the store
-let store = createStore (appReducers);
-console.log (store.getState());
+
 
 /* let routes = {
 	path: '/',
@@ -31,7 +27,6 @@ console.log (store.getState());
 var MobileContainer = React.createClass({
 	render: function() {
 		return (
-            <Provider store={store} >
     			<Router history={browserHistory}>
     				<Route path="/" component={SignIn} />
     				<Route path="mobile" component={Navigation}>
@@ -44,7 +39,6 @@ var MobileContainer = React.createClass({
     					<Route path="My Library" component={Library} />
     				</Route>
     			</Router>
-            </Provider>
 		);
 	}
 });
