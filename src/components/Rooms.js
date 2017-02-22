@@ -4,6 +4,7 @@ import $ from 'jquery';
 import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
 import ReactList from 'react-list';
+import Fuse from 'fuse.js';
 
 import RoomListObject from './RoomListObject'
 import exit from '../assets/closeIcon.svg';
@@ -140,42 +141,106 @@ let searchStyle = {
 	borderRadius: 15
 };
 
-let data = { "rooms": [
+let data = [
                 {
                     "name": "HYPEROOM",
                     "count": 205,
                     "songs": [
 
-                    ]
+                    ],
+                    "id": "1001",
+                    "public": false
                 },
                 {
                     "name":"Slow Jazz",
                     "count": 59,
                     "songs": [
 
-                    ]
+                    ],
+                    "id": "2002",
+                    "public": true
                 },
                 {
                     "name": "Kpop Party",
                     "count": 23,
                     "songs": [
 
-                    ]
+                    ],
+                    "id": "3003",
+                    "public": true
                 },
                 {   "name": "Glitch Mob",
                     "count":15,
                     "songs": [
 
-                    ]
+                    ],
+                    "id": "4004",
+                    "public": true
                 },
                 {
                     "name": "ALL CAPS",
                     "count": 9,
                     "songs": [
 
-                    ]
+                    ],
+                    "id": "5005",
+                    "public": true
+                },
+                {
+                    "name": "Kanye",
+                    "count": 9,
+                    "songs": [
+
+                    ],
+                    "id": "6006",
+                    "public": true
+                },
+                {
+                    "name": "Chance",
+                    "count": 9,
+                    "songs": [
+
+                    ],
+                    "id": "7007",
+                    "public": true
+                },
+                {
+                    "name": "LED WUZ LIT",
+                    "count": 9,
+                    "songs": [
+
+                    ],
+                    "id": "8008",
+                    "public": true
+                },
+                {
+                    "name": "dubbusteppu",
+                    "count": 9,
+                    "songs": [
+
+                    ],
+                    "id": "9009",
+                    "public": true
+                },
+                {
+                    "name": "youtube lul",
+                    "count": 9,
+                    "songs": [
+
+                    ],
+                    "id": "1010",
+                    "public": true
+                },
+                {
+                    "name": "???",
+                    "count": 9,
+                    "songs": [
+
+                    ],
+                    "id": "1111",
+                    "public": true
                 }
-            ]};
+            ];
 
 /*
 fs.readFile('../data/data.json', 'utf8', function readFileCallback(err, payload) {
@@ -209,10 +274,10 @@ export default React.createClass({
         return (
             <div style={containerStyle}>
 
-                <input style={searchStyle} type="text" placeholder="Search for room ID or keyword..." />
+                <input style={searchStyle} type="text" value={this.state.searchQuery} placeholder="Search for room ID or keyword..." onChange={this.handleSearch}/>
 
                 <div style={{overflow: "auto", maxHeight: "500px", minHeight: "500px", width: "90%", background: "#FFF", borderRadius: 15}}>
-                    <ReactList itemRenderer={this.renderItem} length={data["rooms"].length} type="uniform" />
+                    <ReactList itemRenderer={this.renderItem} length={this.state.rooms.length} type="uniform" />
                 </div>
 
                 <div onClick={this.createRoom} style={buttonStyle} className="animated bounceIn">
@@ -253,13 +318,44 @@ export default React.createClass({
         return ({
             createModalIsOpen: false,
             createRoomActiveKey: 1,
+            songQuery: "",
             addRoomName: "",
             addRoomRoommateCap: 50,
-            addRoomSongCap: -1
+            addRoomSongCap: -1,
+            rooms: data
         });
     },
     renderItem(index, key) {
-        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} name={data["rooms"][index].name} count={data["rooms"][index].count} songs={data["rooms"][index].songs} key={key} />
+        if (this.state.rooms[index].public) {
+            return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} name={this.state.rooms[index].name} count={this.state.rooms[index].count} songs={this.state.rooms[index].songs} key={key} />
+        }
+    },
+    handleSearch(event) {
+        if (event.target.value != '') {
+            var options = {
+              shouldSort: true,
+              threshold: 0.6,
+              location: 0,
+              distance: 100,
+              maxPatternLength: 32,
+              minMatchCharLength: 1,
+              keys: [
+                "name",
+                "id"
+                ]
+            };
+            var fuse = new Fuse(this.state.rooms, options); // "list" is the item array
+            var result = fuse.search(event.target.value + "");
+            this.setState({
+                songQuery: event.target.value,
+                rooms: result
+            });
+        } else {
+            this.setState({
+                songQuery: event.target.value,
+                rooms: data
+            })
+        }
     },
     handleCreateRoomSelect: function(eventKey) {
         if (this.state.createRoomActiveKey != eventKey) {

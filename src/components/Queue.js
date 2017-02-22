@@ -116,6 +116,11 @@ let songs = [{name: "Closer", artist: "The Chainsmokers"}];
 
 let Queue = React.createClass({
 	render: function() {
+        let songError;
+
+        if (this.state.addSongError) {
+            songError = <p style={{fontSize: 15, color: "#FF6D7F", fontFamily: "Quicksand", marginTop: 10}}>You must input both a song title and an artist!</p>
+        };
 
 		return(
 			<div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -168,6 +173,7 @@ let Queue = React.createClass({
                                 </div>
                                 <button style={addSongButtonStyle} onClick={this.handleAddSong}>Add Song!</button>
                             {/* ADD MORE SHIT HERE LATER! */}
+                            {songError}
                             </div>
                         </div>
                     </div>
@@ -181,12 +187,13 @@ let Queue = React.createClass({
 			showAddSongModal: false,
 			addSongActiveKey: 1,
 			addNameQuery: "",
-			addArtistQuery: ""
+			addArtistQuery: "",
+            addSongError: false
 		});
 	},
 	renderItem: function(index, key) {
 		let currentSong = true;
-		if (index != 0) {
+		if (index !== 0) {
 			currentSong = false;
 		}
 		return <SongListObject currentSong={currentSong} name={songs[index].name} artist={songs[index].artist} key={key} />
@@ -202,23 +209,31 @@ let Queue = React.createClass({
 		})
 	},
 	handleAddSongSelect: function(eventKey) {
-		if (this.state.addSongActiveKey != eventKey) {
+		if (this.state.addSongActiveKey !== eventKey) {
             this.setState({
                 addSongActiveKey: eventKey
             });
         }
 	},
 	handleAddSong: function() {
-		this.close();
-		songs.push({name: this.state.addNameQuery, artist: this.state.addArtistQuery});
-		this.setState({
-			addNameQuery: "",
-			addArtistQuery: ""
-		})
+        if (this.state.addNameQuery !== '' && this.state.addArtistQuery !== '') {
+    		this.close();
+    		songs.push({name: this.state.addNameQuery, artist: this.state.addArtistQuery});
+    		this.setState({
+    			addNameQuery: "",
+    			addArtistQuery: "",
+                addSongError: false
+    		})
+        } else {
+            this.setState({
+                addSongError: true
+            })
+        }
 	},
 	close: function() {
 		this.setState({
-			showAddSongModal: false
+			showAddSongModal: false,
+            addSongError: false
 		});
 	},
 	open: function() {

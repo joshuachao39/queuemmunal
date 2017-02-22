@@ -41,7 +41,7 @@ let Navigation = React.createClass({
     	let musicPlayer;
 
     	if (this.props.currentRoom != undefined) {
-    		musicPlayer = <MusicPlayer />
+    		musicPlayer = <MusicPlayer/>
     	}
 
 
