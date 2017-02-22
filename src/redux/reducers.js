@@ -1,4 +1,4 @@
-import {LOG_OUT, LOG_IN, UPDATE_ROOM} from './actions';
+import {LOG_OUT, LOG_IN, UPDATE_ROOM, UPDATE_DIMENSIONS} from './actions';
 
 /**
 * state of the app
@@ -8,7 +8,9 @@ import {LOG_OUT, LOG_IN, UPDATE_ROOM} from './actions';
 
 const initialState = {
     loggedIn : false,
-    currentRoom : undefined
+    currentRoom : undefined,
+    height: 0,
+    width: 0
 };
 
 
@@ -35,6 +37,13 @@ function appReducers (state, action) {
     case UPDATE_ROOM: {
         return Object.assign ({}, state, {
             currentCourse: action.room
+        });
+    }
+
+    case UPDATE_DIMENSIONS: {
+        return Object.assign ({}, state, {
+            width: action.width,
+            height: action.height
         });
     }
 
