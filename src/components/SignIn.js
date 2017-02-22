@@ -56,6 +56,12 @@ let errorStyle = {
 	textAlign: "center"
 }
 
+let signUpStyle = {
+	fontSize: 15,
+	paddingTop: 10,
+	textDecoration: "underline"
+}
+
 
 
 let SignIn = React.createClass({
@@ -72,8 +78,15 @@ let SignIn = React.createClass({
 				<input style={formStyle} type="text" value={this.state.email} placeholder="Email" onChange={this.handleUsernameChange} />
 				<input style={formStyle} type="password" value={this.state.password} placeholder="Password" onChange={this.handlePasswordChange} />
 				<button style={buttonStyle} className="animated bounceIn" onClick={this.handleSubmit}>Login</button>
+			
+				<p style={signUpStyle} onClick={this.signUpClicked}>
+					New? Sign up here.
+				</p>
 			</div>
 		);
+	},
+	signUpClicked: function(event) {
+		this.props.router.push('/SignUp');
 	},
 	handleSubmit: function(event) {
 		/*const auth = firebase.auth();

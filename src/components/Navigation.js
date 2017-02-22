@@ -45,13 +45,14 @@ let Navigation = React.createClass({
 					
 					{childrenWithProps}
 				</div>
-				<ReactPlayer url='https://soundcloud.com/wevinkang/daytime-disco' 
+		   	{/*	<ReactPlayer url='https://soundcloud.com/wevinkang/daytime-disco' 
 								 playing 
 								 soundcloudConfig={{showArtwork: true}}
 								 width={this.props.width}
 								 height={this.props.height / 12}
 
-				/>
+				/> */ } 
+			
 				<BottomNavBar callbackParent={this.tabBarChange} />
 			</div>
 		);

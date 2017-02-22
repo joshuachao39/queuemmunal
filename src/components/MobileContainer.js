@@ -8,6 +8,7 @@ import Library from './Library';
 import Queue from './Queue';
 import Roommates from './Roommates';
 import RoomNavigation from './RoomNavigation';
+import SignUp from './SignUp';
 
 
 
@@ -29,6 +30,7 @@ var MobileContainer = React.createClass({
 		return (
     			<Router history={browserHistory}>
     				<Route path="/" component={SignIn} />
+                    <Route path="/SignUp" component={SignUp} />
     				<Route path="mobile" component={Navigation}>
     					<IndexRoute component={Rooms} />
                         <Route path="/mobile/rooms/:roomName" component={RoomNavigation}>
