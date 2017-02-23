@@ -1,0 +1,307 @@
+[
+	{
+		"name":"Shape of You",
+		"artist":"Ed Sheeran",
+		"url":"https://www.youtube.com/watch?v=_dK2tDK9grQ"
+	},
+	{
+		"name":"I Don't Wanna Live Forever",
+		"artist":"ZAYN / Taylor Swift",
+		"url":"https://www.youtube.com/watch?v=7F37r50VUTQ"
+	},
+	{
+		"name":"Bad and Boujee",
+		"artist":"Migos (ft. Lil Uzi Vert)",
+		"url":"https://www.youtube.com/watch?v=S-sJp1FfG7Q"
+	},
+	{
+		"name":"Chained to the Rhythm",
+		"artist":"Katy Perry (ft. Skip Marley)",
+		"url":"https://www.youtube.com/watch?v=8gsGhdZDC-0"
+	},
+	{
+		"name":"Closer",
+		"artist":"The Chainsmokers",
+		"url":"https://www.youtube.com/watch?v=PT2_F-1esPk"
+	},
+	{
+		"name":"Bad Things",
+		"artist":"Machine Gun Kelly / Camila Cabello",
+		"url":"https://www.youtube.com/watch?v=QpbQ4I3Eidg"
+	},
+	{
+		"name":"That's What I Like",
+		"artist":"Bruno Mars",
+		"url":"https://www.youtube.com/watch?v=mPIm_ZZ0yVw"
+	},
+	{
+		"name":"Love on the Brain",
+		"artist":"Rihanna",
+		"url":"https://www.youtube.com/watch?v=0HL_8XRt5Xk"
+	},
+	{
+		"name":"I Feel It Coming",
+		"artist":"The Weeknd (ft. Daft Punk)",
+		"url":"https://www.youtube.com/watch?v=4Kx-ke9RKww"
+	},
+	{
+		"name":"Bounce Back",
+		"artist":"Big Sean",
+		"url":"https://www.youtube.com/watch?v=phr1pOFK1V8"
+	},
+	{
+		"name":"Paris",
+		"artist":"The Chainsmokers",
+		"url":"https://www.youtube.com/watch?v=RhU9MZ98jxo"
+	},
+	{
+		"name":"Fake Love",
+		"artist":"Drake",
+		"url":"https://www.youtube.com/watch?v=Q5qPsCNyxD8"
+	},
+	{
+		"name":"24K Magic",
+		"artist":"Bruno Mars",
+		"url":"https://www.youtube.com/watch?v=LSrFlZlHFCA"
+	},
+	{
+		"name":"Starboy",
+		"artist":"The Weeknd (ft. Daft Punk)",
+		"url":"https://www.youtube.com/watch?v=dMMUH_ZpbB0"
+	},
+	{
+		"name":"Scars to Your Beautiful",
+		"artist":"Alessia Cara",
+		"url":"https://www.youtube.com/watch?v=Em7vc8NWUNY"
+	},
+	{
+		"name":"Black Beatles",
+		"artist":"Rae Sremmurd (ft. Gucci Mane)",
+		"url":"https://www.youtube.com/watch?v=b8m9zhNAgKs"
+	},
+	{
+		"name":"Don't Wanna Know",
+		"artist":"Maroon 5 (ft. Kendrick Lamar)",
+		"url":"https://www.youtube.com/watch?v=OxPv8mSTv9U"
+	},
+	{
+		"name":"Million Reasons",
+		"artist":"Lady Gaga",
+		"url":"https://www.youtube.com/watch?v=WYRJ-ryPEu0"
+	},
+	{
+		"name":"Mercy",
+		"artist":"Shawn Mendes",
+		"url":"https://www.youtube.com/watch?v=PIrMZG7BMq4"
+	},
+	{
+		"name":"iSPY",
+		"artist":"KYLE (ft. Lil Yachty)",
+		"url":"https://www.youtube.com/watch?v=mMMSS37tHDE"
+	},
+	{
+		"name":"Caroline",
+		"artist":"Amine",
+		"url":"https://www.youtube.com/watch?v=3j8ecF8Wt4E"
+	},
+	{
+		"name":"Rockabye",
+		"artist":"Clean Bandit (ft. Sean Paul / Anne-Marie)",
+		"url":"https://www.youtube.com/watch?v=eg3omyesStg"
+	},
+	{
+		"name":"Say You Won't Let Go",
+		"artist":"James Arthur",
+		"url":"https://www.youtube.com/watch?v=uK4FilVP0-Y"
+	},
+	{
+		"name":"Side To Side",
+		"artist":"Arianda Grande (ft. Nicki Minaj)",
+		"url":"https://www.youtube.com/watch?v=SXiSVQZLje8"
+	},
+	{
+		"name":"Can't Stop the Feeling!",
+		"artist":"Justin Timberlake",
+		"url":"https://www.youtube.com/watch?v=ru0K8uYEZWw"
+	},
+	{
+		"name":"All Time Low",
+		"artist":"Jon Bellion",
+		"url":"https://www.youtube.com/watch?v=AXnqkVTFUqY"
+	},
+	{
+		"name":"Body Like a Back Road",
+		"artist":"Sam Hunt",
+		"url":"https://www.youtube.com/watch?v=Mdh2p03cRfw"
+	},
+	{
+		"name":"Let Me Love You",
+		"artist":"DJ Snake (ft. Justin Bieber)",
+		"url":"https://www.youtube.com/watch?v=SMs0GnYze34"
+	},
+	{
+		"name":"T-Shirt",
+		"artist":"Migos",
+		"url":"https://www.youtube.com/watch?v=NV6vDmtAFjg"
+	},
+	{
+		"name":"Down",
+		"artist":"Marian Hill",
+		"url":"https://www.youtube.com/watch?v=KGJya-QUn1o"
+	},
+	{
+		"name":"Water Under the Bridge",
+		"artist":"Adele",
+		"url":"https://www.youtube.com/watch?v=_BBvHRB5vQE"
+	},
+	{
+		"name":"Heathens",
+		"artist":"twenty one pilots",
+		"url":"https://www.youtube.com/watch?v=4Am6iIqPXHY"
+	},
+	{
+		"name":"Congratulations",
+		"artist":"Post Malone (ft. Quavo)",
+		"url":"https://www.youtube.com/watch?v=SC4xMk98Pdc"
+	},
+	{
+		"name":"Issues",
+		"artist":"Julia Michaels",
+		"url":"https://www.youtube.com/watch?v=7dqMyh4ILIg"
+	},
+	{
+		"name":"Better Man",
+		"artist":"Little Big Town",
+		"url":"https://www.youtube.com/watch?v=ph9NQ8ASmX4"
+	},
+	{
+		"name":"Treat You Better",
+		"artist":"Shawn Mendes",
+		"url":"https://www.youtube.com/watch?v=lY2yjAdbvdQ"
+	},
+	{
+		"name":"Broccoli",
+		"artist":"D.R.A.M. (ft. Lil Yachty)",
+		"url":"https://www.youtube.com/watch?v=qsZR6JBSr8M"
+	},
+	{
+		"name":"This Town",
+		"artist":"Niall Horan",
+		"url":"https://www.youtube.com/watch?v=ic1l36GrNOU"
+	},
+	{
+		"name":"Dirt On My Boots",
+		"artist":"Jon Pardi",
+		"url":"https://www.youtube.com/watch?v=gCxbgqyC2Wg"
+	},
+	{
+		"name":"Starving",
+		"artist":"Hailee Steinfeld / Grey (ft. Zedd)",
+		"url":"https://www.youtube.com/watch?v=ScjT8zvT7d0"
+	},
+	{
+		"name":"Party",
+		"artist":"Chris Brown (ft. Usher / Gucci Mane)",
+		"url":"https://www.youtube.com/watch?v=qTfHinwpymQ"
+	},
+	{
+		"name":"Cold",
+		"artist":"Maroon 5 (ft. Future)",
+		"url":"https://www.youtube.com/watch?v=DCBmhs4dYzc"
+	},
+	{
+		"name":"I Got You",
+		"artist":"Bebe Rexha",
+		"url":"https://www.youtube.com/watch?v=pUUGJD-JjGA"
+	},
+	{
+		"name":"Location",
+		"artist":"Khalid",
+		"url":"https://www.youtube.com/watch?v=by3yRdlQvzs"
+	},
+	{
+		"name":"Moves",
+		"artist":"Big Sean",
+		"url":"https://www.youtube.com/watch?v=7cIkC7s3d2o"
+	},
+	{
+		"name":"Make Me (Cry)",
+		"artist":"Noah Cyrus (ft. Labrinth)",
+		"url":"https://www.youtube.com/watch?v=uwX4wrYLwfU"
+	},
+	{
+		"name":"Sober Saturday Night",
+		"artist":"Chris Young (ft. Vince Gill)",
+		"url":"https://www.youtube.com/watch?v=qY8QtrkhcD4"
+	},
+	{
+		"name":"Juju On That Beat (TZ Anthem)",
+		"artist":"Zay Hilfigerrr (ft. Zayion McCall)",
+		"url":"https://www.youtube.com/watch?v=dSMpXARQYbg"
+	},
+	{
+		"name":"Both",
+		"artist":"Gucci Mane (ft. Drake)",
+		"url":"https://www.youtube.com/watch?v=Ue54yIuC-vU"
+	},
+	{
+		"name":"Deja Vu",
+		"artist":"J. Cole",
+		"url":"https://www.youtube.com/watch?v=H2saJ_0SbD8"
+	},
+	{
+		"name":"Love Me Now",
+		"artist":"John Legend",
+		"url":"https://www.youtube.com/watch?v=rL_NP1mD0UQ"
+	},
+	{
+		"name":"Castle On the Hill",
+		"artist":"Ed Sheeran",
+		"url":"https://www.youtube.com/watch?v=7Qp5vcuMIlk"
+	},
+	{
+		"name":"The Fighter",
+		"artist":"Keith Urban (ft. Carrie Underwood)",
+		"url":"https://www.youtube.com/watch?v=58ZqbEniYMw"
+	},
+	{
+		"name":"Bom Bidi Bom",
+		"artist":"Nick Jonas / Nicki Minaj",
+		"url":"https://www.youtube.com/watch?v=CA6fB35pNMg"
+	},
+	{
+		"name":"Despacito",
+		"artist":"Luis Fonsi (ft. Daddy Yankee)",
+		"url":"https://www.youtube.com/watch?v=kJQP7kiw5Fk"
+	},
+	{
+		"name":"Think a Little Less",
+		"artist":"Michael Ray",
+		"url":"https://www.youtube.com/watch?v=JOIvhO2fDTI"
+	},
+	{
+		"name":"Swang",
+		"artist":"Rae Sremmurd",
+		"url":"https://www.youtube.com/watch?v=YjblT3N55io"
+	},
+	{
+		"name":"Party Monster",
+		"artist":"The Weeknd",
+		"url":"https://www.youtube.com/watch?v=diW6jXhLE0E"
+	},
+	{
+		"name":"Play That Song",
+		"artist":"Train",
+		"url":"https://www.youtube.com/watch?v=J5qWnG5RQTk"
+	},
+	{
+		"name":"Used To This",
+		"artist":"Future (ft. Drake)",
+		"url":"https://www.youtube.com/watch?v=vAQIEcMvkac"
+	},
+	{
+		"name":"Goosebumps",
+		"artist":"Travis Scott",
+		"url":"https://www.youtube.com/watch?v=A_0l3J1JYtI"
+	}
+]

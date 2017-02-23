@@ -1,5 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import $ from 'jquery';
 
 let titleStyle = {
@@ -28,15 +29,24 @@ let backContent = '<';
 let TitleBar = React.createClass({
 	render: function() {
 		let backButton;
+		let titleToShow;
 		if (this.props.showBackButton == false) {
 			backButton = null
 		} else {
 			backButton = <button style={buttonStyle} onClick={this.handleBack}> {backContent} </button>;
 		}
+
+		if (this.props.currentRoom == undefined) {
+			titleToShow = this.props.title.toUpperCase()
+		} else {
+		 	titleToShow = this.props.currentRoom.toUpperCase()
+		}
+
+
 		return (
 			<div style={titleStyle}>
 				{backButton}
-				{this.props.title.toUpperCase()}
+				{titleToShow}
 			</div>
 		);
 	},
@@ -50,4 +60,13 @@ let TitleBar = React.createClass({
 	}
 });
 
-export default TitleBar;
+function mapStateToProps (state, ownProps) {
+	return {
+		height: state.height,
+		width: state.width,
+		currentRoom: state.currentRoom
+	}
+}
+
+const TitleBarContainer = connect(mapStateToProps)(TitleBar)
+export default TitleBarContainer;
