@@ -196,9 +196,13 @@ let Rooms = React.createClass({
         let that = this;
         roomsRef.on('child_added', function(data) {
 
+            let roomCount = 0;
+            if (data.val().roommates !== undefined) {
+                roomCount = data.val().roommates.length;
+            }
             let newRoom = Object.assign ({}, {
-                name: data.key,
-                count: data.val().roommates.length
+                name: data.val().name,
+                count: roomCount
             });
 
             let rooms = that.state.rooms;
@@ -266,6 +270,15 @@ let Rooms = React.createClass({
     handleCreateRoom: function() {
         this.closeModal();
         //data.rooms.unshift({name: this.state.addRoomName, count: 1});
+
+        console.log ("writing" + this.state.addRoomName)
+        var newRoom = roomsRef.push();
+        newRoom.set ({
+            name: this.state.addRoomName,
+            roommates: [],
+            songList: []
+        })
+
 
         this.setState({
             addRoomName: ""
