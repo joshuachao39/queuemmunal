@@ -10,21 +10,9 @@ import './styles/index.css';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import appReducers from './redux/reducers'
-import firebase from 'firebase';
-import 'firebase/database';
 
 // initializing the store
 let store = createStore (appReducers);
-
-var config = {
-    apiKey: "AIzaSyCF_-IUfnv4rTfQncPz-9Ja6gcBnaRSSSo",
-    authDomain: "queuemmunal.firebaseapp.com",
-    databaseURL: "https://queuemmunal.firebaseio.com",
-    storageBucket: "queuemmunal.appspot.com",
-    messagingSenderId: "376397752355"
-  };
-
- firebase.initializeApp(config);
 
 
  let App = React.createClass({

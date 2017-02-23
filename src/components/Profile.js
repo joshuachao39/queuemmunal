@@ -1,6 +1,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import uniqueProfile from '../assets/profile_photo.jpg';
+import {connect} from 'react-redux';
 import anonymousProfile from '../assets/anonymousProfile.svg';
 import $ from 'jquery';
 import Switch from 'react-ios-switch';
@@ -28,8 +29,16 @@ let buttonStyle = {
 	marginBottom: 15
 }
 
-export default React.createClass({
-	render: function() {
+class Profile extends React.Component {
+
+	constructor (props) {
+        super (props)
+        this.state = {
+			isAnonymous: false,
+		}
+	}
+
+	render () {
 		let profileToBeRendered = anonymousProfile;
 
 		let randomNumber1 = Math.floor(Math.random() * 20);
@@ -38,11 +47,11 @@ export default React.createClass({
 		let name = adjectives[randomNumber1] + animals[randomNumber2];
 		if (!this.state.isAnonymous) {
 			profileToBeRendered = uniqueProfile;
-			name = "Josh";
+			name = this.props.name;
 		}
 		return (
-			<div style={{ display: "flex", 
-						  flexDirection: "column", 
+			<div style={{ display: "flex",
+						  flexDirection: "column",
 						  alignItems: "center",
 						  justifyContent: "space-around",
 						  height: "100%",
@@ -52,12 +61,12 @@ export default React.createClass({
 				<img className="animated pulse" style={{borderRadius: "50%"}} src={profileToBeRendered} alt="Profile Photo" width={$(window).width() * 0.6}/>
 				<div style={{fontFamily: "Quicksand", fontSize: 36, width: "100%", textAlign: "center"}}>
 					{name}
-					<div style={{marginTop: 20, 
-								 height: 50, 
-								 background: "white", 
-								 fontSize: 18, 
-								 display: "flex", 
-								 justifyContent: "space-between", 
+					<div style={{marginTop: 20,
+								 height: 50,
+								 background: "white",
+								 fontSize: 18,
+								 display: "flex",
+								 justifyContent: "space-between",
 								 alignItems: "center"}}>
 						<p style={{marginLeft: 25, marginBottom: 0}}>Join rooms anonymously</p>
 						<Switch checked={this.state.isAnonymous}
@@ -70,20 +79,27 @@ export default React.createClass({
 				</div>
 			</div>
 		);
-	},
-	handleClick: function() {
+	}
+
+	handleClick () {
 		// log out stuff goes here
 		browserHistory.push('/');
-	},
-	getInitialState: function() {
-		return({
-			isAnonymous: false,
-			name: "Josh"
-		});
-	},
-	toggle: function() {
+	}
+
+
+	toggle () {
 		this.setState({
 			isAnonymous: !this.state.isAnonymous
 		});
 	}
-});
+}
+
+function mapStateToProps (state) {
+    return {
+        name: state.fullname
+    }
+}
+
+const ProfileContainer = connect (mapStateToProps)(Profile);
+
+export default ProfileContainer;

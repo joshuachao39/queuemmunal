@@ -5,7 +5,9 @@
 export const LOG_OUT = 'LOG_OUT';
 export const LOG_IN = 'LOG_IN';
 export const UPDATE_ROOM = 'UPDATE_ROOM';
+export const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_DIMENSIONS = 'UPDATE_DIMENSIONS';
+
 
 /**
  * action creators
@@ -15,6 +17,14 @@ export function updateRoom (roomName) {
     return {
         type: UPDATE_ROOM,
         currentRoom: roomName
+    }
+}
+
+export function updateUser (username, fullname) {
+    return {
+        type: UPDATE_USER,
+        username: username,
+        fullname: fullname
     }
 }
 
