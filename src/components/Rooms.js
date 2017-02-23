@@ -11,7 +11,9 @@ import exit from '../assets/closeIcon.svg';
 import '../styles/styles.css';
 import '../../node_modules/animate.css';
 
-
+// firebase realtime db
+import {database} from '../database/init';
+var roomsRef = database.ref('rooms/');
 
 
 /* the lower right hand button must be set to position absolute, not fixed, in order to work */
@@ -141,136 +143,11 @@ let searchStyle = {
 	borderRadius: 15
 };
 
-let data = [
-                {
-                    "name": "HYPEROOM",
-                    "count": 205,
-                    "songs": [
-
-                    ],
-                    "id": "1001",
-                    "public": false
-                },
-                {
-                    "name":"Slow Jazz",
-                    "count": 59,
-                    "songs": [
-
-                    ],
-                    "id": "2002",
-                    "public": true
-                },
-                {
-                    "name": "Kpop Party",
-                    "count": 23,
-                    "songs": [
-
-                    ],
-                    "id": "3003",
-                    "public": true
-                },
-                {   "name": "Glitch Mob",
-                    "count":15,
-                    "songs": [
-
-                    ],
-                    "id": "4004",
-                    "public": true
-                },
-                {
-                    "name": "ALL CAPS",
-                    "count": 9,
-                    "songs": [
-
-                    ],
-                    "id": "5005",
-                    "public": true
-                },
-                {
-                    "name": "Kanye",
-                    "count": 9,
-                    "songs": [
-
-                    ],
-                    "id": "6006",
-                    "public": true
-                },
-                {
-                    "name": "Chance",
-                    "count": 9,
-                    "songs": [
-
-                    ],
-                    "id": "7007",
-                    "public": true
-                },
-                {
-                    "name": "LED WUZ LIT",
-                    "count": 9,
-                    "songs": [
-
-                    ],
-                    "id": "8008",
-                    "public": true
-                },
-                {
-                    "name": "dubbusteppu",
-                    "count": 9,
-                    "songs": [
-
-                    ],
-                    "id": "9009",
-                    "public": true
-                },
-                {
-                    "name": "youtube lul",
-                    "count": 9,
-                    "songs": [
-
-                    ],
-                    "id": "1010",
-                    "public": true
-                },
-                {
-                    "name": "???",
-                    "count": 9,
-                    "songs": [
-
-                    ],
-                    "id": "1111",
-                    "public": true
-                }
-            ];
-
-/*
-fs.readFile('../data/data.json', 'utf8', function readFileCallback(err, payload) {
-    if (err) {
-        console.log(err);
-    } else {
-        data = JSON.parse(payload);
-    }
-}) */
 
 
-/*
-function FieldGroup({ id, label, help, ...props }) {
-    return (
-        <FormGroup style={searchStyle} controlId={id}>
-            <ControlLabel>{label}</ControlLabel>
-            <FormControl {...props} />
-        </FormGroup>
-    );
-} */
-
-
-
-export default React.createClass({
+let Rooms = React.createClass({
 
     render: function() {
-        /*let roomComponents = [];
-        data["rooms"].map ((element, index) => {
-            roomComponents.push(<RoomListObject name={element.name} count={element.count} songs={element.songs} key={index}/>);
-        }) */
         return (
             <div style={containerStyle}>
 
@@ -315,6 +192,28 @@ export default React.createClass({
         );
     },
     getInitialState: function() {
+
+        let that = this;
+        roomsRef.on('child_added', function(data) {
+
+            let newRoom = Object.assign ({}, {
+                name: data.key,
+                count: data.val().roommates.length
+            });
+
+            let rooms = that.state.rooms;
+            rooms.push (newRoom);
+            that.setState ({
+                rooms: rooms
+            })
+
+            console.log (that.state.rooms);
+        });
+
+        roomsRef.on('child_removed', function(data) {
+            console.log (data.key);
+        });
+
         return ({
             createModalIsOpen: false,
             createRoomActiveKey: 1,
@@ -322,14 +221,14 @@ export default React.createClass({
             addRoomName: "",
             addRoomRoommateCap: 50,
             addRoomSongCap: -1,
-            rooms: data
+            rooms: []
         });
     },
+
     renderItem(index, key) {
-        if (this.state.rooms[index].public) {
-            return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} name={this.state.rooms[index].name} count={this.state.rooms[index].count} songs={this.state.rooms[index].songs} key={key} />
-        }
+        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} name={this.state.rooms[index].name} count={this.state.rooms[index].count} songs={this.state.rooms[index].songs} key={key} />
     },
+
     handleSearch(event) {
         if (event.target.value != '') {
             var options = {
@@ -353,7 +252,7 @@ export default React.createClass({
         } else {
             this.setState({
                 songQuery: event.target.value,
-                rooms: data
+                rooms: this.state.rooms
             })
         }
     },
@@ -366,7 +265,7 @@ export default React.createClass({
     },
     handleCreateRoom: function() {
         this.closeModal();
-        data.rooms.unshift({name: this.state.addRoomName, count: 1});
+        //data.rooms.unshift({name: this.state.addRoomName, count: 1});
 
         this.setState({
             addRoomName: ""
@@ -380,9 +279,13 @@ export default React.createClass({
             createModalIsOpen: true
         });
     },
+
     closeModal: function() {
         this.setState({
             createModalIsOpen: false
         })
     }
 });
+
+
+export default Rooms;

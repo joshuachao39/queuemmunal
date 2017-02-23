@@ -96,7 +96,13 @@ let SignIn = React.createClass({
         // hardcode a user first i guess
 
         database.ref('/users/' + this.state.username).once('value').then(function(snapshot) {
-            var password = snapshot.val().password;
+
+            var user = snapshot.val();
+            var password = undefined;
+            if (user != null) {
+                password = user.password;
+            }
+
             if (password === that.state.password) {
                 that.props.updateStateUser (that.state.username, snapshot.val().name, snapshot.val().pictureUrl);
                 that.props.router.push ('/mobile');
