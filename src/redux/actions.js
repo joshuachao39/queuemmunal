@@ -20,11 +20,12 @@ export function updateRoom (roomName) {
     }
 }
 
-export function updateUser (username, fullname) {
+export function updateUser (username, fullname, url) {
     return {
         type: UPDATE_USER,
         username: username,
-        fullname: fullname
+        fullname: fullname,
+        pictureUrl: url
     }
 }
 

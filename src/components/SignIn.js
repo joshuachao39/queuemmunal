@@ -98,7 +98,7 @@ let SignIn = React.createClass({
         database.ref('/users/' + this.state.username).once('value').then(function(snapshot) {
             var password = snapshot.val().password;
             if (password === that.state.password) {
-                that.props.updateStateUser (that.state.username, snapshot.val().name);
+                that.props.updateStateUser (that.state.username, snapshot.val().name, snapshot.val().pictureUrl);
                 that.props.router.push ('/mobile');
             }
             else {
@@ -126,8 +126,8 @@ let SignIn = React.createClass({
 
 function mapDispatchToProps (dispatch) {
     return {
-        updateStateUser: (username, name) => {
-            dispatch (updateUser(username,name));
+        updateStateUser: (username, name, url) => {
+            dispatch (updateUser(username,name, url));
         }
     }
 }

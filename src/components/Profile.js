@@ -39,12 +39,14 @@ class Profile extends React.Component {
 	}
 
 	render () {
+        console.log (this.props.url);
 		let profileToBeRendered = anonymousProfile;
 
 		let randomNumber1 = Math.floor(Math.random() * 20);
 		let randomNumber2 = Math.floor(Math.random() * 20);
 
 		let name = adjectives[randomNumber1] + animals[randomNumber2];
+        let url = this.props.url;
 		if (!this.state.isAnonymous) {
 			profileToBeRendered = uniqueProfile;
 			name = this.props.name;
@@ -58,7 +60,7 @@ class Profile extends React.Component {
 						  width: "100%",
 						  position: "absolute"
 						}}>
-				<img className="animated pulse" style={{borderRadius: "50%"}} src={profileToBeRendered} alt="Profile Photo" width={$(window).width() * 0.6}/>
+				<img className="animated pulse" style={{borderRadius: "50%"}} src={url} alt="Profile Photo" width={$(window).width() * 0.6}/>
 				<div style={{fontFamily: "Quicksand", fontSize: 36, width: "100%", textAlign: "center"}}>
 					{name}
 					<div style={{marginTop: 20,
@@ -96,7 +98,8 @@ class Profile extends React.Component {
 
 function mapStateToProps (state) {
     return {
-        name: state.fullname
+        name: state.fullname,
+        url: state.pictureUrl
     }
 }
 

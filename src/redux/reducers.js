@@ -12,7 +12,8 @@ const initialState = {
     height: 0,
     width: 0,
     username: "",
-    fullname: ""
+    fullname: "",
+    pictureUrl: ""
 };
 
 
@@ -45,8 +46,9 @@ function appReducers (state, action) {
     case UPDATE_USER: {
         return Object.assign ({}, state, {
             username: action.username,
-            fullname: action.fullname
-        });
+            fullname: action.fullname,
+            pictureUrl: action.pictureUrl
+        })
     }
 
     case UPDATE_DIMENSIONS: {
