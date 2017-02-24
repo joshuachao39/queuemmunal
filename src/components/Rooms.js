@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import $ from 'jquery';
 import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import ReactList from 'react-list';
 import Fuse from 'fuse.js';
 
@@ -148,11 +149,6 @@ let searchStyle = {
 let Rooms = React.createClass({
 
     render: function() {
-
-        if (this.state.rooms.length == 0) {
-            this.refreshRooms();
-        }
-
         return (
             <div style={containerStyle}>
 
@@ -196,56 +192,46 @@ let Rooms = React.createClass({
             </div>
         );
     },
-
-    refreshRooms () {
-        let that = this;
-        database.ref('/rooms/').once('value').then(function(snapshot) {
-            var rooms = snapshot.val();
-            var roomArray = [];
-            //console.log (rooms)
-            for (var id in rooms) {
-                let room = rooms[id];
-                let newRoom = Object.assign ({}, {
-                    name: room.name,
-                    count: room.roommates.length
-                });
-
-                roomArray.push (newRoom);
-            }
-
-            if (that.state !== null) {
-                that.setState ({
-                    rooms: rooms
-                })
-            }
-        });
-    },
-
-    getInitialState: function() {
-
+    componentDidMount: function() {
         let that = this;
         roomsRef.on('child_added', function(data) {
 
-            let roomCount = 0;
+            let roomCount;
             if (data.val().roommates !== undefined) {
-                roomCount = data.val().roommates.length;
+                roomCount = Object.keys(data.val().roommates).length;
             }
+            roomCount = roomCount - 1;
             let newRoom = Object.assign ({}, {
                 name: data.val().name,
-                count: roomCount
+                count: roomCount,
+                key: data.val().key
             });
 
-            if (that.state !== null) {
-                let rooms = that.state.rooms;
-                rooms.push (newRoom);
-                that.setState ({
-                    rooms: rooms
-                })
-            }
-
+            let rooms = that.state.rooms;
+            rooms.push (newRoom);
+            that.setState ({
+                rooms: rooms
+            })
         });
 
+        roomsRef.on('child_removed', function(data) {
+            let currentRooms = that.state.rooms;
+            console.log(currentRooms);
+            for (var i = currentRooms.length - 1; i >= 0; i--) {
+                if (currentRooms[i].key == data.key) {
+                    currentRooms.splice(i, 1);
+                    break;
+                }
+            }
 
+            that.setState({
+                rooms: currentRooms
+            })
+        });
+
+        // gotta update when people are logging into rooms and shit??
+    },
+    getInitialState: function() {
         return ({
             createModalIsOpen: false,
             createRoomActiveKey: 1,
@@ -253,12 +239,17 @@ let Rooms = React.createClass({
             addRoomName: "",
             addRoomRoommateCap: 50,
             addRoomSongCap: -1,
-            rooms: []
+            rooms: [],
+            justAddedRoom: false
         });
     },
 
     renderItem(index, key) {
-        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} name={this.state.rooms[index].name} count={this.state.rooms[index].count} songs={this.state.rooms[index].songs} key={key} />
+        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} 
+                               name={this.state.rooms[index].name} 
+                               count={this.state.rooms[index].count} 
+                               roomKey={this.state.rooms[index].key}
+                               key={key} />
     },
 
     handleSearch(event) {
@@ -299,15 +290,22 @@ let Rooms = React.createClass({
         this.closeModal();
         //data.rooms.unshift({name: this.state.addRoomName, count: 1});
 
-        console.log ("writing" + this.state.addRoomName)
+        // CHECK FOR ROOM CREATION VALIDATION HERE!!!!
+
+        console.log ("writing " + this.state.addRoomName)
         var newRoom = roomsRef.push();
         newRoom.set ({
             name: this.state.addRoomName,
-            roommates: [],
-            songList: []
+            roommates: [""],
+            key: newRoom.key,
+            songList: [""]
         })
 
-
+        let newTitle = {
+            title: this.state.addRoomName,
+            showBackButton: true
+        }
+        
         this.setState({
             addRoomName: ""
         })
@@ -328,5 +326,12 @@ let Rooms = React.createClass({
     }
 });
 
+function mapStateToProps (state, ownProps) {
+    return {
+        username: state.username,
+        fullname: state.fullname
+    }
+}
 
-export default Rooms;
+const RoomsContainer = connect(mapStateToProps) (Rooms);
+export default RoomsContainer;

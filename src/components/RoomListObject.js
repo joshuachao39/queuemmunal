@@ -4,6 +4,8 @@ import { Glyphicon } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 import {updateRoom} from '../redux/actions';
 
+import {database} from '../database/init';
+
 let roomStyle = {
     padding: "10px",
     margin: "auto",
@@ -41,6 +43,11 @@ class RoomListObject extends React.Component {
             title: this.props.name,
             showBackButton: true
         }
+
+        let roomRef = database.ref('rooms/' + this.props.roomKey + '/roommates');
+
+        let newRoommate = roomRef.push(this.props.username);
+
         this.props.changeTitleBarCallback(titleState);
         browserHistory.push('/mobile/rooms/'+this.props.name);
     }
@@ -55,5 +62,12 @@ function mapDispatchToProps (dispatch) {
     };
 }
 
-const RoomListObjectContainer = connect (null, mapDispatchToProps)(RoomListObject)
+function mapStateToProps (state, ownProps) {
+    return ({
+        username: state.username,
+        fullname: state.fullname
+    }); 
+}
+
+const RoomListObjectContainer = connect (mapStateToProps, mapDispatchToProps)(RoomListObject)
 export default RoomListObjectContainer;
