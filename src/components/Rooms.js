@@ -148,6 +148,11 @@ let searchStyle = {
 let Rooms = React.createClass({
 
     render: function() {
+
+        if (this.state.rooms.length == 0) {
+            this.refreshRooms();
+        }
+
         return (
             <div style={containerStyle}>
 
@@ -191,6 +196,31 @@ let Rooms = React.createClass({
             </div>
         );
     },
+
+    refreshRooms () {
+        let that = this;
+        database.ref('/rooms/').once('value').then(function(snapshot) {
+            var rooms = snapshot.val();
+            var roomArray = [];
+            //console.log (rooms)
+            for (var id in rooms) {
+                let room = rooms[id];
+                let newRoom = Object.assign ({}, {
+                    name: room.name,
+                    count: room.roommates.length
+                });
+
+                roomArray.push (newRoom);
+            }
+
+            if (that.state !== null) {
+                that.setState ({
+                    rooms: rooms
+                })
+            }
+        });
+    },
+
     getInitialState: function() {
 
         let that = this;
@@ -205,18 +235,16 @@ let Rooms = React.createClass({
                 count: roomCount
             });
 
-            let rooms = that.state.rooms;
-            rooms.push (newRoom);
-            that.setState ({
-                rooms: rooms
-            })
+            if (that.state !== null) {
+                let rooms = that.state.rooms;
+                rooms.push (newRoom);
+                that.setState ({
+                    rooms: rooms
+                })
+            }
 
-            console.log (that.state.rooms);
         });
 
-        roomsRef.on('child_removed', function(data) {
-            console.log (data.key);
-        });
 
         return ({
             createModalIsOpen: false,
