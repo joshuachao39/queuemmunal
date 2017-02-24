@@ -9,6 +9,7 @@ import {LOG_OUT, LOG_IN, UPDATE_USER, UPDATE_ROOM, UPDATE_DIMENSIONS} from './ac
 const initialState = {
     loggedIn : false,
     currentRoom : undefined,
+    currentRoomKey: undefined,
     height: 0,
     width: 0,
     username: "",
@@ -39,7 +40,8 @@ function appReducers (state, action) {
 
     case UPDATE_ROOM: {
         return Object.assign ({}, state, {
-            currentRoom: action.currentRoom
+            currentRoom: action.currentRoom,
+            currentRoomKey: action.currentRoomKey
         });
     }
 
