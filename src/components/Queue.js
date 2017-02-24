@@ -5,7 +5,11 @@ import SongListObject from './SongListObject';
 import '../styles/styles.css';
 import $ from 'jquery';
 import ReactList from 'react-list';
+import {connect} from 'react-redux';
 import exit from '../assets/closeIcon.svg';
+
+// firebase realtime db
+import {database} from '../database/init';
 
 let buttonStyle = {
     background: "#FF6D7F",
@@ -111,8 +115,6 @@ let addSongButtonStyle = {
 
 
 
-let songs = [{name: "Closer", artist: "The Chainsmokers"}];
-
 
 let Queue = React.createClass({
 	render: function() {
@@ -124,25 +126,25 @@ let Queue = React.createClass({
 
 		return(
 			<div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-				
-				<div style={{overflow: "auto", maxHeight: "500px", minHeight: "500px", width: "90%", background: "#FFF", borderRadius: 15}}>
-                    <ReactList itemRenderer={this.renderItem} length={songs.length} type="uniform" />
-                </div>
-                
 
-				<div style={buttonStyle} onClick={this.open} className="animated bounceIn"> 
+				<div style={{overflow: "auto", maxHeight: "500px", minHeight: "500px", width: "90%", background: "#FFF", borderRadius: 15}}>
+                    <ReactList itemRenderer={this.renderItem} length={this.state.songs.length} type="uniform" />
+                </div>
+
+
+				<div style={buttonStyle} onClick={this.open} className="animated bounceIn">
 					<Glyphicon style={{fontSize:30}} glyph="plus" />
 				</div>
 
-				{/*<Modal 
+				{/*<Modal
 					show={this.state.showAddSongModal}
 					onHide={this.close}
 					bsSize="large">
 					<Modal.Header bsClass="modal-header-style" closeButton/>
-					<div style={{display: "flex", 
-								 flexDirection: "column", 
-								 alignItems: "center", 
-								 height: $(window).height() * 0.85, 
+					<div style={{display: "flex",
+								 flexDirection: "column",
+								 alignItems: "center",
+								 height: $(window).height() * 0.85,
 								 fontFamily: "Quicksand"}}>
 						<p> Let's add a song! </p>
 					</div>
@@ -151,7 +153,7 @@ let Queue = React.createClass({
 					isOpen={this.state.showAddSongModal}
 					contentLabel="Add Song Modal"
 					style={addSongModalStyle}>
-					
+
 					<div style={containerStyle}>
                         <img src={exit} className="exitStyle animated bounceIn" alt="exit" onClick={this.close}/>
                         <div style={exitContainerStyle}>
@@ -161,7 +163,7 @@ let Queue = React.createClass({
                             <Nav bsClass="addRoomTabBar" bsStyle="pills" activeKey={this.state.addSongActiveKey} onSelect={this.handleAddSongSelect}>
                                 <NavItem eventKey={1}>Search </NavItem>
                                 <NavItem eventKey={2}>My Library </NavItem>
-                            </Nav> 
+                            </Nav>
                         </div>
                         <div style={contentStyle}>
                             <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", justifyContent: "space-around", alignItems: "center"}}>
@@ -188,15 +190,44 @@ let Queue = React.createClass({
 			addSongActiveKey: 1,
 			addNameQuery: "",
 			addArtistQuery: "",
-            addSongError: false
+            addSongError: false,
+            songs: []
 		});
 	},
+
+    componentDidMount: function () {
+        var that = this;
+        var roomSongListRef = database.ref('rooms/'+ this.props.roomKey + '/songList');
+        var songId = -1;
+        roomSongListRef.on('child_added', function(data) {
+            console.log (data.val());
+            let queueEntryKey = data.val();
+            console.log ("queueEntryKey "+queueEntryKey)
+            database.ref('queueEntry/' + queueEntryKey).once('value').then(function(snapshot) {
+                console.log (snapshot.val())
+                let songId = snapshot.val().songId;
+                that.addSong (songId);
+            })
+        });
+    },
+
+    addSong: function (songId) {
+        var that = this;
+        database.ref('songs/' + songId).once('value').then(function(snapshot) {
+            var songArray = that.state.songs;
+    		songArray.push({name: snapshot.val().name, artist: snapshot.val().artist});
+            that.setState ({
+                songs: songArray
+            });
+        });
+    },
+
 	renderItem: function(index, key) {
 		let currentSong = true;
 		if (index !== 0) {
 			currentSong = false;
 		}
-		return <SongListObject currentSong={currentSong} name={songs[index].name} artist={songs[index].artist} key={key} />
+		return <SongListObject currentSong={currentSong} name={this.state.songs[index].name} artist={this.state.songs[index].artist} key={key} />
 	},
 	handleNameQueryChange: function(event) {
 		this.setState({
@@ -218,7 +249,7 @@ let Queue = React.createClass({
 	handleAddSong: function() {
         if (this.state.addNameQuery !== '' && this.state.addArtistQuery !== '') {
     		this.close();
-    		songs.push({name: this.state.addNameQuery, artist: this.state.addArtistQuery});
+    		this.state.songs.push({name: this.state.addNameQuery, artist: this.state.addArtistQuery});
     		this.setState({
     			addNameQuery: "",
     			addArtistQuery: "",
@@ -243,4 +274,13 @@ let Queue = React.createClass({
 	}
 });
 
-export default Queue;
+
+function mapStateToProps (state) {
+    return {
+        roomKey: state.currentRoomKey
+    }
+}
+
+
+const QueueContainer = connect (mapStateToProps)(Queue);
+export default QueueContainer;

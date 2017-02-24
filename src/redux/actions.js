@@ -13,10 +13,11 @@ export const UPDATE_DIMENSIONS = 'UPDATE_DIMENSIONS';
  * action creators
  */
 
-export function updateRoom (roomName) {
+export function updateRoom (roomName, roomKey) {
     return {
         type: UPDATE_ROOM,
-        currentRoom: roomName
+        currentRoom: roomName,
+        currentRoomKey: roomKey
     }
 }
 

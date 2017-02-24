@@ -38,7 +38,7 @@ class RoomListObject extends React.Component {
 
     enterRoom (e) {
         e.preventDefault();
-        this.props.setRoom (this.props.name);
+        this.props.setRoom (this.props.name, this.props.roomKey);
         let titleState = {
             title: this.props.name,
             showBackButton: true
@@ -57,7 +57,7 @@ class RoomListObject extends React.Component {
             if (this.props.username === roommatesInTheRoom[i]) {
                 shouldAddRoommate = false;
                 break;
-            } 
+            }
         }
         if (shouldAddRoommate) {
             let newRoommate = roomRef.push(this.props.username);
@@ -70,9 +70,9 @@ class RoomListObject extends React.Component {
 
 function mapDispatchToProps (dispatch) {
     return {
-        setRoom: (roomName) => {
+        setRoom: (roomName, roomKey) => {
             console.log ("updating to"+roomName);
-            dispatch (updateRoom(roomName));
+            dispatch (updateRoom(roomName, roomKey));
         }
     };
 }
@@ -81,7 +81,7 @@ function mapStateToProps (state, ownProps) {
     return ({
         username: state.username,
         fullname: state.fullname
-    }); 
+    });
 }
 
 const RoomListObjectContainer = connect (mapStateToProps, mapDispatchToProps)(RoomListObject)
