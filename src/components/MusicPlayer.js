@@ -59,14 +59,14 @@ let MusicPlayer = React.createClass({
 	}, 
 	getInitialState() {
 		return {
-			index: 60,
+			index: 0,
 			songsLeft: true,
 			played: 0,
 			loaded: 0
 		}
 	},
 	songStart() {
-		this.player.seekTo(0.95);
+		this.player.seekTo(0.00);
 	},
 	songFinish() {
 		console.log(data.length);
