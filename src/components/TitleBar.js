@@ -30,13 +30,13 @@ let TitleBar = React.createClass({
 	render: function() {
 		let backButton;
 		let titleToShow;
-		if (this.props.showBackButton == false) {
+		if (this.props.showBackButton === false) {
 			backButton = null
 		} else {
 			backButton = <button style={buttonStyle} onClick={this.handleBack}> {backContent} </button>;
 		}
 
-		if (this.props.currentRoom == undefined) {
+		if (this.props.currentRoom === undefined) {
 			titleToShow = this.props.title.toUpperCase()
 		} else {
 		 	titleToShow = this.props.currentRoom.toUpperCase()

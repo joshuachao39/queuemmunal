@@ -6,13 +6,13 @@ import anonymousProfile from '../assets/anonymousProfile.svg';
 import $ from 'jquery';
 import Switch from 'react-ios-switch';
 import 'react-ios-switch/build/bundle.css';
-
+import { updateAnonymous } from '../redux/actions';
 
 let adjectives = ["Brawny", "Terrific", "Shocking", "Furry", "Fierce", "Somber", "Supreme", "Chill", "Infinite", "Secretive", "Knowlegable",
-				  "Accurate", "Humorous", "Smooth", "Quirky", "Quick", "Receptive", "Productive", "Tasteful", "Funny"];
+				  "Accurate", "Humorous", "Smooth", "Quirky", "Quick", "Receptive", "Productive", "Tasteful", "Funny", "Gloomy"];
 
 let animals = ["Canary", "Cat", "Jaguar", "Deer", "Toad", "Chimp", "Shrew", "Dragon", "Chameleon", "Pikachu", "Wolverine", "Gazelle", "Meerkat",
-               "Jackal", "Lion", "Elk", "Sloth", "Panda", "Fox", "Mantis"];
+               "Jackal", "Lion", "Elk", "Sloth", "Panda", "Fox", "Mantis", "Quail"];
 
 let buttonStyle = {
 	background: "#FF6D7F",
@@ -34,22 +34,24 @@ class Profile extends React.Component {
 	constructor (props) {
         super (props)
         this.state = {
-			isAnonymous: false,
+			isAnonymous: this.props.isAnonymous,
 		}
+		this.toggle = this.toggle.bind(this)
 	}
 
 	render () {
-        console.log (this.props.url);
-		let profileToBeRendered = anonymousProfile;
+        console.log ("url is: " + this.props.url);
+        console.log("is the user anonymous? " + this.state.isAnonymous);
 
-		let randomNumber1 = Math.floor(Math.random() * 20);
-		let randomNumber2 = Math.floor(Math.random() * 20);
+		let randomNumber1 = Math.floor(Math.random() * 21);
+		let randomNumber2 = Math.floor(Math.random() * 21);
 
 		let name = adjectives[randomNumber1] + animals[randomNumber2];
-        let url = this.props.url;
+		let url = anonymousProfile;
+
 		if (!this.state.isAnonymous) {
-			profileToBeRendered = uniqueProfile;
 			name = this.props.name;
+			url = this.props.url;
 		}
 		return (
 			<div style={{ display: "flex",
@@ -99,10 +101,20 @@ class Profile extends React.Component {
 function mapStateToProps (state) {
     return {
         name: state.fullname,
-        url: state.pictureUrl
+        url: state.pictureUrl,
+        isAnonymous: state.isAnonymous
     }
 }
 
-const ProfileContainer = connect (mapStateToProps)(Profile);
+function mapDispatchToProps (dispatch) {
+    return {
+        setAnonymous: (isAnonymous) => {
+        	console.log("trying to update isAnonymous"+isAnonymous);
+            dispatch (updateAnonymous(isAnonymous));
+        }
+    }
+}
+
+const ProfileContainer = connect (mapStateToProps, mapDispatchToProps)(Profile);
 
 export default ProfileContainer;
