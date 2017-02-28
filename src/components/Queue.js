@@ -205,6 +205,15 @@ let Queue = React.createClass({
         var roomSongListRef = database.ref('rooms/'+ this.props.roomKey + '/songList');
         var songId = -1;
         roomSongListRef.on('child_added', function(data) {
+            let currentSongs = that.state.songs;
+            currentSongs.push({
+                name: data.val().name,
+                artist: data.val().artist
+            });
+            that.setState({
+                songs: currentSongs
+            })
+            /*console.log("something changed!");
             console.log (data.val());
             let queueEntryKey = data.val();
             console.log ("queueEntryKey "+queueEntryKey)
@@ -212,7 +221,7 @@ let Queue = React.createClass({
                 console.log (snapshot.val())
                 let songId = snapshot.val().songId;
                 that.addSong (songId);
-            })
+            }) */
         });
     },
 
@@ -303,7 +312,15 @@ let Queue = React.createClass({
 	handleAddSong: function() {
         if (this.state.selectedSong !== "") {
     		this.close();
-    		this.state.songs.push({name: this.state.selectedSong.props.name, artist: this.state.selectedSong.props.artist});
+            let roomSongListRef = database.ref('rooms/'+ this.props.roomKey + '/songList');
+            roomSongListRef.push({
+                name: this.state.selectedSong.props.name,
+                artist: this.state.selectedSong.props.artist,
+                url: this.state.selectedSong.props.url,
+                startTime: Date.now(),
+                votes: 0
+            });
+
     		this.setState({
     			selectedSong: ""
     		})
