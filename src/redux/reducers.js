@@ -1,4 +1,4 @@
-import {LOG_OUT, LOG_IN, UPDATE_USER, UPDATE_ROOM, UPDATE_DIMENSIONS} from './actions';
+import {LOG_OUT, LOG_IN, UPDATE_USER, UPDATE_ROOM, UPDATE_DIMENSIONS, IS_ANONYMOUS} from './actions';
 
 /**
 * state of the app
@@ -14,7 +14,8 @@ const initialState = {
     width: 0,
     username: "",
     fullname: "",
-    pictureUrl: ""
+    pictureUrl: "",
+    isAnonymous: false
 };
 
 
@@ -57,6 +58,12 @@ function appReducers (state, action) {
         return Object.assign ({}, state, {
             width: action.width,
             height: action.height
+        });
+    }
+
+    case IS_ANONYMOUS: {
+        return Object.assign ({}, state, {
+            isAnonymous: action.isAnonymous
         });
     }
 

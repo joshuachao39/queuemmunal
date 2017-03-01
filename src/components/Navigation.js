@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { ButtonGroup, Button } from 'react-bootstrap';
+// import { ButtonGroup, Button } from 'react-bootstrap';
 import BottomNavBar from './BottomNavBar';
 import TitleBar from './TitleBar';
 import MusicPlayer from './MusicPlayer';
-import $ from 'jquery';
+// import $ from 'jquery';
 
 
 let navigationStyle = {
@@ -40,7 +40,7 @@ let Navigation = React.createClass({
 
     	let musicPlayer;
 
-    	if (this.props.currentRoom != undefined) {
+    	if (this.props.currentRoom !== undefined) {
     		musicPlayer = <MusicPlayer/>
     	}
 

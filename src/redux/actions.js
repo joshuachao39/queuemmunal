@@ -7,7 +7,7 @@ export const LOG_IN = 'LOG_IN';
 export const UPDATE_ROOM = 'UPDATE_ROOM';
 export const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_DIMENSIONS = 'UPDATE_DIMENSIONS';
-
+export const IS_ANONYMOUS = 'IS_ANONYMOUS';
 
 /**
  * action creators
@@ -51,4 +51,11 @@ export function updateContainer (width, height) {
     };
 }
 
-export default {updateRoom, logOut, logIn, updateContainer};
+export function updateAnonymous () {
+    return {
+        type: IS_ANONYMOUS
+    };
+}
+
+export default {updateRoom, logOut, logIn, updateContainer, updateAnonymous};
+
