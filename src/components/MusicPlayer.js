@@ -72,7 +72,10 @@ let MusicPlayer = React.createClass({
 	playerInitialize: function() {
 		let duration = this.player.player.getDuration() * 1000;
 		console.log("duration is: " + duration);
+		console.log("Date now on allen's computer: "+ Date.now());
 		let timeElapsed = Date.now() - this.state.queue[0].startTime;
+		console.log("time elapsed is: " + timeElapsed);
+		console.log("fraction should be: " + (timeElapsed / duration));
 		// console.log( 1 - (Date.now() / (duration + this.state.queue[0].startTime)) );
 		this.player.seekTo(timeElapsed / duration);
 

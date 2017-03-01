@@ -86,7 +86,7 @@ let SongListObject = React.createClass({
 		return (
 			<div style={trueStyle}>
 
-				<div style={addStyle} onClick={this.addFunction}> + </div>
+				<div style={addStyle} onClick={this.addFunction}>+</div>
 
 				<div style={titleAndArtistStyle}> 
 					<p style={trueTitleStyle}>{this.props.name}</p>
@@ -96,7 +96,7 @@ let SongListObject = React.createClass({
 		);
 	},
 	addFunction: function() {
-		console.log('adding a song to saved songs!');
+		alert('Added a song to your saved songs list!');
 		let userRef = database.ref('users/' + this.props.username + '/savedSongs');
 		userRef.push({
 			name: this.props.name,
