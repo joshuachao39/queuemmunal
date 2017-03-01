@@ -208,7 +208,8 @@ let Queue = React.createClass({
             let currentSongs = that.state.songs;
             currentSongs.push({
                 name: data.val().name,
-                artist: data.val().artist
+                artist: data.val().artist,
+                key: data.key
             });
             that.setState({
                 songs: currentSongs
@@ -222,6 +223,18 @@ let Queue = React.createClass({
                 let songId = snapshot.val().songId;
                 that.addSong (songId);
             }) */
+        });
+        roomSongListRef.on('child_removed', function(snapshot) {
+            let currentSongs = that.state.songs;
+            for (let index = currentSongs.length - 1; index >= 0; index--) {
+                if (currentSongs[index].key === snapshot.key) {
+                    currentSongs.splice(index, 1);
+                    break;
+                }
+            }
+            that.setState({
+                songs: currentSongs
+            })
         });
     },
 
@@ -313,13 +326,23 @@ let Queue = React.createClass({
         if (this.state.selectedSong !== "") {
     		this.close();
             let roomSongListRef = database.ref('rooms/'+ this.props.roomKey + '/songList');
-            roomSongListRef.push({
-                name: this.state.selectedSong.props.name,
-                artist: this.state.selectedSong.props.artist,
-                url: this.state.selectedSong.props.url,
-                startTime: Date.now(),
-                votes: 0
-            });
+            if (this.state.songs.length === 0) {
+                roomSongListRef.push({
+                    name: this.state.selectedSong.props.name,
+                    artist: this.state.selectedSong.props.artist,
+                    url: this.state.selectedSong.props.url,
+                    startTime: Date.now(),
+                    votes: 0
+                });
+            } else {
+                roomSongListRef.push({
+                    name: this.state.selectedSong.props.name,
+                    artist: this.state.selectedSong.props.artist,
+                    url: this.state.selectedSong.props.url,
+                    startTime: -1,
+                    votes: 0
+                });
+            }
 
     		this.setState({
     			selectedSong: ""

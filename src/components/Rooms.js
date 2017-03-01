@@ -296,6 +296,7 @@ let Rooms = React.createClass({
         var newRoom = roomsRef.push();
         newRoom.set ({
             name: this.state.addRoomName,
+            admin: this.props.username,
             roommates: [""],
             key: newRoom.key,
             songList: [""]
