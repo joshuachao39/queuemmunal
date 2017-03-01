@@ -129,9 +129,9 @@ let Queue = React.createClass({
         };
 
 		return(
-			<div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+			<div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
 
-				<div style={{overflow: "auto", maxHeight: "500px", minHeight: "500px", width: "90%", background: "#FFF", borderRadius: 15}}>
+				<div style={{overflow: "auto", maxHeight: "65vh", minHeight: "65vh", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.songs.length} type="uniform" />
                 </div>
 
@@ -246,7 +246,7 @@ let Queue = React.createClass({
 		if (index !== 0) {
 			currentSong = false;
 		}
-		return <SongListObject currentSong={currentSong} name={this.state.songs[index].name} artist={this.state.songs[index].artist} key={key} />
+		return <SongListObject currentSong={currentSong} name={this.state.songs[index].name} artist={this.state.songs[index].artist} key={key} username={this.props.username}/>
 	},
 	handleSearch(event) {
         if (event.target.value != '') {
@@ -348,7 +348,8 @@ function mapStateToProps (state) {
     return {
         roomKey: state.currentRoomKey,
         height: state.height,
-        width: state.width
+        width: state.width,
+        username: state.username
     }
 }
 

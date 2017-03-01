@@ -154,7 +154,7 @@ let Rooms = React.createClass({
 
                 <input style={searchStyle} type="text" value={this.state.searchQuery} placeholder="Search for room ID or keyword..." onChange={this.handleSearch}/>
 
-                <div style={{overflow: "auto", maxHeight: "500px", minHeight: "500px", width: "90%", background: "#FFF", borderRadius: 15}}>
+                <div style={{overflow: "auto", maxHeight: "60vh", minHeight: "60vh", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.rooms.length} type="uniform" />
                 </div>
 

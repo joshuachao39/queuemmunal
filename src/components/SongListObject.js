@@ -1,5 +1,8 @@
 import React from 'react';
 
+// firebase realtime db
+import {database} from '../database/init';
+
 
 let songStyle = {
 	display: "flex",
@@ -83,7 +86,7 @@ let SongListObject = React.createClass({
 		return (
 			<div style={trueStyle}>
 
-				<div style={addStyle}> + </div>
+				<div style={addStyle} onClick={this.addFunction}> + </div>
 
 				<div style={titleAndArtistStyle}> 
 					<p style={trueTitleStyle}>{this.props.name}</p>
@@ -91,7 +94,17 @@ let SongListObject = React.createClass({
 	            </div>
 			</div>
 		);
+	},
+	addFunction: function() {
+		console.log('adding a song to saved songs!');
+		let userRef = database.ref('users/' + this.props.username + '/savedSongs');
+		userRef.push({
+			name: this.props.name,
+			artist: this.props.artist
+		});
 	}
 })
+
+
 
 export default SongListObject;
