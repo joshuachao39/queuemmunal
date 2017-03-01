@@ -2,10 +2,22 @@ import React from 'react';
 
 
 let songStyle = {
+	display: "flex",
+	justifyContent: "flex-start",
     padding: "10px",
     margin: "auto",
     fontFamily: "Quicksand",
     borderBottom: "1px solid #C7C7C7"
+}
+
+let currentSongStyle = {
+	display: "flex",
+	justifyContent: "flex-start",
+	padding: "10px",
+    margin: "auto",
+    fontFamily: "Quicksand",
+    background: "#A0B8E1",
+    color: "white"
 }
 
 let titleStyle = {
@@ -25,22 +37,29 @@ let currentTitleStyle = {
 let artistStyle = {
 	fontSize: 13, 
 	color: "#6F6F6F", 
-	marginLeft: 5
+	marginLeft: 5,
+	marginBottom: 2
 }
 
 let currentArtistStyle = {
 	fontSize: 13, 
 	color: "white", 
-	marginBottom: 5, 
-	marginLeft: 5
+	marginLeft: 5, 
+	marginBottom: 2
 }
 
-let currentSongStyle = {
-	padding: "10px",
-    margin: "auto",
-    fontFamily: "Quicksand",
-    background: "#A0B8E1",
-    color: "white"
+let addStyle = {
+	display: "flex",
+	fontSize: "2.5em",
+	marginLeft: 5,
+	padding: 0,
+	border: 0
+}
+
+let titleAndArtistStyle = {
+	display: "inline-block",
+	alignSelf: "center",
+	marginLeft: 10,
 }
 
 
@@ -49,6 +68,7 @@ let SongListObject = React.createClass({
 		let trueStyle;
 		let trueTitleStyle;
 		let trueArtistStyle;
+
 		if (this.props.currentSong) {
 			trueStyle = currentSongStyle;
 			trueTitleStyle = currentTitleStyle;
@@ -62,8 +82,13 @@ let SongListObject = React.createClass({
 
 		return (
 			<div style={trueStyle}>
-				<p style={trueTitleStyle}>{this.props.name}</p>
-                <p style={trueArtistStyle}>{this.props.artist}</p>
+
+				<div style={addStyle}> + </div>
+
+				<div style={titleAndArtistStyle}> 
+					<p style={trueTitleStyle}>{this.props.name}</p>
+	                <p style={trueArtistStyle}>{this.props.artist}</p>
+	            </div>
 			</div>
 		);
 	}
