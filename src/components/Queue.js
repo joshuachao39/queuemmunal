@@ -174,7 +174,7 @@ let Queue = React.createClass({
                                 <p style={addSongHeadingStyle}>Search</p>
                                 <input style={formStyle} type="text" value={this.state.searchSongQuery} placeholder="Search by song title or artist" onChange={this.handleSearch} />
                             </div>
-                            <div style={{overflow: "auto", minHeight: 400, maxHeight: 400, width: "100%", background: "#FFF", borderRadius: 15}}>
+                            <div style={{overflow: "auto", minHeight: "45vh", maxHeight: "45vh", width: "100%", background: "#FFF", borderRadius: 15}}>
                                 <ReactList itemRenderer={this.renderSong} length={this.state.songDatabase.length} type="uniform" />
                             </div>
                             <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", alignItems: "center"}}>
