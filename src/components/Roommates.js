@@ -82,9 +82,26 @@ class Roommates extends React.Component {
 
 
 	leaveRoom() {
-		browserHistory.push('/mobile');
+        browserHistory.push('/mobile');
+        var that = this;
+
+        // removing from previous room
+        database.ref('rooms/'+this.props.currentRoomKey+'/roommates/list').once ("value").then(function(snapshot){
+
+            let oldRoommates = Object.values (snapshot.val());
+            let oldIndex = oldRoommates.indexOf(that.props.username);
+
+            if (oldIndex !== -1) {
+                oldRoommates.splice (oldIndex);
+            }
+
+            database.ref('rooms/'+that.props.currentRoomKey+'/roommates').set({
+                list: oldRoommates
+            });
+        })
+
         this.props.removeRoom();
-	}
+    }
 
 	renderItem (index, key){
 		return (
