@@ -38,15 +38,20 @@ class RoomListObject extends React.Component {
 
     enterRoom (e) {
         e.preventDefault();
+
+        var previousRoomKey = this.props.currentRoomKey;
+        var that = this;
+
+        // update state
         this.props.setRoom (this.props.name, this.props.roomKey);
+
+        let roomRef = database.ref('rooms/' + this.props.roomKey+ '/roommates/list');
+        let roommates = []
+
         let titleState = {
             title: this.props.name,
             showBackButton: true
         }
-
-        var that = this;
-        let roomRef = database.ref('rooms/' + this.props.roomKey + '/roommates/list');
-        let roommates = []
 
         roomRef.once("value").then(function(snapshot) {
             roommates = Object.values(snapshot.val());
@@ -58,32 +63,34 @@ class RoomListObject extends React.Component {
 
             // add to room if not already in room
             if (index == -1) {
+
+                // if already in a room, remove from the room
+                if (previousRoomKey !== undefined && that.props.roomKey !== previousRoomKey) {
+
+                    // removing from previous room
+                    database.ref('rooms/'+previousRoomKey+'/roommates/list').once ("value").then(function(snapshot){
+                        let oldRoommates = Object.values (snapshot.val());
+                        let oldIndex = oldRoommates.indexOf(that.props.username);
+
+                        if (oldIndex !== -1) {
+                            oldRoommates.splice (oldIndex);
+                        }
+
+                        database.ref('rooms/'+previousRoomKey+'/roommates').set({
+                            list: oldRoommates
+                        })
+                    })
+                }
+
+                // adding to array
                 roommates.push (that.props.username);
-                console.log (roommates);
+                // console.log (roommates);
+                // console.log (that.props.currentRoomKey)
                 database.ref('rooms/' + that.props.roomKey + '/roommates').set({
                     list: roommates
                 });
             }
         })
-
-
-        //if (shouldAddRoommate) {
-            // check if you're in another room first.
-            /*if (this.props.currentRoom !== '') {
-                let allRooms = database.ref('/rooms');
-                allRooms.once('value').then(function(snapshot) {
-                    let roomArray = Object.keys(snapshot.val()).map(function(key) { return snapshot.val()[key]});
-                    for(let i=0; i < roomArray.length; i++) {
-                        console.log("FUCKKKK");
-                        let roommateArray = Object.keys(roomArray[i].roommates).map(function(key) { return roomArray[i].roommates[key]});
-                        for (let j=0; j < roommateArray.length; j++) {
-                            if (this.props.currentRoom)
-                        }
-                    }
-                })
-            } */
-           // let newRoommate = roomRef.push(this.props.username);
-        // }
 
         this.props.changeTitleBarCallback(titleState);
         browserHistory.push('/mobile/rooms/'+this.props.name);
