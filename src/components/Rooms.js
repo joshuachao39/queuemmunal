@@ -162,9 +162,10 @@ let Rooms = React.createClass({
 
         return (
             <div style={containerStyle}>
-
-                <input style={searchStyle} type="text" value={this.state.searchQuery} placeholder="Search for room ID or keyword..." onChange={this.handleSearch}/>
-
+                <div>
+                    <input style={searchStyle} type="search" value={this.state.searchQuery} placeholder="Search for room ID or keyword..." onChange={this.handleSearch}/>
+                    {this.state.clearSearchButton}
+                </div>
                 <div style={{overflow: "auto", maxHeight: "60vh", minHeight: "60vh", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.rooms.length} type="uniform" />
                 </div>
@@ -250,12 +251,13 @@ let Rooms = React.createClass({
         return ({
             createModalIsOpen: false,
             createRoomActiveKey: 1,
-            songQuery: "",
+            searchQuery: "",
             addRoomName: "",
             addRoomRoommateCap: 50,
             addRoomSongCap: -1,
             rooms: [],
-            justAddedRoom: false
+            justAddedRoom: false,
+            clearSearchButton: null
         });
     },
 
@@ -265,6 +267,24 @@ let Rooms = React.createClass({
                                count={this.state.rooms[index].count} 
                                roomKey={this.state.rooms[index].key}
                                key={key} />
+    },
+
+    clearSearch: function() {
+        let allRooms = [];
+        database.ref('/rooms').once("value", function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                allRooms.push({
+                    name: childSnapshot.val().name,
+                    count: childSnapshot.val().count,
+                    key: childSnapshot.key
+                })
+            })
+        })
+        this.setState({
+            searchQuery: "",
+            rooms: allRooms,
+            clearSearchButton: null
+        })
     },
 
     handleSearch(event) {
@@ -284,24 +304,23 @@ let Rooms = React.createClass({
             var fuse = new Fuse(this.state.rooms, options); // "list" is the item array
             var result = fuse.search(event.target.value + "");
             this.setState({
-                songQuery: event.target.value,
-                rooms: result
+                searchQuery: event.target.value,
+                rooms: result,
+                clearSearchButton: <button style={{position: "absolute", 
+                                                   height: 25, 
+                                                   width: 25, 
+                                                   right: "8vw", 
+                                                   top: 7, 
+                                                   border: "none", 
+                                                   background: "#FF6D7F", 
+                                                   color: "white", 
+                                                   borderRadius: "50%", 
+                                                   fontFamily: "Quicksand"
+                                                  }}
+                                            onClick={this.clearSearch}>x</button>
             });
         } else {
-            let allRooms = [];
-            database.ref('/rooms').once("value", function(snapshot) {
-                snapshot.forEach(function(childSnapshot) {
-                    allRooms.push({
-                        name: childSnapshot.val().name,
-                        count: childSnapshot.val().count,
-                        key: childSnapshot.key
-                    })
-                })
-            })
-            this.setState({
-                songQuery: event.target.value,
-                rooms: allRooms
-            })
+           this.clearSearch();
         }
     },
     handleCreateRoomSelect: function(eventKey) {

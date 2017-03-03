@@ -220,6 +220,7 @@ let MusicPlayer = React.createClass({
 		let that = this;
 		database.ref('rooms/' + that.props.roomKey).once("value").then(function(snapshot) {
 			if (snapshot.val().admin === that.props.username) {
+				console.log("deleting song!");
 				let songsRemaining = that.state.queue;
 				let songToDeleteKey = that.state.queue[0].key;
 				console.log(songsRemaining);
