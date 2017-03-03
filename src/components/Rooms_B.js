@@ -254,7 +254,7 @@ let Rooms = React.createClass({
                     onRequestClose={this.closePrivateRoomModal}
                     style={privateRoomModalStyle}>
                         <div style={containerStyle}>
-                            <img src={exit} className="exitStyle animated bounceIn" alt="exit" onClick={this.closeModal}/>
+                            <img src={exit} className="exitStyle animated bounceIn" alt="exit" onClick={this.closePrivateRoomModal}/>
                             <div style={exitContainerStyle}>
                                 <div style={titleStyle}>
                                     ENTER PRIVATE ROOM
