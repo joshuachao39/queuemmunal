@@ -45,20 +45,21 @@ class RoomListObject extends React.Component {
         }
 
         let roomRef = database.ref('rooms/' + this.props.roomKey + '/roommates');
-        let shouldAddRoommate = true;
+        let roommates = [];
 
-/*
         roomRef.on("value", function(snapshot) {
-            roommatesInTheRoom = Object.keys(snapshot.val()).map(function(key) { return snapshot.val()[key]});
+            roommates = Object.values(snapshot.val());
         })
 
         // only push roommate if we aren't in that group already. if you're in another room, leave that room first.
+        /*
         for (let i=0; i<roommatesInTheRoom.length; i++) {
             if (this.props.username === roommatesInTheRoom[i]) {
                 shouldAddRoommate = false;
                 break;
             }
         } */
+
         //if (shouldAddRoommate) {
             // check if you're in another room first.
             /*if (this.props.currentRoom !== '') {

@@ -19,6 +19,15 @@ let buttonStyle = {
 	justifyContent: "center",
 	alignItems: "center",
 }
+let containerStyle = {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexFlow: "column nowrap",
+    justifyContent: "center",
+    alignItems: "center",
+}
+
 
 class Roommates extends React.Component {
 
@@ -61,7 +70,6 @@ class Roommates extends React.Component {
 		return (
 			<div style={{width: "100%", height: "100%", justifyContent: "center", alignItems: "center"}}>
 
-				<p style={{fontFamily: "Quicksand", fontSize: 20, marginBottom: 15}}>These are your roommates!</p>
                 <div style={{overflow: "auto", maxHeight: "65vh", minHeight: "65vh", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.roommates.length} type="uniform" />
                 </div>
@@ -81,7 +89,7 @@ class Roommates extends React.Component {
 	renderItem (index, key){
 		return (
             <div>
-                <p style={{fontSize: 20, color: "#070707", marginBottom: 5, marginLeft: 5}} key={key}>{this.state.roommates[index]}</p>
+                <p key={key}>{this.state.roommates[index]}</p>
             </div>
         );
 	}

@@ -4,10 +4,13 @@ import $ from 'jquery';
 import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
 import ReactList from 'react-list';
-
-import RoomListObject from './RoomListObject'
+import {connect} from 'react-redux';
+import {updateUser} from '../redux/actions';
+import RoomListObject from './RoomListObject';
 import '../styles/styles.css';
 import '../../node_modules/animate.css';
+
+import {database} from '../database/init';
 
 
 
@@ -41,9 +44,9 @@ let createAccountButtonStyle = {
     letterSpacing: 0,
     width: "50vw",
     border: "none",
+    marginTop: 30,
     paddingTop: 7,
-    paddingBottom: 7,
-    marginTop: 40
+    paddingBottom: 7
 };
 
 let titleStyle = {
@@ -60,7 +63,7 @@ let titleStyle = {
     marginBottom: 20
 }
 
-let addRoomHeadingStyle = {
+let formHeadingStyle = {
     marginTop: 5,
     marginBottom: 4,
     fontSize: 16,
@@ -84,7 +87,7 @@ let formStyle = {
 
 
 let containerStyle = {
-    width: "90%",
+    width: "100%",
     // maybe add height 100% here for modal
     display: "flex",
     flexFlow: "column nowrap",
@@ -100,19 +103,6 @@ let pageStyle = {
     height: "100%"
 }
 
-let contentStyle = {
-    height: "100%",
-    width: "100%",
-    display: "flex",
-    flexFlow: "column nowrap",
-    justifyContent: "space-around",
-    alignItems: "center"
-}
-
-let exitContainerStyle = {
-    width: "100%"
-}
-
 let errorStyle = {
     fontSize: 15,
     color: "#FF6D7F",
@@ -122,50 +112,39 @@ let errorStyle = {
     paddingTop: 3
 }
 
-let signUpStyle = {
-    fontSize: 15,
-    paddingTop: 10,
-    fontFamily: "Quicksand",
-    color: "#3066BE"
-}
 
-
-export default React.createClass({
+let SignUp = React.createClass({
 
     render: function() {
         let backText = "< back"
         return (
             <div style={pageStyle}>
                 <div style={containerStyle}>
-                    <div style={exitContainerStyle}>
-                        <div style={titleStyle}>
-                            <button onClick={this.handleCancel} 
-                                    style={{position: "fixed", left: 15, top: 22, borderStyle: "none", backgroundColor: "transparent"}}> 
-                                        {backText} 
-                            </button>
-                            CREATE A LOGIN
-                        </div>
+                    <div style={titleStyle}>
+                        <button onClick={this.handleCancel} 
+                                style={{position: "fixed", left: 15, top: 22, borderStyle: "none", backgroundColor: "transparent"}}> 
+                                    {backText} 
+                        </button>
+                        CREATE A LOGIN
                     </div>
-                    <div style={contentStyle}>
-                        <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", justifyContent: "space-around", alignItems: "center"}}>
-                            <div style={{width: "80vw", marginTop: 20}}>
-                                <p style={addRoomHeadingStyle}> Username </p>
-                                <input style={formStyle} type="text" value={this.state.usernameText} placeholder="Enter a username here" onChange={this.handleUsernameChange} />
-                            </div>
-
-                            <div style={{width: "80vw", marginTop: 30}}>
-                                <p style={addRoomHeadingStyle}> Password </p>
-                                <input style={formStyle} type="password" value={this.state.passwordText} placeholder="Enter your password here" onChange={this.handlePasswordChange} />
-                            </div>
-
-                            <div style={{width: "80vw", marginTop: 30}}>
-                                <p style={addRoomHeadingStyle}> Re-enter Password: </p>
-                                <input style={formStyle} type="password" value={this.state.passwordCheckText} placeholder="Re-enter your password here" onChange={this.handlePasswordCheck} />
-                            </div>
-                            {this.state.errorText}
-
-                            <button className="animated fadeIn" style={createAccountButtonStyle} onClick={this.handleAccountCreation}>Create your account!</button>
+                    <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", justifyContent: "space-around", alignItems: "center"}}>
+                        <div style={{width: "80vw", marginTop: 20}}>
+                            <p style={formHeadingStyle}> Username </p>
+                            <input style={formStyle} type="text" value={this.state.usernameText} placeholder="Enter a username here" onChange={this.handleUsernameChange} />
                         </div>
+
+                        <div style={{width: "80vw", marginTop: 30}}>
+                            <p style={formHeadingStyle}> Password </p>
+                            <input style={formStyle} type="password" value={this.state.passwordText} placeholder="Enter your password here" onChange={this.handlePasswordChange} />
+                        </div>
+
+                        <div style={{width: "80vw", marginTop: 30}}>
+                            <p style={formHeadingStyle}> Re-enter Password: </p>
+                            <input style={formStyle} type="password" value={this.state.passwordCheckText} placeholder="Re-enter your password here" onChange={this.handlePasswordCheck} />
+                        </div>
+                        {this.state.errorText}
+                        {this.state.newUserErrorText}
+                        <button className="animated fadeIn" style={createAccountButtonStyle} onClick={this.handleOnSubmit}>Create your account!</button>
                     </div>
                 </div>
             </div>
@@ -173,24 +152,56 @@ export default React.createClass({
     },
     getInitialState: function() {
         return ({
-            createModalIsOpen: false,
-            createRoomActiveKey: 1,
-            addRoomName: "",
-            addRoomRoommateCap: 50,
-            addRoomSongCap: -1
+            usernameText: "",
+            passwordText: "",
+            passwordMatch: false,
+            errorText: null,
+            newUserErrorText: null
         });
     },
-    handleCreateRoomSelect: function(eventKey) {
-        if (this.state.createRoomActiveKey !== eventKey) {
-            this.setState({
-                createRoomActiveKey: eventKey
-            });
+    handleOnSubmit: function() {
+        this.checkForExistingUser(this.addNewUser);
+    },
+    addNewUser: function(userExists) {
+        if (this.state.passwordMatch) {
+            if (userExists) {
+                this.setState({
+                    newUserErrorText: <p style={errorStyle}> Sorry, that username is already taken! </p> 
+                })
+            } else {
+                let usersRef = database.ref('/users');
+                usersRef.child(this.state.usernameText).set({
+                    name: this.state.usernameText,
+                    password: this.state.passwordText,
+                    pictureUrl: "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d" 
+                })
+                this.props.updateStateUser(this.state.usernameText, this.state.usernameText, "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d");
+                this.setState({
+                    usernameText: "",
+                    passwordText: ""
+                })
+                this.props.router.push('/mobile');
+
+            }
         }
     },
-    handleAccountCreation: function() {
-        this.props.router.push('/mobile');
+    checkForExistingUser: function(callback) {
+        let that = this;
+        // IMPORTANT CODE RIGHT HERE
+        database.ref('/users').once("value", function(snapshot) {
+            let userExists = snapshot.forEach(function(childSnapshot) {
+                if (childSnapshot.key === that.state.usernameText) {
+                    return true;
+                }
+            });
+            callback(userExists);
+        })
     },
     handleCancel: function() {
+        this.setState({
+            usernameText: "",
+            passwordText: ""
+        })
         this.props.router.push('/');
     },
     handleUsernameChange: function(event) {
@@ -201,24 +212,29 @@ export default React.createClass({
     },
     handlePasswordCheck: function(event) {
         let curr_pass = event.target.value;
-        this.setState({passwordCheckText: curr_pass});
 
         if (this.state.passwordText !== curr_pass) {
-            this.setState({errorText: <p style={errorStyle}> Passwords don't match! </p>});
+            this.setState({
+                errorText: <p style={errorStyle}> Passwords don't match! </p>,
+                passwordMatch: false
+            });
         }
         else {
-            this.setState({errorText: null});
+            this.setState({
+                errorText: null,
+                passwordMatch: true
+            });
         }
-    },
-
-    createRoom: function() {
-        this.setState({
-            createModalIsOpen: true
-        });
-    },
-    closeModal: function() {
-        this.setState({
-            createModalIsOpen: false
-        })
     }
 });
+
+function mapDispatchToProps (dispatch) {
+    return {
+        updateStateUser: (username, name, url) => {
+            dispatch (updateUser(username,name, url));
+        }
+    }
+}
+
+const SignupContainer = connect (null, mapDispatchToProps)(SignUp);
+export default SignupContainer;

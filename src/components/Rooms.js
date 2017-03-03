@@ -193,6 +193,7 @@ let Rooms = React.createClass({
         );
     },
     componentDidMount: function() {
+        console.log("logged in user is: " + this.props.username);
         let that = this;
         roomsRef.on('child_added', function(data) {
 
