@@ -95,14 +95,57 @@ let SongListObject = React.createClass({
 			</div>
 		);
 	},
+	getInitialState: function() {
+		return ({
+			shouldAdd: true
+		});
+	},
+	componentWillMount: function() {
+		let userRef = database.ref('users/' + this.props.username + '/savedSongs');
+		let that = this;
+		userRef.on("child_added", function(snapshot) {
+			if (snapshot.val().name === that.props.name && snapshot.val().artist === that.props.artist) {
+				that.setState({
+					shouldAdd: false
+				})
+			}
+		})
+		userRef.on("child_removed", function(snapshot) {
+			if (snapshot.val().name === that.props.name && snapshot.val().artist === that.props.artist) {
+				that.setState({
+					shouldAdd: true
+				})
+			}
+		})
+	},
 	addFunction: function() {
 		console.log('adding a song to saved songs!');
-		let userRef = database.ref('users/' + this.props.username + '/savedSongs');
-		userRef.push({
-			name: this.props.name,
-			artist: this.props.artist
-		});
-	}
+		if (this.state.shouldAdd) {
+			this.props.onSaveSuccess();
+			let userRef = database.ref('users/' + this.props.username + '/savedSongs');
+			userRef.push({
+				name: this.props.name,
+				artist: this.props.artist
+			});
+		} else {
+			this.props.onSaveFailure();
+
+		}
+	} /*,
+	shouldAdd: function() {
+		let returnValue = true;
+		let that = this;
+		let songList;
+		database.ref('users/' + this.props.username + '/savedSongs').once("value", function(snapshot) {
+			snapshot.forEach(function(childSnapshot) {
+				if (childSnapshot.val().name === that.props.name && childSnapshot.val().artist === that.props.artist) {
+					that.setState({
+						shouldAdd: false
+					})
+				}
+			})
+		})
+	} */
 })
 
 

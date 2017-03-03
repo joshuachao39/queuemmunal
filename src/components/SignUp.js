@@ -139,7 +139,10 @@ export default React.createClass({
                 <div style={containerStyle}>
                     <div style={exitContainerStyle}>
                         <div style={titleStyle}>
-                            <button onClick={this.handleCancel} style={{position: "fixed", left: 15, top: 22}}> {backText} </button>
+                            <button onClick={this.handleCancel} 
+                                    style={{position: "fixed", left: 15, top: 22, borderStyle: "none", backgroundColor: "transparent"}}> 
+                                        {backText} 
+                            </button>
                             CREATE A LOGIN
                         </div>
                     </div>

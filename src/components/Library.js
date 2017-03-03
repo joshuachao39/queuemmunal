@@ -9,7 +9,7 @@ import {database} from '../database/init';
 let Library = React.createClass({
 	render: function() {
 		return (
-			<div style={{height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+			<div style={{height: "100%", width: "100%", position: "absolute", display: "flex", justifyContent: "center", alignItems: "center"}}>
 
 				<div style={{overflow: "auto", maxHeight: "65vh", minHeight: "65vh", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.songs.length} type="uniform" />

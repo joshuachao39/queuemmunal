@@ -5,13 +5,15 @@ import SongListObject from './SongListObject';
 import SongQueryObject from './SongQueryObject';
 import ReactList from 'react-list';
 import Fuse from 'fuse.js';
+import NotificationSystem from 'react-notification-system';
+
 import '../styles/styles.css';
 import $ from 'jquery';
 import {connect} from 'react-redux';
 import exit from '../assets/closeIcon.svg';
 
 // firebase realtime db
-import {database} from '../database/init';
+import {database, firebaseApp} from '../database/init';
 
 // songs
 import data from '../data/music.json';
@@ -184,6 +186,9 @@ let Queue = React.createClass({
                         </div>
                     </div>
 				</Modal>
+                <NotificationSystem ref={notif => {this.success_notification = notif}} />
+                <NotificationSystem ref={notif => {this.failure_notification = notif}} />
+
 
 			</div>
 		);
@@ -237,7 +242,24 @@ let Queue = React.createClass({
             })
         });
     },
-
+    showSaveSongNotificationSuccess: function() {
+        this.success_notification.addNotification({
+            message: "Saved song to your library!",
+            level: "success",
+            position: "tc",
+            autoDismiss: 2,
+            dismissible: true
+        })
+    },
+    showSaveSongNotificationFailure: function() {
+        this.failure_notification.addNotification({
+            message: "Sorry, you already have that song in your library...",
+            level: "error",
+            position: "tc",
+            autoDismiss: 2,
+            dismissible: true
+        })
+    },
     addSong: function (songId) {
         var that = this;
         database.ref('songs/' + songId).once('value').then(function(snapshot) {
@@ -259,7 +281,14 @@ let Queue = React.createClass({
 		if (index !== 0) {
 			currentSong = false;
 		}
-		return <SongListObject currentSong={currentSong} name={this.state.songs[index].name} artist={this.state.songs[index].artist} key={key} username={this.props.username}/>
+		return <SongListObject currentSong={currentSong} 
+                               name={this.state.songs[index].name} 
+                               artist={this.state.songs[index].artist} 
+                               key={key} 
+                               username={this.props.username}
+                               onSaveSuccess={this.showSaveSongNotificationSuccess}
+                               onSaveFailure={this.showSaveSongNotificationFailure}
+                />
 	},
 	handleSearch(event) {
         if (event.target.value != '') {
@@ -325,13 +354,14 @@ let Queue = React.createClass({
 	handleAddSong: function() {
         if (this.state.selectedSong !== "") {
     		this.close();
+            console.log(firebaseApp.database.ServerValue.TIMESTAMP);
             let roomSongListRef = database.ref('rooms/'+ this.props.roomKey + '/songList');
             if (this.state.songs.length === 0) {
                 roomSongListRef.push({
                     name: this.state.selectedSong.props.name,
                     artist: this.state.selectedSong.props.artist,
                     url: this.state.selectedSong.props.url,
-                    startTime: Date.now(),
+                    startTime: firebaseApp.database.ServerValue.TIMESTAMP,
                     votes: 0
                 });
             } else {

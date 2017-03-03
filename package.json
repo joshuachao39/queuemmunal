@@ -16,6 +16,7 @@
     "react-ios-switch": "^0.1.10",
     "react-list": "^0.8.3",
     "react-modal": "^1.6.5",
+    "react-notification-system": "^0.2.12",
     "react-player": "^0.14.3",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",

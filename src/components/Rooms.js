@@ -196,7 +196,7 @@ let Rooms = React.createClass({
         let that = this;
         roomsRef.on('child_added', function(data) {
 
-            let roomCount;
+            /*let roomCount;
             if (data.val().roommates !== undefined) {
                 roomCount = Object.keys(data.val().roommates).length;
             }
@@ -205,10 +205,14 @@ let Rooms = React.createClass({
                 name: data.val().name,
                 count: roomCount,
                 key: data.val().key
-            });
+            }); */
 
             let rooms = that.state.rooms;
-            rooms.push (newRoom);
+            rooms.push ({
+                name: data.val().name,
+                count: 0,
+                key: data.key
+            });
             that.setState ({
                 rooms: rooms
             })
@@ -293,14 +297,12 @@ let Rooms = React.createClass({
         // CHECK FOR ROOM CREATION VALIDATION HERE!!!!
 
         console.log ("writing " + this.state.addRoomName)
-        var newRoom = roomsRef.push();
-        newRoom.set ({
+        var newRoom = roomsRef.push({
             name: this.state.addRoomName,
             admin: this.props.username,
-            roommates: [""],
-            key: newRoom.key,
-            songList: [""]
-        })
+            roommates: [],
+            songList: []
+        });
 
         let newTitle = {
             title: this.state.addRoomName,

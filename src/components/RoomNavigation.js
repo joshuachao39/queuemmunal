@@ -6,6 +6,8 @@ import '../styles/styles.css';
 
 let outerContainer = {
 	width: "100%",
+	height: "100%",
+	position: "absolute",
 	display: "flex",
 	flexDirection: "column",
 	justifyContent: "center",

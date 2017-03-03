@@ -19,7 +19,9 @@ let titleStyle = {
 
 let buttonStyle = {
 	position: "absolute",
-	left: 15
+	left: 15,
+	borderStyle: "none",
+	backgroundColor: "transparent"
 
 }
 

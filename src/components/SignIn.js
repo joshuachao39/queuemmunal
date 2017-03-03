@@ -93,10 +93,8 @@ let SignIn = React.createClass({
     handleSubmit: function(event) {
 
         var that = this;
-        // hardcode a user first i guess
 
         database.ref('/users/' + this.state.username).once('value').then(function(snapshot) {
-
             var user = snapshot.val();
             var password = undefined;
             if (user != null) {
@@ -105,7 +103,9 @@ let SignIn = React.createClass({
 
             if (password === that.state.password) {
                 that.props.updateStateUser (that.state.username, snapshot.val().name, snapshot.val().pictureUrl);
+                console.log("submit pushed");
                 that.props.router.push ('/mobile');
+
             }
             else {
                 that.setState({errorLoggingIn: true, username: '', password: ''});

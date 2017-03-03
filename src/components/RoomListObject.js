@@ -44,6 +44,7 @@ class RoomListObject extends React.Component {
             showBackButton: true
         }
 
+        /*
         let roomRef = database.ref('rooms/' + this.props.roomKey + '/roommates');
         let roommatesInTheRoom;
         let shouldAddRoommate = true;
@@ -57,8 +58,8 @@ class RoomListObject extends React.Component {
                 shouldAddRoommate = false;
                 break;
             }
-        }
-        if (shouldAddRoommate) {
+        } */
+        //if (shouldAddRoommate) {
             // check if you're in another room first.
             /*if (this.props.currentRoom !== '') {
                 let allRooms = database.ref('/rooms');
@@ -73,8 +74,8 @@ class RoomListObject extends React.Component {
                     }
                 })
             } */
-            let newRoommate = roomRef.push(this.props.username);
-        }
+           // let newRoommate = roomRef.push(this.props.username);
+        // }
 
         this.props.changeTitleBarCallback(titleState);
         browserHistory.push('/mobile/rooms/'+this.props.name);
