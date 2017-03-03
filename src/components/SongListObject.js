@@ -86,7 +86,7 @@ let SongListObject = React.createClass({
 		return (
 			<div style={trueStyle}>
 
-				<div style={addStyle} onClick={this.addFunction}> + </div>
+				<div style={addStyle} onClick={this.addFunction}>+</div>
 
 				<div style={titleAndArtistStyle}> 
 					<p style={trueTitleStyle}>{this.props.name}</p>
@@ -131,21 +131,7 @@ let SongListObject = React.createClass({
 			this.props.onSaveFailure();
 
 		}
-	} /*,
-	shouldAdd: function() {
-		let returnValue = true;
-		let that = this;
-		let songList;
-		database.ref('users/' + this.props.username + '/savedSongs').once("value", function(snapshot) {
-			snapshot.forEach(function(childSnapshot) {
-				if (childSnapshot.val().name === that.props.name && childSnapshot.val().artist === that.props.artist) {
-					that.setState({
-						shouldAdd: false
-					})
-				}
-			})
-		})
-	} */
+	} 
 })
 
 

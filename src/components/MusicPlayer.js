@@ -115,6 +115,7 @@ let MusicPlayer = React.createClass({
 		// console.log("player initialize is called everytime we come back to the page...");
 		let that = this;
 		let duration = this.player.player.getDuration() * 1000;
+
 		let startTime = this.state.queue[0].startTime || 0;
 		// console.log("duration is: " + duration);
 		database.ref("/.info/serverTimeOffset").once("value", function(offset) {

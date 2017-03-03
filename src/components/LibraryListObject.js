@@ -30,7 +30,6 @@ let artistStyle = {
 let titleAndArtistStyle = {
 	display: "inline-block",
 	alignSelf: "center",
-	marginLeft: 10,
 }
 
 
