@@ -42,7 +42,7 @@ class Roommates extends React.Component {
 
         var that = this;
 
-        let roommatesRef = database.ref ('rooms/'+this.props.currentRoomKey+'/roommates');
+        let roommatesRef = database.ref ('rooms/'+this.props.currentRoomKey+'/roommates/list');
 
         roommatesRef.on('child_added', function(data) {
             let currentRoommates = that.state.roommates;
