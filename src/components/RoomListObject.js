@@ -13,27 +13,45 @@ let roomStyle = {
     borderBottom: "1px solid #C7C7C7"
 }
 
-let glyphStyle = {
-    position: "absolute",
-    right: "20px",
-    top: "50%",
-    size: "150%"
-}
-
 class RoomListObject extends React.Component {
 
     constructor (props) {
         super (props);
+        this.state = {
+            roommateCount: 0
+        }
         this.enterRoom = this.enterRoom.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     render () {
         return (
             <div style={roomStyle} onClick={this.enterRoom}>
                 <p style={{fontSize: 20, color: "#070707", marginBottom: 5, marginLeft: 5}}>{this.props.name}</p>
-                <p style={{fontSize: 13, color: "#6F6F6F", marginLeft: 5}}>{this.props.count} roommates</p>
+                <p style={{fontSize: 13, color: "#6F6F6F", marginLeft: 5}}>{this.state.roommateCount} roommates</p>
             </div>
         )
+    }
+
+    componentDidMount() {
+        console.log("mounting " +  this.props.name + " room...");
+        let that = this;
+        let roommates = 0;
+        database.ref('rooms/' + this.props.roomKey + '/roommates/list').on("child_added", function(snapshot) {
+            /*console.log(snapshot.val());
+            console.log("Current roommate count is: " + that.state.roommateCount);
+            var currentRoommateCount = that.state.roommateCount; */
+            roommates++;
+            that.setState({
+                roommateCount: roommates
+            })
+        })
+        database.ref('rooms/' + this.props.roomKey + '/roommates/list').on("child_removed", function(snapshot) {
+            roommates--;
+            that.setState({
+                roommateCount: roommates
+            })
+        })
     }
 
     enterRoom (e) {

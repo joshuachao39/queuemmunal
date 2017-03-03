@@ -111,6 +111,26 @@ let createRoomModalStyle = {
     }
 }
 
+let privateRoomModalStyle = {
+    overlay: {
+        backgroundColor: "rgba(0, 0, 0, 0.75)"
+    },
+    content: {
+        borderRadius: 15,
+        border: "none",
+        background: "#F4F4F8",
+        fontFamily: "Quicksand",
+        top                   : '50%',
+        left                  : '20%',
+        right                 : '20%',
+        bottom                : 'auto',
+        marginRight           : '-20%',
+        transform             : 'translate(-13%, -50%)',
+
+    }
+}
+
+
 let contentStyle = {
     width: "100%",
     display: "flex",
@@ -140,9 +160,17 @@ let searchStyle = {
     color: "#C7C7CD",
     letterSpacing: -0.08,
     padding: 10,
-    width: "90vw",
-    marginBottom: 20,
+    width: "65vw",
     borderRadius: 15
+};
+
+let errorStyle = {
+    fontSize: 15,
+    color: "#FF6D7F",
+    fontFamily: "Quicksand",
+    maxWidth: "90vw",
+    textAlign: "center",
+    marginTop: 5
 };
 
 
@@ -162,9 +190,25 @@ let Rooms = React.createClass({
 
         return (
             <div style={containerStyle}>
-
-                <input style={searchStyle} type="text" value={this.state.searchQuery} placeholder="Search for room ID or keyword..." onChange={this.handleSearch}/>
-
+                <div style={{width: "90%", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
+                    <input style={searchStyle} type="text" value={this.state.searchQuery} placeholder="Search by keyword..." onChange={this.handleSearch}/>
+                    <button style={{marginLeft: 10, 
+                                    fontFamily: "Quicksand",
+                                    fontSize: 12,
+                                    color: "white",
+                                    maxWidth: "30vw",
+                                    paddingTop: 5,
+                                    paddingBottom: 5,
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                    borderRadius: 15,
+                                    borderStyle: "none",
+                                    background: "#FF6D7F",
+                                    fontWeight: "bold"
+                                    }}
+                            className="animated pulse infinite"
+                            onClick={this.openPrivateRoomModal}> Enter<br/>Private Room </button>
+                </div>
                 <div style={{overflow: "auto", maxHeight: "60vh", minHeight: "60vh", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.rooms.length} type="uniform" />
                 </div>
@@ -176,6 +220,8 @@ let Rooms = React.createClass({
                 <Modal
                     isOpen={this.state.createModalIsOpen}
                     contentLabel="Create Room Modal"
+                    shouldCloseOnOverlayClick={true}
+                    onRequestClose={this.closeModal}
                     style={createRoomModalStyle}>
                     <div style={containerStyle}>
                         <img src={exit} className="exitStyle animated bounceIn" alt="exit" onClick={this.closeModal}/>
@@ -200,8 +246,45 @@ let Rooms = React.createClass({
                         </div>
                     </div>
                 </Modal>
+
+                <Modal
+                    isOpen={this.state.privateModalIsOpen}
+                    contentLabel="Enter Private Room"
+                    shouldCloseOnOverlayClick={true}
+                    onRequestClose={this.closePrivateRoomModal}
+                    style={privateRoomModalStyle}>
+                        <div style={containerStyle}>
+                            <img src={exit} className="exitStyle animated bounceIn" alt="exit" onClick={this.closeModal}/>
+                            <div style={exitContainerStyle}>
+                                <div style={titleStyle}>
+                                    ENTER PRIVATE ROOM
+                                </div>
+                            </div>
+                            <div style={contentStyle}>
+                                <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", justifyContent: "space-around", alignItems: "center"}}>
+                                    <div style={{width: "100%"}}>
+                                        <p style={addRoomHeadingStyle}>Password</p>
+                                        <input style={formStyle} type="text" value={this.state.privateRoomKey} placeholder="Enter the private key password here" onChange={this.handlePrivateRoomKeyChange} />
+                                    </div>
+                                    {this.state.errorText}
+                                    <button style={createRoomButtonStyle} onClick={this.handlePrivateRoomEnter}>Enter private room!</button>
+                                {/* ADD MORE SHIT HERE LATER! */}
+                                </div>
+                            </div>
+                        </div>
+                </Modal>
             </div>
         );
+    },
+    closePrivateRoomModal: function() {
+            this.setState({
+                privateModalIsOpen: false
+            })
+    },
+    openPrivateRoomModal: function() {
+        this.setState({
+            privateModalIsOpen: true
+        })
     },
     componentDidMount: function() {
         let that = this;
@@ -249,13 +332,16 @@ let Rooms = React.createClass({
     getInitialState: function() {
         return ({
             createModalIsOpen: false,
+            privateModalIsOpen: false,
             createRoomActiveKey: 1,
             songQuery: "",
             addRoomName: "",
             addRoomRoommateCap: 50,
             addRoomSongCap: -1,
             rooms: [],
-            justAddedRoom: false
+            justAddedRoom: false,
+            privateRoomKey: "",
+            errorText: null
         });
     },
 
@@ -339,8 +425,44 @@ let Rooms = React.createClass({
             addRoomName: ""
         })
     },
+    enterPrivateRoom: function(privateRoom) {
+        if (privateRoom) {
+            let titleState = {
+                name: privateRoom.name,
+                showBackButton: true
+            }
+            this.props.changeTitleBarCallback(titleState);
+            // consider adding to roommates here?
+            this.setState({
+                errorText: null
+            })
+            browserHistory.push('/mobile/rooms/' + privateRoom.name);
+        } else {
+            this.setState({
+                errorText: <p style={errorStyle}>Sorry! We couldn't find a private room associated with that password...</p>
+            })
+        }
+    },
+
+    checkIfPrivateRoomExists: function(callback) {
+            let that = this;
+            database.ref('/rooms').once('value', function(snapshot) {
+                let privateRoom = snapshot.forEach( function(childSnapshot) {
+                    if (childSnapshot.val().public === false && that.state.privateRoomKey === childSnapshot.key) {
+                        return {name: childSnapshot.val().name, key: childSnapshot.key};
+                    }
+                })
+                 callback(privateRoom);
+            })
+    },
+    handlePrivateRoomEnter: function() {
+        this.checkIfPrivateRoomExists(this.enterPrivateRoom);
+    },
     handleNameChange: function(event) {
         this.setState({addRoomName: event.target.value});
+    },
+    handlePrivateRoomKeyChange: function(event) {
+        this.setState({privateRoomKey: event.target.value});
     },
     createRoom: function() {
         this.setState({
@@ -362,5 +484,6 @@ function mapStateToProps (state, ownProps) {
     }
 }
 
-const RoomsContainer = connect(mapStateToProps) (Rooms);
-export default RoomsContainer;
+const RoomsContainer_B = connect(mapStateToProps) (Rooms);
+export default RoomsContainer_B;
+

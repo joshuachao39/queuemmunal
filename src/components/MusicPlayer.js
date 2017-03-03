@@ -127,15 +127,11 @@ let MusicPlayer = React.createClass({
 			// console.log("Player should skip to: " + (timeElapsed / duration));
 
 			// check if the song ain't too old
-			if (timeElapsed / duration >= 1) {
-				database.ref('rooms/' + that.props.roomKey + '/songList/' + that.state.queue[0].key).remove();
-			} else {
-				that.player.seekTo(timeElapsed / duration);
-				// set the played
-				that.setState({
-					played: timeElapsed / duration
-				})
-			}
+			that.player.seekTo(timeElapsed / duration);
+			// set the played
+			that.setState({
+				played: timeElapsed / duration
+			})
 		});
 
 	},

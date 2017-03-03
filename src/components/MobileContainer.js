@@ -2,6 +2,7 @@ import React from "react";
 import '../styles/App.css';
 import SignIn from './SignIn';
 import Navigation from './Navigation';
+import Rooms_B from './Rooms_B';
 import Rooms from './Rooms';
 import Profile from './Profile';
 import Library from './Library';
@@ -18,6 +19,15 @@ var MobileContainer = React.createClass({
     			<Router history={browserHistory}>
     				<Route path="/" component={SignIn} />
                     <Route path="/SignUp" component={SignUp} />
+                    <Route path="/mobile_redesigned" component={Navigation}>
+                        <IndexRoute component={Rooms_B} />
+                        <Route path="/mobile/rooms/:roomName" component={RoomNavigation}>
+                            <IndexRoute component={Queue} />
+                            <Route path="/mobile/rooms/:roomName/roommates" component={Roommates} />
+                        </Route>
+                        <Route path="Profile" component={Profile} />
+                        <Route path="My Library" component={Library} />
+                    </Route>
     				<Route path="mobile" component={Navigation}>
     					<IndexRoute component={Rooms} />
                         <Route path="/mobile/rooms/:roomName" component={RoomNavigation}>

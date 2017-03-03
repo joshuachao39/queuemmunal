@@ -109,7 +109,7 @@ let errorStyle = {
     fontFamily: "Quicksand",
     maxWidth: "80vw",
     textAlign: "center",
-    paddingTop: 3
+    marginTop: 15,
 }
 
 
@@ -163,25 +163,31 @@ let SignUp = React.createClass({
         this.checkForExistingUser(this.addNewUser);
     },
     addNewUser: function(userExists) {
-        if (this.state.passwordMatch) {
-            if (userExists) {
-                this.setState({
-                    newUserErrorText: <p style={errorStyle}> Sorry, that username is already taken! </p> 
-                })
-            } else {
-                let usersRef = database.ref('/users');
-                usersRef.child(this.state.usernameText).set({
-                    name: this.state.usernameText,
-                    password: this.state.passwordText,
-                    pictureUrl: "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d" 
-                })
-                this.props.updateStateUser(this.state.usernameText, this.state.usernameText, "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d");
-                this.setState({
-                    usernameText: "",
-                    passwordText: ""
-                })
-                this.props.router.push('/mobile');
+        if (this.state.usernameText === "" || this.state.passwordText === "") {
+            this.setState({
+                newUserErrorText: <p style={errorStyle}> Username and password fields cannot be blank! </p>
+            })
+        } else {
+            if (this.state.passwordMatch) {
+                if (userExists) {
+                    this.setState({
+                        newUserErrorText: <p style={errorStyle}> Sorry, that username is already taken! </p> 
+                    })
+                } else {
+                    let usersRef = database.ref('/users');
+                    usersRef.child(this.state.usernameText).set({
+                        name: this.state.usernameText,
+                        password: this.state.passwordText,
+                        pictureUrl: "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d" 
+                    })
+                    this.props.updateStateUser(this.state.usernameText, this.state.usernameText, "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d");
+                    this.setState({
+                        usernameText: "",
+                        passwordText: ""
+                    })
+                    this.props.router.push('/mobile');
 
+                }
             }
         }
     },
