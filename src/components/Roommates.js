@@ -1,9 +1,10 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import {updateRoom} from '../redux/actions'
+import {updateRoom} from '../redux/actions';
 import {database} from '../database/init';
 import ReactList from 'react-list';
+import IndividualRoommate from './IndividualRoommate';
 
 let buttonStyle = {
 	background: "#FF6D7F",
@@ -15,6 +16,8 @@ let buttonStyle = {
 	height: 45,
 	paddingTop: 10,
 	paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
 	display: "flex",
 	justifyContent: "center",
 	alignItems: "center",
@@ -66,11 +69,11 @@ class Roommates extends React.Component {
 
 
 	render () {
-        console.log (this.state.roommates);
+        // console.log (this.state.roommates);
 		return (
-			<div style={{width: "100%", height: "100%", justifyContent: "center", alignItems: "center"}}>
+			<div style={{width: "100%", height: "100%", display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
 
-                <div style={{overflow: "auto", maxHeight: "65vh", minHeight: "65vh", width: "90%", background: "#FFF", borderRadius: 15}}>
+                <div style={{overflow: "auto", maxHeight: "55vh", minHeight: "55vh", width: "90%", background: "#FFF", borderRadius: 15, marginBottom: 20}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.roommates.length} type="uniform" />
                 </div>
 
@@ -105,9 +108,7 @@ class Roommates extends React.Component {
 
 	renderItem (index, key){
 		return (
-            <div>
-                <p key={key}>{this.state.roommates[index]}</p>
-            </div>
+            <IndividualRoommate name={this.state.roommates[index]} key={key} />
         );
 	}
 }
@@ -126,7 +127,9 @@ function mapStateToProps (state, ownProps) {
         currentRoom: state.currentRoom,
         currentRoomKey: state.currentRoomKey,
         username: state.username,
-        fullname: state.fullname
+        fullname: state.fullname,
+        width: state.width,
+        height: state.height
     });
 }
 

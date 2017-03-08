@@ -162,6 +162,19 @@ let SignUp = React.createClass({
     handleOnSubmit: function() {
         this.checkForExistingUser(this.addNewUser);
     },
+    getRandomProfilePicture: function() {
+        let profilePictures = [
+            "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/elma.png?alt=media&token=cd71ae9b-80ba-46b9-8441-22a91d4aaf01",
+            "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/fafnir.png?alt=media&token=ab926b49-1a7f-4abf-b591-6c54d86d7924",
+            "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/kanna.png?alt=media&token=a539061c-d569-48cd-93e1-249b7b58b62d",
+            "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/kobayashi.png?alt=media&token=74f779f4-694b-4428-b076-a4061db434f4",
+            "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/lucoa.png?alt=media&token=84308749-41e7-437e-9aa0-93d3b7f593d9",
+            "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/takiya.png?alt=media&token=c2082f35-76bd-4361-9c2e-7b98114de99d",
+            "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/tohru.png?alt=media&token=4c30d2b0-970f-44d7-b026-bc60a6981dc5"
+        ];
+        let randomIndex = Math.floor(Math.random() * profilePictures.length);
+        return profilePictures[randomIndex];
+    },
     addNewUser: function(userExists) {
         if (this.state.usernameText === "" || this.state.passwordText === "") {
             this.setState({
@@ -175,12 +188,13 @@ let SignUp = React.createClass({
                     })
                 } else {
                     let usersRef = database.ref('/users');
+                    let randomProfilePicture = this.getRandomProfilePicture();
                     usersRef.child(this.state.usernameText).set({
                         name: this.state.usernameText,
                         password: this.state.passwordText,
-                        pictureUrl: "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d" 
+                        pictureUrl: randomProfilePicture
                     })
-                    this.props.updateStateUser(this.state.usernameText, this.state.usernameText, "https://firebasestorage.googleapis.com/v0/b/queuemmunal.appspot.com/o/profile_photo.jpg?alt=media&token=bad9378a-ca70-4745-9e0c-976c3567eb6d");
+                    this.props.updateStateUser(this.state.usernameText, this.state.usernameText, randomProfilePicture);
                     this.setState({
                         usernameText: "",
                         passwordText: ""

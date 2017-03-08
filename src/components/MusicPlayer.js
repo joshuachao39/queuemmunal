@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import data from '../data/music.json';
-import {database} from '../database/init';
+import {firebaseApp, database} from '../database/init';
 
 let MusicPlayer = React.createClass({
 	render() {
@@ -28,7 +28,7 @@ let MusicPlayer = React.createClass({
 		// if we lose played???
 		let played;
 		if (!this.state.played) {
-			let that = this;
+			/*let that = this;
 			database.ref("/.info/serverTimeOffset").once("value", function(offset) {
 				if (!that.state.queue[0]) {
 					played = 0
@@ -40,7 +40,8 @@ let MusicPlayer = React.createClass({
 					let timeElapsed = serverTime - startTime;
 					played = timeElapsed / duration;
 				}
-			})
+			}) */
+			played = 0;
 		} else {
 			played = this.state.played;
 		}
@@ -226,7 +227,7 @@ let MusicPlayer = React.createClass({
 				console.log(songsRemaining);
 				if (songsRemaining.length > 1) {
 					let nextSongKey = that.state.queue[1].key;
-					database.ref('rooms/' + that.props.roomKey + '/songList/' + nextSongKey).update({startTime: Date.now()});
+					database.ref('rooms/' + that.props.roomKey + '/songList/' + nextSongKey).update({startTime: firebaseApp.database.ServerValue.TIMESTAMP});
 				}
 				database.ref('rooms/' + that.props.roomKey + '/songList/' + songToDeleteKey).remove();
 			}
