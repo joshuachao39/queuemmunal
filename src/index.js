@@ -9,7 +9,7 @@ import $ from 'jquery';
 import './styles/index.css';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import appReducers from './redux/reducers'
+import appReducers from './redux/reducers';
 
 // initializing the store
 let store = createStore (appReducers);

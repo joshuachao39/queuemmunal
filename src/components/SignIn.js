@@ -5,6 +5,10 @@ import {updateUser} from '../redux/actions';
 import {connect} from 'react-redux';
 import {database} from '../database/init';
 import browserHistory from 'react-router';
+import ReactGA from 'react-ga';
+ReactGA.initialize("UA-93278922-1");
+
+let ga = ReactGA.ga();
 
 let formStyle = {
     /* Field: */
@@ -118,6 +122,7 @@ let SignIn = React.createClass({
     handleSubmit1: function(event) {
 
         var that = this;
+        ga('send', 'event', 'signin', 'click');
 
         database.ref('/users/' + this.state.username).once('value').then(function(snapshot) {
             var user = snapshot.val();
