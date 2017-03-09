@@ -16,6 +16,10 @@ import '../../node_modules/animate.css';
 import {database} from '../database/init';
 var roomsRef = database.ref('rooms/');
 
+let variation = cxApi.chooseVariation();
+
+console.log("This experiment says the variation is: " + variation);
+
 
 /* the lower right hand button must be set to position absolute, not fixed, in order to work */
 let buttonStyle = {
