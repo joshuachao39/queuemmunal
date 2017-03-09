@@ -11,6 +11,8 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import appReducers from './redux/reducers';
 
+//console.log("The experiment variation is: " + variation);
+
 // initializing the store
 let store = createStore (appReducers);
 
