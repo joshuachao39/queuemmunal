@@ -173,13 +173,21 @@ let MusicPlayer = React.createClass({
 				that.setState({
 					queue: currentSongs
 				})
+			});
+
+			database.ref('rooms/' + this.props.roomKey).once("value", function(snapshot) {
+				that.setState({
+					admin: snapshot.val().admin
+				})
 			})
+
 		}
 	},
 	componentWillMount: function() {
 		console.log("Is this being run everytime we come back to the room?");
 		let that = this;
 		let roomSongListRef = database.ref('rooms/' + this.props.roomKey + '/songList');
+
 		roomSongListRef.on("child_added", function(snapshot) {
 			let currentSongs = that.state.queue;
 			currentSongs.push({
@@ -209,6 +217,12 @@ let MusicPlayer = React.createClass({
 			})
 		})
 
+		database.ref('rooms/' + this.props.roomKey).once("value", function(snapshot) {
+			that.setState({
+				admin: snapshot.val().admin
+			})
+		})
+
 
 		// 
 
@@ -219,19 +233,17 @@ let MusicPlayer = React.createClass({
 	},
 	songFinish() {
 		let that = this;
-		database.ref('rooms/' + that.props.roomKey).once("value").then(function(snapshot) {
-			if (snapshot.val().admin === that.props.username) {
-				console.log("deleting song!");
-				let songsRemaining = that.state.queue;
-				let songToDeleteKey = that.state.queue[0].key;
-				console.log(songsRemaining);
-				if (songsRemaining.length > 1) {
-					let nextSongKey = that.state.queue[1].key;
-					database.ref('rooms/' + that.props.roomKey + '/songList/' + nextSongKey).update({startTime: firebaseApp.database.ServerValue.TIMESTAMP});
-				}
-				database.ref('rooms/' + that.props.roomKey + '/songList/' + songToDeleteKey).remove();
+		if (this.props.username == this.state.admin) {
+			console.log("deleting songs!");
+			let songsRemaining = that.state.queue;
+			let songToDeleteKey = that.state.queue[0].key;
+			console.log(songsRemaining);
+			if (songsRemaining.length > 1) {
+				let nextSongKey = that.state.queue[1].key;
+				database.ref('rooms/' + that.props.roomKey + '/songList/' + nextSongKey).update({startTime: firebaseApp.database.ServerValue.TIMESTAMP});
 			}
-		});
+			database.ref('rooms/' + that.props.roomKey + '/songList/' + songToDeleteKey).remove();
+		}
 	},
 	returnToRoom() {
 		browserHistory.push('/mobile/rooms/' + this.props.currentRoom);
