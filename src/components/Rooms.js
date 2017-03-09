@@ -16,10 +16,9 @@ import '../../node_modules/animate.css';
 import {database} from '../database/init';
 var roomsRef = database.ref('rooms/');
 
-const cxApi = window.cxApi;
-let variation = cxApi.chooseVariation();
+const experiment_variation = window.experiment_variation;
 
-console.log("In the rooms page, the experiment variation is: " + variation);
+console.log("In the rooms page, the experiment variation is: " + experiment_variation);
 
 
 /* the lower right hand button must be set to position absolute, not fixed, in order to work */
