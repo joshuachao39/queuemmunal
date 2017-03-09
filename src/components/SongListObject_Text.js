@@ -2,11 +2,16 @@ import React from 'react';
 
 // firebase realtime db
 import {database} from '../database/init';
+import ReactGA from 'react-ga';
+ReactGA.initialize("UA-93278922-1");
+
+let ga = ReactGA.ga();
 
 
 let songStyle = {
 	display: "flex",
-	justifyContent: "flex-start",
+	justifyContent: "space-between",
+	alignItems: "center",
     padding: "10px",
     margin: "auto",
     fontFamily: "Quicksand",
@@ -15,7 +20,8 @@ let songStyle = {
 
 let currentSongStyle = {
 	display: "flex",
-	justifyContent: "flex-start",
+	justifyContent: "space-between",
+	alignItems: "center",
 	padding: "10px",
     margin: "auto",
     fontFamily: "Quicksand",
@@ -53,10 +59,26 @@ let currentArtistStyle = {
 
 let addStyle = {
 	display: "flex",
-	fontSize: "2.5em",
-	marginLeft: 5,
-	padding: 0,
-	border: 0
+	color: "#3066BE",
+	fontSize: "0.8em",
+	height: "100%",
+	marginRight: 15,
+	border: "1px solid #3066BE",
+	borderRadius: 10,
+	padding: 8,
+	textAlign: "center"
+}
+
+let addCurrentStyle = {
+	display: "flex",
+	color: "white",
+	fontSize: "0.8em",
+	height: "100%",
+	marginRight: 15,
+	border: "1px solid white",
+	borderRadius: 10,
+	padding: 8,
+	textAlign: "center"
 }
 
 let titleAndArtistStyle = {
@@ -71,27 +93,29 @@ let SongListObject = React.createClass({
 		let trueStyle;
 		let trueTitleStyle;
 		let trueArtistStyle;
+		let addButtonStyle;
 
 		if (this.props.currentSong) {
 			trueStyle = currentSongStyle;
 			trueTitleStyle = currentTitleStyle;
 			trueArtistStyle = currentArtistStyle;
+			addButtonStyle = addCurrentStyle;
 
 		} else {
 			trueStyle = songStyle;
 			trueTitleStyle = titleStyle;
 			trueArtistStyle = artistStyle;
+			addButtonStyle = addStyle;
 		}
 
 		return (
 			<div style={trueStyle}>
 
-				<div style={addStyle} onClick={this.addFunction}>+</div>
-
 				<div style={titleAndArtistStyle}> 
 					<p style={trueTitleStyle}>{this.props.name}</p>
 	                <p style={trueArtistStyle}>{this.props.artist}</p>
 	            </div>
+	            <div style={addButtonStyle} onClick={this.addFunction}>Add Song to<br/>Library</div>
 			</div>
 		);
 	},
@@ -120,6 +144,7 @@ let SongListObject = React.createClass({
 	},
 	addFunction: function() {
 		console.log('adding a song to saved songs!');
+		ga('send', 'event', 'saveSong', 'click');
 		if (this.state.shouldAdd) {
 			this.props.onSaveSuccess();
 			let userRef = database.ref('users/' + this.props.username + '/savedSongs');
