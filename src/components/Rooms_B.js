@@ -401,8 +401,9 @@ let Rooms = React.createClass({
             public: this.state.createRoomActiveKey === 1
         });
 
-        roomsRef.child(newRoom.key + '/roommates').push({
-            name: this.props.username
+        let roommates = [this.props.username];
+        roomsRef.child(newRoom.key + '/roommates').set({
+            list: roommates
         })
 
 
