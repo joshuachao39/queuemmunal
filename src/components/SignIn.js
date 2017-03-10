@@ -83,8 +83,7 @@ let SignIn = React.createClass({
                 {errorText}
                 <input style={formStyle} type="text" value={this.state.username} placeholder="Email" onChange={this.handleUsernameChange} />
                 <input style={formStyle} type="password" value={this.state.password} placeholder="Password" onChange={this.handlePasswordChange} />
-                <button style={buttonStyle} className="animated bounceIn" onClick={this.handleSubmit1}>Login (Default Design)</button>
-                <button style={buttonStyle} className="animated bounceIn" onClick={this.handleSubmit2}>Login (Re-design)</button>
+                <button style={buttonStyle} className="animated bounceIn" onClick={this.handleSubmit}>Login</button>
 
                 <p style={signUpStyle} onClick={this.signUpClicked}>
                     New? Sign up here.
@@ -95,54 +94,7 @@ let SignIn = React.createClass({
     signUpClicked: function(event) {
         this.props.router.push('/SignUp');
     },
-
-    handleSubmit1: function(event) {
-
-        var that = this;
-
-        database.ref('/users/' + this.state.username).once('value').then(function(snapshot) {
-            var user = snapshot.val();
-            var password = undefined;
-            if (user != null) {
-                password = user.password;
-            }
-
-            if (password === that.state.password) {
-                that.props.updateStateUser (that.state.username, snapshot.val().name, snapshot.val().pictureUrl);
-                console.log("submit pushed");
-                that.props.router.push ('/mobile');
-
-            }
-            else {
-                that.setState({errorLoggingIn: true, username: '', password: ''});
-            }
-        });
-
-    },
-    handleSubmit1: function(event) {
-
-        var that = this;
-        ga('send', 'event', 'signin', 'click');
-
-        database.ref('/users/' + this.state.username).once('value').then(function(snapshot) {
-            var user = snapshot.val();
-            var password = undefined;
-            if (user != null) {
-                password = user.password;
-            }
-
-            if (password === that.state.password) {
-                that.props.updateStateUser (that.state.username, snapshot.val().name, snapshot.val().pictureUrl);
-                console.log("submit pushed");
-                that.props.router.push ('/mobile');
-
-            }
-            else {
-                that.setState({errorLoggingIn: true, username: '', password: ''});
-            }
-        });
-    },
-    handleSubmit2: function(event) {
+    handleSubmit: function(event) {
 
         var that = this;
 

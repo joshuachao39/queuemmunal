@@ -1,7 +1,8 @@
 import React from 'react';
 import { Glyphicon, Nav, NavItem } from 'react-bootstrap';
 import Modal from 'react-modal';
-import SongListObject from './SongListObject';
+import SongListObject_Glyph from './SongListObject_Glyph';
+import SongListObject_Text from './SongListObject_Text';
 import SongQueryObject from './SongQueryObject';
 import ReactList from 'react-list';
 import Fuse from 'fuse.js';
@@ -18,6 +19,9 @@ import {database, firebaseApp} from '../database/init';
 
 // songs
 import data from '../data/music.json';
+
+
+let chosenVariation = window.chosenVariation;
 
 let buttonStyle = {
     background: "#FF6D7F",
@@ -202,7 +206,8 @@ let Queue = React.createClass({
             searchSongQuery: "",
             songDatabase: data,
             selectedSong: "",
-            songs: []
+            songs: [],
+            defaultAddButton: chosenVariation == 0
 		});
 	},
 
@@ -282,14 +287,25 @@ let Queue = React.createClass({
 		if (index !== 0) {
 			currentSong = false;
 		}
-		return <SongListObject currentSong={currentSong} 
-                               name={this.state.songs[index].name} 
-                               artist={this.state.songs[index].artist} 
-                               key={key} 
-                               username={this.props.username}
-                               onSaveSuccess={this.showSaveSongNotificationSuccess}
-                               onSaveFailure={this.showSaveSongNotificationFailure}
-                />
+        if (this.state.defaultAddButton) {
+    		return (<SongListObject_Glyph currentSong={currentSong} 
+                                   name={this.state.songs[index].name} 
+                                   artist={this.state.songs[index].artist} 
+                                   key={key} 
+                                   username={this.props.username}
+                                   onSaveSuccess={this.showSaveSongNotificationSuccess}
+                                   onSaveFailure={this.showSaveSongNotificationFailure}
+                    />);
+        } else {
+            return (<SongListObject_Text currentSong={currentSong} 
+                                   name={this.state.songs[index].name} 
+                                   artist={this.state.songs[index].artist} 
+                                   key={key} 
+                                   username={this.props.username}
+                                   onSaveSuccess={this.showSaveSongNotificationSuccess}
+                                   onSaveFailure={this.showSaveSongNotificationFailure}
+                    />);
+        }
 	},
 	handleSearch(event) {
         if (event.target.value != '') {
