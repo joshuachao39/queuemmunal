@@ -77,24 +77,39 @@ class Roommates extends React.Component {
         browserHistory.push('/mobile');
         var that = this;
 
-        database.ref('rooms/'+this.props.currentRoomKey+'/roommates/list').once ("value").then(function(snapshot){
+        database.ref('rooms/'+this.props.currentRoomKey).once ("value").then(function(snapshot){
 
-            let oldRoommates = Object.values (snapshot.val());
+            var updates = {};
+
+            let admin = snapshot.val().admin;
+            let oldRoommates = snapshot.val().roommates.list;
             let oldIndex = oldRoommates.indexOf(that.props.username);
+            let roommateCount = oldRoommates.length;
 
             if (oldIndex !== -1) {
-                oldRoommates.splice (oldIndex);
+                oldRoommates.splice (oldIndex, 1);
             }
 
             database.ref('rooms/'+that.props.currentRoomKey+'/roommates').set({
                 list: oldRoommates
             });
-        })
 
-        // if last roommate, delete room
-        if (this.state.roommates.length === 1) {
-            database.ref('rooms/').child(this.props.currentRoomKey).remove();
-        }
+            // if last roommate, delete room
+            if (roommateCount === 1) {
+                console.log ('removing '+ that.props.currentRoomKey)
+                database.ref('rooms/').child(that.props.currentRoomKey).remove();
+            }
+
+            else {
+
+                // if admin, switch admin
+                if (admin === that.props.username) {
+                    updates['/rooms/' + that.props.currentRoomKey + '/admin'] = oldRoommates[0];
+                    database.ref().update(updates);
+                }
+            }
+
+        })
 
         this.props.removeRoom();
     }
@@ -117,7 +132,6 @@ function mapDispatchToProps (dispatch) {
 
 function mapStateToProps (state, ownProps) {
     return ({
-        currentRoom: state.currentRoom,
         currentRoomKey: state.currentRoomKey,
         username: state.username,
         fullname: state.fullname,

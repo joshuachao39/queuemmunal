@@ -330,7 +330,7 @@ let Rooms = React.createClass({
         });
 
         let roommates = [this.props.username];
-        roomsRef.child(newRoom.key + '/roommates').push({
+        roomsRef.child(newRoom.key + '/roommates').set({
             list: roommates
         })
 

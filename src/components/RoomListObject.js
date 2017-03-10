@@ -31,7 +31,7 @@ class RoomListObject extends React.Component {
         )
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let that = this;
         let roommates = 0;
         database.ref('rooms/' + this.props.roomKey + '/roommates/list').on("child_added", function(snapshot) {
@@ -55,6 +55,7 @@ class RoomListObject extends React.Component {
         var that = this;
 
         // update state
+        console.log ("Room: " + this.props.roomKey)
         this.props.setRoom (this.props.name, this.props.roomKey);
 
         let roomRef = database.ref('rooms/' + this.props.roomKey+ '/roommates/list');
@@ -88,7 +89,7 @@ class RoomListObject extends React.Component {
                         let oldIndex = oldRoommates.indexOf(that.props.username);
 
                         if (oldIndex !== -1) {
-                            oldRoommates.splice (oldIndex);
+                            oldRoommates.splice (oldIndex, 1);
                         }
 
                         database.ref('rooms/'+previousRoomKey+'/roommates').set({
@@ -99,8 +100,6 @@ class RoomListObject extends React.Component {
 
                 // adding to array
                 roommates.push (that.props.username);
-                // console.log (roommates);
-                // console.log (that.props.currentRoomKey)
                 database.ref('rooms/' + that.props.roomKey + '/roommates').set({
                     list: roommates
                 });

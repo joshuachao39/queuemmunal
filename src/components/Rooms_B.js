@@ -405,6 +405,7 @@ let Rooms = React.createClass({
         // CHECK FOR ROOM CREATION VALIDATION HERE!!!!
 
         console.log ("writing " + this.state.addRoomName)
+
         if (this.state.createRoomActiveKey == 1) {
             let newRoom = roomsRef.push({
                 name: this.state.addRoomName,
@@ -412,7 +413,7 @@ let Rooms = React.createClass({
                 public: true
             });
             let roommates = [this.props.username];
-            roomsRef.child(newRoom.key + '/roommates').push({
+            roomsRef.child(newRoom.key + '/roommates').set({
                 list: roommates
             })
         } else {
@@ -423,11 +424,10 @@ let Rooms = React.createClass({
                 public: false
             });
             let roommates = [this.props.username];
-            roomsRef.child(randomKey + '/roommates').push({
+            roomsRef.child(randomKey + '/roommates').set({
                 list: roommates
             })
         }
-
 
         this.setState({
             addRoomName: ""
