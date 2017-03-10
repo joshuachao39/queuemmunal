@@ -64,12 +64,10 @@ class Roommates extends React.Component {
 
             that.state = {roommates: currentRoommates};
         });
-        console.log (this.state.roommates.length);
     }
 
 
 	render () {
-        // console.log (this.state.roommates);
 		return (
 			<div style={{width: "100%", height: "100%", display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
 
@@ -88,7 +86,6 @@ class Roommates extends React.Component {
         browserHistory.push('/mobile');
         var that = this;
 
-        // removing from previous room
         database.ref('rooms/'+this.props.currentRoomKey+'/roommates/list').once ("value").then(function(snapshot){
 
             let oldRoommates = Object.values (snapshot.val());
@@ -102,6 +99,11 @@ class Roommates extends React.Component {
                 list: oldRoommates
             });
         })
+
+        // if last roommate, delete room
+        if (this.state.roommates.length === 1) {
+            database.ref('rooms/').child(this.props.currentRoomKey).remove();
+        }
 
         this.props.removeRoom();
     }
