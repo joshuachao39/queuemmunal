@@ -73,8 +73,6 @@ class RoomListObject extends React.Component {
 
         roomRef.once("value").then(function(snapshot) {
             roommates = Object.values(snapshot.val());
-            console.log ("Initial roommates");
-            console.log (roommates);
 
             let index = roommates.indexOf(that.props.username);
             let size = roommates.length;
