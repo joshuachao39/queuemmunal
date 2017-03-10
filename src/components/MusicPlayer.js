@@ -159,10 +159,10 @@ let MusicPlayer = React.createClass({
 				})
 			})
 
-			database.ref('rooms/' + this.props.roomKey + "/admin").on("child_changed", function(snapshot) {
-				console.log("admin changed to " + snapshot.val())
+			database.ref('rooms/' + this.props.roomKey).on("child_changed", function(snapshot) {
+				console.log("admin changed to " + snapshot.val().admin)
 				that.setState({
-					admin: snapshot.val()
+					admin: snapshot.val().admin
 				})
 			})
 
@@ -207,10 +207,10 @@ let MusicPlayer = React.createClass({
 			})
 		})
 
-		database.ref('rooms/' + this.props.roomKey + "/admin").on("child_changed", function(snapshot) {
-			console.log("admin changed to " + snapshot.val());
+		database.ref('rooms/' + this.props.roomKey).on("child_changed", function(snapshot) {
+			console.log("admin changed to " + snapshot.val().admin);
 			that.setState({
-				admin: snapshot.val()
+				admin: snapshot.val().admin
 			})
 		})
 
