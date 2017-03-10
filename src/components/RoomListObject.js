@@ -84,18 +84,39 @@ class RoomListObject extends React.Component {
                 if (previousRoomKey !== undefined && that.props.roomKey !== previousRoomKey) {
 
                     // removing from previous room
-                    database.ref('rooms/'+previousRoomKey+'/roommates/list').once ("value").then(function(snapshot){
-                        let oldRoommates = Object.values (snapshot.val());
+                    database.ref('rooms/'+previousRoomKey).once ("value").then(function(snapshot){
+                        
+                        var updates = {};
+
+                        let admin = snapshot.val().admin;
+                        let oldRoommates = snapshot.val().roommates.list;
                         let oldIndex = oldRoommates.indexOf(that.props.username);
+                        let roommateCount = oldRoommates.length;
 
                         if (oldIndex !== -1) {
                             oldRoommates.splice (oldIndex, 1);
                         }
 
-                        database.ref('rooms/'+previousRoomKey+'/roommates').set({
+                        database.ref('rooms/'+that.props.currentRoomKey+'/roommates').set({
                             list: oldRoommates
-                        })
+                        });
+
+                        // if last roommate, delete room
+                        if (roommateCount === 1) {
+                            console.log ('removing '+ that.props.currentRoomKey)
+                            database.ref('rooms/').child(that.props.currentRoomKey).remove();
+                        }
+
+                        else {
+
+                            // if admin, switch admin
+                            if (admin === that.props.username) {
+                                updates['/rooms/' + that.props.currentRoomKey + '/admin'] = oldRoommates[0];
+                                database.ref().update(updates);
+                            }
+                        }
                     })
+
                 }
 
                 // adding to array
