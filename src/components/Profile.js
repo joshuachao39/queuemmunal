@@ -27,6 +27,7 @@ let buttonStyle = {
 	marginBottom: 15
 }
 
+
 class Profile extends React.Component {
 
 	constructor (props) {
@@ -60,7 +61,7 @@ class Profile extends React.Component {
 						  width: "100%",
 						  position: "absolute"
 						}}>
-				<img className="animated pulse" style={{borderRadius: "50%"}} src={url} role="presentation"/>
+				<img className="animated pulse" style={{borderRadius: "50%"}} src={url} role="presentation" width={this.props.width * 0.8} height={this.props.width * 0.8}/>
 				<div style={{fontFamily: "Quicksand", fontSize: 36, width: "100%", textAlign: "center"}}>
 					{name}
 					<div style={{marginTop: 20,
@@ -100,7 +101,8 @@ function mapStateToProps (state) {
     return {
         name: state.fullname,
         url: state.pictureUrl,
-        isAnonymous: state.isAnonymous
+        isAnonymous: state.isAnonymous,
+        width: state.width
     }
 }
 

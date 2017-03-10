@@ -173,10 +173,25 @@ let Rooms = React.createClass({
     render: function() {
         //let publicStatus;
         let buttonPublicText;
+        let generatedKey;
         if (this.state.createRoomActiveKey === 1) {
             buttonPublicText = "public";
         } else {
             buttonPublicText = "private";
+            generatedKey = 
+                <div style={{display: "flex", 
+                             justifyContent: "center", 
+                             alignItems: "center", 
+                             flexDirection: "column",
+                             marginTop: 20,
+                             border: "1px solid black",
+                             borderRadius: 15,
+                             padding: 15
+                }}>
+                    <p style={{fontSize: 16, marginBottom: 0}}> Your private password is: </p>
+                    <p style={{fontSize: 50, fontFamily: "Courier New", marginBottom: 0}}> {this.state.randomKey} </p>
+                    <p style={{textAlign: "center", width: this.props.width * 0.6}}> Share this <strong>case-sensitive</strong> code to your friends! You can view this code anytime in your room. </p>
+                </div>;
         }
 
         return (
@@ -231,6 +246,7 @@ let Rooms = React.createClass({
                                     <p style={addRoomHeadingStyle}>Name</p>
                                     <input style={formStyle} type="text" value={this.state.addRoomName} placeholder="Enter your room name here" onChange={this.handleNameChange} />
                                 </div>
+                                {generatedKey}
                                 <button style={createRoomButtonStyle} onClick={this.handleCreateRoom}>Create your {buttonPublicText} room!</button>
                             {/* ADD MORE SHIT HERE LATER! */}
                             </div>
@@ -281,22 +297,13 @@ let Rooms = React.createClass({
         let that = this;
         roomsRef.on('child_added', function(data) {
 
-            /*let roomCount;
-            if (data.val().roommates !== undefined) {
-                roomCount = Object.keys(data.val().roommates).length;
-            }
-            roomCount = roomCount - 1;
-            let newRoom = Object.assign ({}, {
-                name: data.val().name,
-                count: roomCount,
-                key: data.val().key
-            }); */
-
             let rooms = that.state.rooms;
             rooms.push ({
                 name: data.val().name,
-                count: 0,
-                key: data.key
+                count: 0, // could be iffy
+                key: data.key,
+                public: data.val().public,
+                admin: data.val().admin
             });
             that.setState ({
                 rooms: rooms
@@ -332,16 +339,19 @@ let Rooms = React.createClass({
             rooms: [],
             justAddedRoom: false,
             privateRoomKey: "",
-            errorText: null
+            errorText: null,
+            randomKey: this.generateRandomKey()
         });
     },
 
     renderItem(index, key) {
-        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback}
-                               name={this.state.rooms[index].name}
-                               count={this.state.rooms[index].count}
-                               roomKey={this.state.rooms[index].key}
-                               key={key} />
+        if (this.state.rooms[index].public === true || this.state.rooms[index].admin === this.props.username) {
+            return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback}
+                                   name={this.state.rooms[index].name}
+                                   count={this.state.rooms[index].count}
+                                   roomKey={this.state.rooms[index].key}
+                                   key={key} />
+        }
     },
 
     handleSearch(event) {
@@ -395,34 +405,42 @@ let Rooms = React.createClass({
         // CHECK FOR ROOM CREATION VALIDATION HERE!!!!
 
         console.log ("writing " + this.state.addRoomName)
-        let newRoom = roomsRef.push({
-            name: this.state.addRoomName,
-            admin: this.props.username,
-            public: this.state.createRoomActiveKey === 1
-        });
+        if (this.state.createRoomActiveKey == 1) {
+            let newRoom = roomsRef.push({
+                name: this.state.addRoomName,
+                admin: this.props.username,
+                public: true
+            });
+            let roommates = [this.props.username];
+            roomsRef.child(newRoom.key + '/roommates').push({
+                list: roommates
+            })
+        } else {
+            let randomKey = this.state.randomKey;
+            roomsRef.child(randomKey).set({
+                name: this.state.addRoomName,
+                admin: this.props.username,
+                public: false
+            });
+            let roommates = [this.props.username];
+            roomsRef.child(randomKey + '/roommates').push({
+                list: roommates
+            })
+        }
 
-        roomsRef.child(newRoom.key + '/roommates').push({
-            name: this.props.username
-        })
-
-
-
-        /*let newTitle = {
-            title: this.state.addRoomName,
-            showBackButton: true
-        } */
 
         this.setState({
             addRoomName: ""
         })
     },
     enterPrivateRoom: function(privateRoom) {
-        if (privateRoom) {
-            let titleState = {
+        if (privateRoom.name !== undefined && privateRoom.key !== undefined) {
+            console.log("private room name is: " + privateRoom.name);
+            /*let titleState = {
                 name: privateRoom.name,
                 showBackButton: true
             }
-            this.props.changeTitleBarCallback(titleState);
+             this.props.changeTitleBarCallback(titleState); */
             // consider adding to roommates here?
             this.setState({
                 errorText: null
@@ -434,15 +452,32 @@ let Rooms = React.createClass({
             })
         }
     },
+    generateRandomKey: function() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 6; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    },
 
     checkIfPrivateRoomExists: function(callback) {
             let that = this;
             database.ref('/rooms').once('value', function(snapshot) {
-                let privateRoom = snapshot.forEach( function(childSnapshot) {
+                let name;
+                let key;
+                snapshot.forEach( function(childSnapshot) {
                     if (childSnapshot.val().public === false && that.state.privateRoomKey === childSnapshot.key) {
-                        return {name: childSnapshot.val().name, key: childSnapshot.key};
+                        name = childSnapshot.val().name;
+                        key = childSnapshot.key;
+                        return true;
                     }
-                })
+                });
+                let privateRoom = {
+                    name: name,
+                    key: key
+                };
                  callback(privateRoom);
             })
     },
@@ -471,7 +506,8 @@ let Rooms = React.createClass({
 function mapStateToProps (state, ownProps) {
     return {
         username: state.username,
-        fullname: state.fullname
+        fullname: state.fullname,
+        width: state.width
     }
 }
 
