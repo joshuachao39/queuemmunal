@@ -4,11 +4,8 @@ import '../styles/App.css';
 import {updateUser} from '../redux/actions';
 import {connect} from 'react-redux';
 import {database} from '../database/init';
-import browserHistory from 'react-router';
 import ReactGA from 'react-ga';
 ReactGA.initialize("UA-93278922-1");
-
-let ga = ReactGA.ga();
 
 let formStyle = {
     /* Field: */
@@ -107,7 +104,6 @@ let SignIn = React.createClass({
 
             if (password === that.state.password) {
                 that.props.updateStateUser (that.state.username, snapshot.val().name, snapshot.val().pictureUrl);
-                console.log("submit pushed");
                 that.props.router.push ('/mobile_redesigned');
 
             }

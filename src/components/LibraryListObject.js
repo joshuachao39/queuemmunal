@@ -1,9 +1,5 @@
 import React from 'react';
 
-// firebase realtime db
-import {database} from '../database/init';
-
-
 let songStyle = {
 	display: "flex",
 	justifyContent: "flex-start",
@@ -14,15 +10,15 @@ let songStyle = {
 }
 
 let titleStyle = {
-	fontSize: 20, 
-	color: "#070707", 
-	marginBottom: 5, 
+	fontSize: 20,
+	color: "#070707",
+	marginBottom: 5,
 	marginLeft: 5
 }
 
 let artistStyle = {
-	fontSize: 13, 
-	color: "#6F6F6F", 
+	fontSize: 13,
+	color: "#6F6F6F",
 	marginLeft: 5,
 	marginBottom: 2
 }
@@ -37,7 +33,7 @@ let LibraryListObject = React.createClass({
 	render: function() {
 		return (
 			<div style={songStyle}>
-				<div style={titleAndArtistStyle}> 
+				<div style={titleAndArtistStyle}>
 					<p style={titleStyle}>{this.props.name}</p>
 	                <p style={artistStyle}>{this.props.artist}</p>
 	            </div>

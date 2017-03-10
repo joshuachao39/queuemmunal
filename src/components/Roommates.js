@@ -22,15 +22,6 @@ let buttonStyle = {
 	justifyContent: "center",
 	alignItems: "center",
 }
-let containerStyle = {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexFlow: "column nowrap",
-    justifyContent: "center",
-    alignItems: "center",
-}
-
 
 class Roommates extends React.Component {
 

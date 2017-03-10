@@ -31,7 +31,6 @@ let innerContainerStyle = {
 
 let Navigation = React.createClass({
 	render: function() {
-		console.log("CURRENT ROOM: " + this.props.currentRoom);
 		const childrenWithProps = React.Children.map(this.props.children,
      		(child) => React.cloneElement(child, {
        			changeTitleBarCallback: this.changeTitleFromChild
@@ -49,11 +48,11 @@ let Navigation = React.createClass({
 			<div style={navigationStyle}>
 				<TitleBar changeTitleBarCallback={this.changeTitleFromChild} title={this.state.activePage} showBackButton={this.state.showBackButton}/>
 				<div style={innerContainerStyle}>
-					
+
 					{childrenWithProps}
 				</div>
 				{musicPlayer}
-				
+
 				<BottomNavBar callbackParent={this.tabBarChange} />
 			</div>
 		);

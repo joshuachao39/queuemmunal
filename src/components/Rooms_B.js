@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import $ from 'jquery';
-import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
+import { Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import ReactList from 'react-list';
@@ -143,13 +143,6 @@ let exitContainerStyle = {
     width: "100%"
 }
 
-let listStyle = {
-    width: "90%",
-    /*justifyContent: "center",
-    alignContent: "center",
-    margin: 0,
-    overflowY: "scroll" */
-}
 
 let searchStyle = {
     /* Field: */
@@ -178,13 +171,11 @@ let errorStyle = {
 let Rooms = React.createClass({
 
     render: function() {
-        let publicStatus;
+        //let publicStatus;
         let buttonPublicText;
         if (this.state.createRoomActiveKey === 1) {
-            publicStatus = true;
             buttonPublicText = "public";
         } else {
-            publicStatus = false;
             buttonPublicText = "private";
         }
 
@@ -192,7 +183,7 @@ let Rooms = React.createClass({
             <div style={containerStyle}>
                 <div style={{width: "90%", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20}}>
                     <input style={searchStyle} type="text" value={this.state.searchQuery} placeholder="Search by keyword..." onChange={this.handleSearch}/>
-                    <button style={{marginLeft: 10, 
+                    <button style={{marginLeft: 10,
                                     fontFamily: "Quicksand",
                                     fontSize: 12,
                                     color: "white",
@@ -316,7 +307,7 @@ let Rooms = React.createClass({
             let currentRooms = that.state.rooms;
             console.log(currentRooms);
             for (var i = currentRooms.length - 1; i >= 0; i--) {
-                if (currentRooms[i].key == data.key) {
+                if (currentRooms[i].key === data.key) {
                     currentRooms.splice(i, 1);
                     break;
                 }
@@ -346,9 +337,9 @@ let Rooms = React.createClass({
     },
 
     renderItem(index, key) {
-        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} 
-                               name={this.state.rooms[index].name} 
-                               count={this.state.rooms[index].count} 
+        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback}
+                               name={this.state.rooms[index].name}
+                               count={this.state.rooms[index].count}
                                roomKey={this.state.rooms[index].key}
                                key={key} />
     },
@@ -391,7 +382,7 @@ let Rooms = React.createClass({
         }
     },
     handleCreateRoomSelect: function(eventKey) {
-        if (this.state.createRoomActiveKey != eventKey) {
+        if (this.state.createRoomActiveKey !== eventKey) {
             this.setState({
                 createRoomActiveKey: eventKey
             });
@@ -420,7 +411,7 @@ let Rooms = React.createClass({
             title: this.state.addRoomName,
             showBackButton: true
         } */
-        
+
         this.setState({
             addRoomName: ""
         })
@@ -486,4 +477,3 @@ function mapStateToProps (state, ownProps) {
 
 const RoomsContainer_B = connect(mapStateToProps) (Rooms);
 export default RoomsContainer_B;
-

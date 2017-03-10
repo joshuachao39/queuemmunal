@@ -1,37 +1,12 @@
 import React from 'react';
-import Modal from 'react-modal';
 import $ from 'jquery';
-import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
-import { browserHistory } from 'react-router';
-import ReactList from 'react-list';
 import {connect} from 'react-redux';
 import {updateUser} from '../redux/actions';
-import RoomListObject from './RoomListObject';
 import '../styles/styles.css';
 import '../../node_modules/animate.css';
 
 import {database} from '../database/init';
 
-
-
-/* the lower right hand button must be set to position absolute, not fixed, in order to work */
-let buttonStyle = {
-    background: "#FF6D7F",
-    boxShadow: "0 3px 6px 3px rgba(0,0,0,0.24)",
-    borderRadius: "50%",
-    fontFamily: "Quicksand",
-    fontSize: 16,
-    color: "white",
-    width: 90,
-    height: 90,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 15,
-    position: "absolute",
-    bottom: 15,
-    right: 15
-}
 
 let createAccountButtonStyle = {
     /* Button Background: */
@@ -121,9 +96,9 @@ let SignUp = React.createClass({
             <div style={pageStyle}>
                 <div style={containerStyle}>
                     <div style={titleStyle}>
-                        <button onClick={this.handleCancel} 
-                                style={{position: "fixed", left: 15, top: 22, borderStyle: "none", backgroundColor: "transparent"}}> 
-                                    {backText} 
+                        <button onClick={this.handleCancel}
+                                style={{position: "fixed", left: 15, top: 22, borderStyle: "none", backgroundColor: "transparent"}}>
+                                    {backText}
                         </button>
                         CREATE A LOGIN
                     </div>
@@ -184,7 +159,7 @@ let SignUp = React.createClass({
             if (this.state.passwordMatch) {
                 if (userExists) {
                     this.setState({
-                        newUserErrorText: <p style={errorStyle}> Sorry, that username is already taken! </p> 
+                        newUserErrorText: <p style={errorStyle}> Sorry, that username is already taken! </p>
                     })
                 } else {
                     let usersRef = database.ref('/users');

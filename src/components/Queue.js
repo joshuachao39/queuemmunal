@@ -1,8 +1,8 @@
 import React from 'react';
 import { Glyphicon, Nav, NavItem } from 'react-bootstrap';
 import Modal from 'react-modal';
-import SongListObject_Glyph from './SongListObject_Glyph';
-import SongListObject_Text from './SongListObject_Text';
+import SongListObjectGlyph from './SongListObject_Glyph';
+import SongListObjectText from './SongListObject_Text';
 import SongQueryObject from './SongQueryObject';
 import ReactList from 'react-list';
 import Fuse from 'fuse.js';
@@ -20,8 +20,6 @@ import {database, firebaseApp} from '../database/init';
 // songs
 import data from '../data/music.json';
 
-
-let chosenVariation = window.chosenVariation;
 
 let buttonStyle = {
     background: "#FF6D7F",
@@ -207,14 +205,12 @@ let Queue = React.createClass({
             songDatabase: data,
             selectedSong: "",
             songs: [],
-            defaultAddButton: chosenVariation == 0
 		});
 	},
 
     componentDidMount: function () {
         var that = this;
         var roomSongListRef = database.ref('rooms/'+ this.props.roomKey + '/songList');
-        var songId = -1;
         roomSongListRef.on('child_added', function(data) {
             let currentSongs = that.state.songs;
             currentSongs.push({
@@ -288,19 +284,19 @@ let Queue = React.createClass({
 			currentSong = false;
 		}
         if (this.state.defaultAddButton) {
-    		return (<SongListObject_Glyph currentSong={currentSong} 
-                                   name={this.state.songs[index].name} 
-                                   artist={this.state.songs[index].artist} 
-                                   key={key} 
+    		return (<SongListObjectGlyph currentSong={currentSong}
+                                   name={this.state.songs[index].name}
+                                   artist={this.state.songs[index].artist}
+                                   key={key}
                                    username={this.props.username}
                                    onSaveSuccess={this.showSaveSongNotificationSuccess}
                                    onSaveFailure={this.showSaveSongNotificationFailure}
                     />);
         } else {
-            return (<SongListObject_Text currentSong={currentSong} 
-                                   name={this.state.songs[index].name} 
-                                   artist={this.state.songs[index].artist} 
-                                   key={key} 
+            return (<SongListObjectText currentSong={currentSong}
+                                   name={this.state.songs[index].name}
+                                   artist={this.state.songs[index].artist}
+                                   key={key}
                                    username={this.props.username}
                                    onSaveSuccess={this.showSaveSongNotificationSuccess}
                                    onSaveFailure={this.showSaveSongNotificationFailure}
@@ -308,7 +304,7 @@ let Queue = React.createClass({
         }
 	},
 	handleSearch(event) {
-        if (event.target.value != '') {
+        if (event.target.value !== '') {
             var options = {
               shouldSort: true,
               threshold: 0.6,

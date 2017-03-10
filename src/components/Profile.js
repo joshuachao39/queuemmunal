@@ -1,9 +1,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import uniqueProfile from '../assets/profile_photo.jpg';
 import {connect} from 'react-redux';
 import anonymousProfile from '../assets/anonymousProfile.svg';
-import $ from 'jquery';
 import Switch from 'react-ios-switch';
 import 'react-ios-switch/build/bundle.css';
 import { updateAnonymous } from '../redux/actions';
@@ -62,7 +60,7 @@ class Profile extends React.Component {
 						  width: "100%",
 						  position: "absolute"
 						}}>
-				<img className="animated pulse" style={{borderRadius: "50%"}} src={url} alt="Profile Photo" width={$(window).width() * 0.6}/>
+				<img className="animated pulse" style={{borderRadius: "50%"}} src={url} role="presentation"/>
 				<div style={{fontFamily: "Quicksand", fontSize: 36, width: "100%", textAlign: "center"}}>
 					{name}
 					<div style={{marginTop: 20,

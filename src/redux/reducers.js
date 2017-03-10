@@ -67,6 +67,9 @@ function appReducers (state, action) {
         });
     }
 
+    default: {
+        console.log ("Invalid action");
+    }
     }
 
     return state;

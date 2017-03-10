@@ -76,7 +76,7 @@ let BottomNavBar = React.createClass({
 							<Button key={i} position={i} name={value.name} active={value.active} callbackParent={this.onChildChanged} />
 						);
 					}, this)
-				}		
+				}
 			</div>
 		);
 	},
@@ -93,7 +93,7 @@ let BottomNavBar = React.createClass({
 	onChildChanged: function(state) {
 		// console.log("I know that a buttonw was clicked!");
 		// console.log(state.active + " " + state.name + " " + state.position);
-		
+
 
 		//console.log(this.props.children);
 		if (state.name !== this.state.activePage) {
@@ -107,7 +107,6 @@ let BottomNavBar = React.createClass({
 			};
 			newState.activePage = state.name;
 			newState.buttons[state.position] = {name: state.name, active: true};
-			console.log(newState);
 			this.setState(newState);
 			this.props.callbackParent(newState.activePage);
 		}

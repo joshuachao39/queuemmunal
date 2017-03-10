@@ -1,8 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import $ from 'jquery';
-import {ListGroup, FormControl, ControlLabel, FormGroup, Glyphicon, Nav, NavItem} from 'react-bootstrap'
-import { browserHistory } from 'react-router';
+import { Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { connect } from 'react-redux';
 import ReactList from 'react-list';
 import Fuse from 'fuse.js';
@@ -16,7 +15,7 @@ import '../../node_modules/animate.css';
 import {database} from '../database/init';
 var roomsRef = database.ref('rooms/');
 
-const experiment_variation = window.experiment_variation;
+//const experiment_variation = window.experiment_variation;
 
 /* the lower right hand button must be set to position absolute, not fixed, in order to work */
 let buttonStyle = {
@@ -124,13 +123,6 @@ let exitContainerStyle = {
     width: "100%"
 }
 
-let listStyle = {
-    width: "90%",
-    /*justifyContent: "center",
-    alignContent: "center",
-    margin: 0,
-    overflowY: "scroll" */
-}
 
 let searchStyle = {
     /* Field: */
@@ -151,13 +143,10 @@ let searchStyle = {
 let Rooms = React.createClass({
 
     render: function() {
-        let publicStatus;
         let buttonPublicText;
         if (this.state.createRoomActiveKey === 1) {
-            publicStatus = true;
             buttonPublicText = "public";
         } else {
-            publicStatus = false;
             buttonPublicText = "private";
         }
 
@@ -233,9 +222,8 @@ let Rooms = React.createClass({
 
         roomsRef.on('child_removed', function(data) {
             let currentRooms = that.state.rooms;
-            console.log(currentRooms);
             for (var i = currentRooms.length - 1; i >= 0; i--) {
-                if (currentRooms[i].key == data.key) {
+                if (currentRooms[i].key === data.key) {
                     currentRooms.splice(i, 1);
                     break;
                 }
@@ -325,7 +313,7 @@ let Rooms = React.createClass({
         }
     },
     handleCreateRoomSelect: function(eventKey) {
-        if (this.state.createRoomActiveKey != eventKey) {
+        if (this.state.createRoomActiveKey !== eventKey) {
             this.setState({
                 createRoomActiveKey: eventKey
             });
@@ -335,7 +323,6 @@ let Rooms = React.createClass({
         this.closeModal();
 
         // CHECK FOR ROOM CREATION VALIDATION HERE!!!!
-        console.log ("writing " + this.state.addRoomName)
         let newRoom = roomsRef.push({
             name: this.state.addRoomName,
             admin: this.props.username,

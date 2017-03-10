@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Glyphicon } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 import {updateRoom} from '../redux/actions';
 
@@ -76,10 +75,9 @@ class RoomListObject extends React.Component {
             }
 
             let index = roommates.indexOf(that.props.username);
-            let size = roommates.length;
 
             // add to room if not already in room
-            if (index == -1) {
+            if (index === -1) {
 
                 // if already in a room, remove from the room
                 if (previousRoomKey !== undefined && that.props.roomKey !== previousRoomKey) {

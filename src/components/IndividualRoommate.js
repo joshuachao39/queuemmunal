@@ -6,17 +6,17 @@ import {database} from '../database/init';
 let IndividualRoommate = React.createClass({
 	render: function() {
 		return(
-			<div style={{display: "inline-flex", 
+			<div style={{display: "inline-flex",
 			             flexDirection: "column",
 			             alignItems: "center",
-			             justifyContent: "center", 
+			             justifyContent: "center",
 			             width: (this.props.width * 0.9) / 4,
 			         	 paddingTop: 10}}>
-            	<img className="animated pulse" 
+            	<img className="animated pulse"
             	     style={{borderRadius: "50%",
             	             textAlign: "center"}}
             	     src={this.state.url}
-            	     alt="Profile Photo"
+            	     alt="Presentation"
             	     width="80%"
             	/>
             	<p style={{textAlign: "center", fontFamily: "Quicksand", marginTop: 10, width: (this.props.width * 0.9) / 4 - 5, wordWrap: "break-word"}}>{this.props.name}</p>
