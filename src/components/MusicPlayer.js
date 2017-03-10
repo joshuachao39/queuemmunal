@@ -168,7 +168,7 @@ let MusicPlayer = React.createClass({
 
 		}
 	},
-	componentWillMount: function() {
+	componentDidMount: function() {
 		//Is this being run everytime we come back to the room
 		let that = this;
 		let roomSongListRef = database.ref('rooms/' + this.props.roomKey + '/songList');
