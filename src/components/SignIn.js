@@ -4,8 +4,6 @@ import '../styles/App.css';
 import {updateUser} from '../redux/actions';
 import {connect} from 'react-redux';
 import {database} from '../database/init';
-import ReactGA from 'react-ga';
-ReactGA.initialize("UA-93278922-1");
 
 let formStyle = {
     /* Field: */

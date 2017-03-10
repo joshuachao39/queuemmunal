@@ -2,9 +2,6 @@ import React from 'react';
 
 // firebase realtime db
 import {database} from '../database/init';
-import ReactGA from 'react-ga';
-ReactGA.initialize("UA-93278922-1");
-let ga = ReactGA.ga();
 
 
 let songStyle = {
@@ -123,7 +120,6 @@ let SongListObject = React.createClass({
 	},
 	addFunction: function() {
 		console.log('adding a song to saved songs!');
-		ga('send', 'event', 'saveSong', 'click');
 		if (this.state.shouldAdd) {
 			this.props.onSaveSuccess();
 			let userRef = database.ref('users/' + this.props.username + '/savedSongs');
