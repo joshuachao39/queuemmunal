@@ -21,7 +21,6 @@ class RoomListObject extends React.Component {
             roommateCount: 0
         }
         this.enterRoom = this.enterRoom.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     render () {
@@ -33,14 +32,10 @@ class RoomListObject extends React.Component {
         )
     }
 
-    componentDidMount() {
-        console.log("mounting " +  this.props.name + " room...");
+    componentWillMount() {
         let that = this;
         let roommates = 0;
         database.ref('rooms/' + this.props.roomKey + '/roommates/list').on("child_added", function(snapshot) {
-            /*console.log(snapshot.val());
-            console.log("Current roommate count is: " + that.state.roommateCount);
-            var currentRoommateCount = that.state.roommateCount; */
             roommates++;
             that.setState({
                 roommateCount: roommates
@@ -72,7 +67,13 @@ class RoomListObject extends React.Component {
         }
 
         roomRef.once("value").then(function(snapshot) {
-            roommates = Object.values(snapshot.val());
+
+            if (snapshot.val() !== null) {
+                roommates = Object.values(snapshot.val());
+            }
+            else {
+                roommates = []
+            }
 
             let index = roommates.indexOf(that.props.username);
             let size = roommates.length;

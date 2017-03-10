@@ -18,9 +18,6 @@ var roomsRef = database.ref('rooms/');
 
 const experiment_variation = window.experiment_variation;
 
-console.log("In the rooms page, the experiment variation is: " + experiment_variation);
-
-
 /* the lower right hand button must be set to position absolute, not fixed, in order to work */
 let buttonStyle = {
     background: "#FF6D7F",
@@ -266,9 +263,9 @@ let Rooms = React.createClass({
     },
 
     renderItem(index, key) {
-        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback} 
-                               name={this.state.rooms[index].name} 
-                               count={this.state.rooms[index].count} 
+        return <RoomListObject changeTitleBarCallback={this.props.changeTitleBarCallback}
+                               name={this.state.rooms[index].name}
+                               count={this.state.rooms[index].count}
                                roomKey={this.state.rooms[index].key}
                                key={key} />
     },
@@ -310,15 +307,15 @@ let Rooms = React.createClass({
             this.setState({
                 searchQuery: event.target.value,
                 rooms: result,
-                clearSearchButton: <button style={{position: "absolute", 
-                                                   height: 25, 
-                                                   width: 25, 
-                                                   right: "8vw", 
-                                                   top: 7, 
-                                                   border: "none", 
-                                                   background: "#FF6D7F", 
-                                                   color: "white", 
-                                                   borderRadius: "50%", 
+                clearSearchButton: <button style={{position: "absolute",
+                                                   height: 25,
+                                                   width: 25,
+                                                   right: "8vw",
+                                                   top: 7,
+                                                   border: "none",
+                                                   background: "#FF6D7F",
+                                                   color: "white",
+                                                   borderRadius: "50%",
                                                    fontFamily: "Quicksand"
                                                   }}
                                             onClick={this.clearSearch}>x</button>
@@ -336,10 +333,8 @@ let Rooms = React.createClass({
     },
     handleCreateRoom: function() {
         this.closeModal();
-        //data.rooms.unshift({name: this.state.addRoomName, count: 1});
 
         // CHECK FOR ROOM CREATION VALIDATION HERE!!!!
-
         console.log ("writing " + this.state.addRoomName)
         let newRoom = roomsRef.push({
             name: this.state.addRoomName,
@@ -347,17 +342,11 @@ let Rooms = React.createClass({
             public: this.state.createRoomActiveKey === 1
         });
 
+        let roommates = [this.props.username];
         roomsRef.child(newRoom.key + '/roommates').push({
-            name: this.props.username
+            list: roommates
         })
 
-
-
-        /*let newTitle = {
-            title: this.state.addRoomName,
-            showBackButton: true
-        } */
-        
         this.setState({
             addRoomName: ""
         })

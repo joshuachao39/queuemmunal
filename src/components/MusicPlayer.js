@@ -20,11 +20,6 @@ let MusicPlayer = React.createClass({
 			songURL = currentSong.url;
 			//console.log("The song url is: " + currentSong.url);
 		}
-		/*console.log("The played is: " + this.state.played);
-		console.log("Should we play?: " + this.state.songsLeft);
-		console.log("The queue is:");
-		console.log(this.state.queue); */
-
 		// if we lose played???
 		let played;
 		if (!this.state.played) {
@@ -66,7 +61,7 @@ let MusicPlayer = React.createClass({
 					}}
 				onClick={this.returnToRoom}>
 				<div style={{backgroundColor: "#FF6D7F", height: this.props.height / 200, position: "absolute", top: 0, left: 0, right: this.props.width - (this.props.width * played)}} />
-				<ReactPlayer url={songURL} 
+				<ReactPlayer url={songURL}
 					ref={(player) => {this.player = player}}
 					 playing={this.state.songsLeft}
 					 onReady={this.playerInitialize}
@@ -104,7 +99,7 @@ let MusicPlayer = React.createClass({
 				played: state.played
 			})
 		}
-	}, 
+	},
 	getInitialState() {
 		return {
 			queue: [],
@@ -224,7 +219,7 @@ let MusicPlayer = React.createClass({
 		})
 
 
-		// 
+		//
 
 	},
 	songStart() {
