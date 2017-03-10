@@ -4,6 +4,7 @@ import $ from 'jquery';
 import { Glyphicon, Nav, NavItem} from 'react-bootstrap'
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import {updateRoom} from '../redux/actions';
 import ReactList from 'react-list';
 import Fuse from 'fuse.js';
 
@@ -436,16 +437,78 @@ let Rooms = React.createClass({
     enterPrivateRoom: function(privateRoom) {
         if (privateRoom.name !== undefined && privateRoom.key !== undefined) {
             console.log("private room name is: " + privateRoom.name);
-            /*let titleState = {
-                name: privateRoom.name,
-                showBackButton: true
-            }
-             this.props.changeTitleBarCallback(titleState); */
-            // consider adding to roommates here?
             this.setState({
                 errorText: null
             })
             browserHistory.push('/mobile/rooms/' + privateRoom.name);
+            // update redux's currentRoomKey
+            this.props.setRoom (privateRoom.name, privateRoom.key);
+
+            // make sure u leave a room if you're in it
+            let roomRef = database.ref('rooms/' + this.props.roomKey+ '/roommates/list');
+            let roommates = []
+            let that = this;
+            var previousRoomKey = this.props.currentRoomKey;
+            roomRef.once("value").then(function(snapshot) {
+
+                if (snapshot.val() !== null) {
+                    roommates = Object.values(snapshot.val());
+                }
+                else {
+                    roommates = []
+                }
+
+                let index = roommates.indexOf(that.props.username);
+
+                // add to room if not already in room
+                if (index === -1) {
+
+                    // if already in a room, remove from the room
+                    if (previousRoomKey !== undefined && that.props.roomKey !== previousRoomKey) {
+
+                        // removing from previous room
+                        database.ref('rooms/'+previousRoomKey).once ("value").then(function(snapshot){
+                            
+                            var updates = {};
+
+                            let admin = snapshot.val().admin;
+                            let oldRoommates = snapshot.val().roommates.list;
+                            let oldIndex = oldRoommates.indexOf(that.props.username);
+                            let roommateCount = oldRoommates.length;
+
+                            if (oldIndex !== -1) {
+                                oldRoommates.splice (oldIndex, 1);
+                            }
+
+                            database.ref('rooms/'+that.props.currentRoomKey+'/roommates').set({
+                                list: oldRoommates
+                            });
+
+                            // if last roommate, delete room
+                            if (roommateCount === 1) {
+                                console.log ('removing '+ that.props.currentRoomKey)
+                                database.ref('rooms/').child(that.props.currentRoomKey).remove();
+                            }
+
+                            else {
+
+                                // if admin, switch admin
+                                if (admin === that.props.username) {
+                                    updates['/rooms/' + that.props.currentRoomKey + '/admin'] = oldRoommates[0];
+                                    database.ref().update(updates);
+                                }
+                            }
+                        })
+
+                    }
+
+                    // adding to array
+                    roommates.push (that.props.username);
+                    database.ref('rooms/' + that.props.roomKey + '/roommates').set({
+                        list: roommates
+                    });
+                }
+            })
         } else {
             this.setState({
                 errorText: <p style={errorStyle}>Sorry! We couldn't find a private room associated with that password...</p>
@@ -503,6 +566,15 @@ let Rooms = React.createClass({
     }
 });
 
+function mapDispatchToProps (dispatch) {
+    return {
+        setRoom: (roomName, roomKey) => {
+            console.log ("updating to"+roomName);
+            dispatch (updateRoom(roomName, roomKey));
+        }
+    };
+};
+
 function mapStateToProps (state, ownProps) {
     return {
         username: state.username,
@@ -511,5 +583,5 @@ function mapStateToProps (state, ownProps) {
     }
 }
 
-const RoomsContainer_B = connect(mapStateToProps) (Rooms);
+const RoomsContainer_B = connect(mapStateToProps, mapDispatchToProps) (Rooms);
 export default RoomsContainer_B;
