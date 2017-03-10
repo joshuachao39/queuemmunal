@@ -152,10 +152,17 @@ let MusicPlayer = React.createClass({
 				})
 			});
 
-			database.ref('rooms/' + this.props.roomKey).on("child_changed", function(snapshot) {
-				console.log("Admin changed to " + snapshot.val().admin);
+			database.ref('rooms/' + this.props.roomKey + "/admin").once("value", function(snapshot) {
+				console.log("admin initialized to " + snapshot.val())
 				that.setState({
-					admin: snapshot.val().admin
+					admin: snapshot.val()
+				})
+			})
+
+			database.ref('rooms/' + this.props.roomKey + "/admin").on("child_changed", function(snapshot) {
+				console.log("admin changed to " + snapshot.val())
+				that.setState({
+					admin: snapshot.val()
 				})
 			})
 
@@ -191,12 +198,19 @@ let MusicPlayer = React.createClass({
 			that.setState({
 				queue: currentSongs
 			})
+		});
+
+		database.ref('rooms/' + this.props.roomKey + "/admin").once("value", function(snapshot) {
+			console.log("admin initialized to " + snapshot.val());
+			that.setState({
+				admin: snapshot.val()
+			})
 		})
 
-		database.ref('rooms/' + this.props.roomKey).on("child_changed", function(snapshot) {
-			console.log("Admin changed to " + snapshot.val().admin);
+		database.ref('rooms/' + this.props.roomKey + "/admin").on("child_changed", function(snapshot) {
+			console.log("admin changed to " + snapshot.val());
 			that.setState({
-				admin: snapshot.val().admin
+				admin: snapshot.val()
 			})
 		})
 
