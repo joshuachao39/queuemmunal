@@ -74,7 +74,7 @@ class Roommates extends React.Component {
 
 
 	leaveRoom() {
-        browserHistory.push('/mobile');
+        browserHistory.push('/mobile_redesigned');
         var that = this;
 
         database.ref('rooms/'+this.props.currentRoomKey).once ("value").then(function(snapshot){

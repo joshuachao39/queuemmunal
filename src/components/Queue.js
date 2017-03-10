@@ -7,7 +7,6 @@ import SongQueryObject from './SongQueryObject';
 import ReactList from 'react-list';
 import Fuse from 'fuse.js';
 import NotificationSystem from 'react-notification-system';
-// import ReactGA from '../experiments/init';
 
 import '../styles/styles.css';
 import $ from 'jquery';
@@ -283,25 +282,14 @@ let Queue = React.createClass({
 		if (index !== 0) {
 			currentSong = false;
 		}
-        if (this.state.defaultAddButton) {
-    		return (<SongListObjectGlyph currentSong={currentSong}
-                                   name={this.state.songs[index].name}
-                                   artist={this.state.songs[index].artist}
-                                   key={key}
-                                   username={this.props.username}
-                                   onSaveSuccess={this.showSaveSongNotificationSuccess}
-                                   onSaveFailure={this.showSaveSongNotificationFailure}
-                    />);
-        } else {
-            return (<SongListObjectText currentSong={currentSong}
-                                   name={this.state.songs[index].name}
-                                   artist={this.state.songs[index].artist}
-                                   key={key}
-                                   username={this.props.username}
-                                   onSaveSuccess={this.showSaveSongNotificationSuccess}
-                                   onSaveFailure={this.showSaveSongNotificationFailure}
-                    />);
-        }
+        return (<SongListObjectText currentSong={currentSong}
+                               name={this.state.songs[index].name}
+                               artist={this.state.songs[index].artist}
+                               key={key}
+                               username={this.props.username}
+                               onSaveSuccess={this.showSaveSongNotificationSuccess}
+                               onSaveFailure={this.showSaveSongNotificationFailure}
+                />);
 	},
 	handleSearch(event) {
         if (event.target.value !== '') {

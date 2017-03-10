@@ -76,9 +76,9 @@ let SignIn = React.createClass({
         return (
             <div style={divStyle}>
                 <img src={logo} className="App-logo" alt="logo" />
-                Queuemmunal
+                Harmonic
                 {errorText}
-                <input style={formStyle} type="text" value={this.state.username} placeholder="Email" onChange={this.handleUsernameChange} />
+                <input style={formStyle} type="text" value={this.state.username} placeholder="Username" onChange={this.handleUsernameChange} />
                 <input style={formStyle} type="password" value={this.state.password} placeholder="Password" onChange={this.handlePasswordChange} />
                 <button style={buttonStyle} className="animated bounceIn" onClick={this.handleSubmit}>Login</button>
 
