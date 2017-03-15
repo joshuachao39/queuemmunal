@@ -143,7 +143,8 @@ let SongListObject = React.createClass({
 			let userRef = database.ref('users/' + this.props.username + '/savedSongs');
 			userRef.push({
 				name: this.props.name,
-				artist: this.props.artist
+				artist: this.props.artist,
+				url: this.props.url
 			});
 		} else {
 			this.props.onSaveFailure();

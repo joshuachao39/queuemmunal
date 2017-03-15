@@ -127,10 +127,15 @@ let addSongButtonStyle = {
 let Queue = React.createClass({
 	render: function() {
         let songError;
-
+        let songListLength;
         if (this.state.addSongError) {
             songError = <p style={{fontSize: 15, color: "#FF6D7F", fontFamily: "Quicksand", marginTop: 10}}>You must select a song!</p>
         };
+        if (this.state.addSongActiveKey == 1) {
+            songListLength = this.state.songDatabase.length
+        } else {
+            songListLength = this.state.userLibrary.length
+        }
 
 		return(
 			<div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -169,8 +174,8 @@ let Queue = React.createClass({
                                 ADD A SONG
                             </div>
                             <Nav bsClass="addRoomTabBar" bsStyle="pills" activeKey={this.state.addSongActiveKey} onSelect={this.handleAddSongSelect}>
-                                <NavItem eventKey={1}>Search </NavItem>
-                                <NavItem eventKey={2}>My Library </NavItem>
+                                <NavItem eventKey={1}>Search</NavItem>
+                                <NavItem eventKey={2}>My Library</NavItem>
                             </Nav>
                         </div>
                         <div style={contentStyle}>
@@ -179,7 +184,7 @@ let Queue = React.createClass({
                                 <input style={formStyle} type="text" value={this.state.searchSongQuery} placeholder="Search by song title or artist" onChange={this.handleSearch} />
                             </div>
                             <div style={{overflow: "auto", minHeight: "45vh", maxHeight: "45vh", width: "100%", background: "#FFF", borderRadius: 15}}>
-                                <ReactList itemRenderer={this.renderSong} length={this.state.songDatabase.length} type="uniform" />
+                                <ReactList itemRenderer={this.renderSong} length={songListLength} type="uniform" />
                             </div>
                             <div style={{width: "100%", display: "flex", flexFlow: "column nowrap", alignItems: "center"}}>
                                 <button style={addSongButtonStyle} onClick={this.handleAddSong}>Add Song!</button>
@@ -204,17 +209,36 @@ let Queue = React.createClass({
             songDatabase: data,
             selectedSong: "",
             songs: [],
+            userLibrary: [],
+            fullUserLibrary: []
 		});
 	},
 
     componentDidMount: function () {
         var that = this;
         var roomSongListRef = database.ref('rooms/'+ this.props.roomKey + '/songList');
+        var userLibraryRef = database.ref('users/' + this.props.username + '/savedSongs');
+
+        userLibraryRef.on('child_added', function(data) {
+            let currentUserLibrary = that.state.userLibrary;
+            currentUserLibrary.push({
+                name: data.val().name,
+                artist: data.val().artist,
+                url: data.val().url,
+                key: data.key
+            });
+            that.setState({
+                userLibrary: currentUserLibrary,
+                fullUserLibrary: currentUserLibrary
+            })
+        });
+
         roomSongListRef.on('child_added', function(data) {
             let currentSongs = that.state.songs;
             currentSongs.push({
                 name: data.val().name,
                 artist: data.val().artist,
+                url: data.val().url,
                 key: data.key
             });
             that.setState({
@@ -272,8 +296,21 @@ let Queue = React.createClass({
         });
     },
     renderSong(index, key) {
+        let songName;
+        let songArtist;
+        let songUrl;
+        if (this.state.addSongActiveKey == 1) {
+            songName = this.state.songDatabase[index].name;
+            songArtist = this.state.songDatabase[index].artist;
+            songUrl = this.state.songDatabase[index].url;
+        } else {
+            songName = this.state.userLibrary[index].name;
+            songArtist = this.state.userLibrary[index].artist;
+            songUrl = this.state.userLibrary[index].url;
+        }
+
         return (
-            <SongQueryObject name={this.state.songDatabase[index].name} artist={this.state.songDatabase[index].artist} url={this.state.songDatabase[index].url} handleSelectCallback={this.selectSong} key={key} />
+            <SongQueryObject name={songName} artist={songArtist} url={songUrl} handleSelectCallback={this.selectSong} key={key} />
         );
     },
 
@@ -285,6 +322,7 @@ let Queue = React.createClass({
         return (<SongListObjectText currentSong={currentSong}
                                name={this.state.songs[index].name}
                                artist={this.state.songs[index].artist}
+                               url={this.state.songs[index].url}
                                key={key}
                                username={this.props.username}
                                onSaveSuccess={this.showSaveSongNotificationSuccess}
@@ -302,26 +340,48 @@ let Queue = React.createClass({
               minMatchCharLength: 1,
               keys: [
                 "name",
+                "artist"
                 ]
             };
-            var fuse = new Fuse(data, options); // "list" is the item array
+            var fuse;
+            if (this.state.addSongActiveKey == 1) {
+                fuse = new Fuse(data, options); // "list" is the item array
+            } else {
+                fuse = new Fuse(this.state.fullUserLibrary, options);
+            }
             var result = fuse.search(event.target.value + "");
             if (this.state.selectedSong !== "") {
                 this.state.selectedSong.setState({
                     selected: false
                 })
             }
-            this.setState({
-                selectedSong: "",
-                searchSongQuery: event.target.value,
-                songDatabase: result
-            });
+            if (this.state.addSongActiveKey == 1) {
+                this.setState({
+                    selectedSong: "",
+                    searchSongQuery: event.target.value,
+                    songDatabase: result
+                });
+            } else {
+                this.setState({
+                    selectedSong: "",
+                    searchSongQuery: event.target.value,
+                    userLibrary: result
+                })
+            }
         } else {
-            this.setState({
-                selectedSong: "",
-                searchSongQuery: event.target.value,
-                songDatabase: data
-            })
+            if (this.state.addSongActiveKey == 1) {
+                this.setState({
+                    selectedSong: "",
+                    searchSongQuery: event.target.value,
+                    songDatabase: data
+                })
+            } else {
+                this.setState({
+                    selectedSong: "",
+                    searchSongQuery: event.target.value,
+                    userLibrary: this.state.fullUserLibrary
+                })
+            }
         }
     },
 	handleAddSongSelect: function(eventKey) {
