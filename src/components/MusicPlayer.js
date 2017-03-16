@@ -3,6 +3,8 @@ import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import {firebaseApp, database} from '../database/init';
+import FaCircleUp from 'react-icons/lib/fa/arrow-circle-o-up';
+import FaCircleDown from 'react-icons/lib/fa/arrow-circle-o-down';
 
 let MusicPlayer = React.createClass({
 	render() {
@@ -60,12 +62,20 @@ let MusicPlayer = React.createClass({
 					 onEnded={this.songFinish}
 					 onDuration={this.getDuration}
 				/>
-				<p style={{marginBottom: 5}}> {songTitle} {artistName} </p>
-				<p style={{marginBottom: 0, color: "#D4D4D4", fontWeight: 400}}> Playing from {this.props.currentRoom} </p>
+				<div style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", width: "100%", height: "100%", alignItems: "center"}}>
+					<FaCircleDown style={{marginLeft: 10}} size={50} onClick={this.voteButtonPressed}/>
+					<div>
+						<p style={{marginBottom: 5, maxWidth: "80vw", textAlign: "center"}}> {songTitle} {artistName} </p>
+						<p style={{marginBottom: 0, color: "#D4D4D4", fontWeight: 400, textAlign: "center"}}> Playing from {this.props.currentRoom} </p>
+					</div>
+					<FaCircleUp style={{marginRight: 10}} size={50} onClick={this.voteButtonPressed}/>
+				</div>
 			</div>
 		);
 	},
-
+	voteButtonPressed: function() {
+		console.log("vote button pressed!");
+	},
 	// On progress is called everytime we come back to the page
 	onProgress: function(state) {
 		let that = this;
