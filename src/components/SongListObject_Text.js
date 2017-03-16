@@ -10,7 +10,8 @@ let songStyle = {
     padding: "10px",
     margin: "auto",
     fontFamily: "Quicksand",
-    borderBottom: "1px solid #C7C7C7"
+    borderBottom: "1px solid #C7C7C7",
+    width: "100%"
 }
 
 let currentSongStyle = {
@@ -21,41 +22,65 @@ let currentSongStyle = {
     margin: "auto",
     fontFamily: "Quicksand",
     background: "#A0B8E1",
-    color: "white"
+    color: "white",
+    width: "100%"
 }
 
+let currentVoteStyle = {
+	display: "flex", 
+	justifyContent: "center",
+	alignItems: "center", 
+	borderRight: "1px solid white", 
+	color: "white",
+	fontSize: 20,
+	backgroundColor: "#A0B8E1",
+	width: 50
+}
+
+let voteStyle = {
+	display: "flex", 
+	justifyContent: "center",
+	alignItems: "center", 
+	borderRight: "1px solid #3066BE", 
+	color: "#C7C7C7",
+	fontSize: 20,
+	borderBottom: "1px solid #C7C7C7",
+	width: 50
+}
+
+
 let titleStyle = {
-	fontSize: 20, 
+	fontSize: 16, 
 	color: "#070707", 
 	marginBottom: 5, 
-	marginLeft: 5
+	marginLeft: 0
 }
 
 let currentTitleStyle = {
-	fontSize: 20, 
+	fontSize: 16, 
 	color: "white", 
 	marginBottom: 5, 
-	marginLeft: 5
+	marginLeft: 0
 }
 
 let artistStyle = {
-	fontSize: 13, 
+	fontSize: 10, 
 	color: "#6F6F6F", 
-	marginLeft: 5,
+	marginLeft: 0,
 	marginBottom: 2
 }
 
 let currentArtistStyle = {
-	fontSize: 13, 
+	fontSize: 10, 
 	color: "white", 
-	marginLeft: 5, 
+	marginLeft: 0, 
 	marginBottom: 2
 }
 
 let addStyle = {
 	display: "flex",
 	color: "#3066BE",
-	fontSize: "0.8em",
+	fontSize: "0.75em",
 	height: "100%",
 	marginRight: 15,
 	border: "1px solid #3066BE",
@@ -67,7 +92,7 @@ let addStyle = {
 let addCurrentStyle = {
 	display: "flex",
 	color: "white",
-	fontSize: "0.8em",
+	fontSize: "0.75em",
 	height: "100%",
 	marginRight: 15,
 	border: "1px solid white",
@@ -79,7 +104,7 @@ let addCurrentStyle = {
 let titleAndArtistStyle = {
 	display: "inline-block",
 	alignSelf: "center",
-	marginLeft: 10,
+	marginLeft: 5,
 }
 
 
@@ -88,6 +113,7 @@ let SongListObject = React.createClass({
 		let trueStyle;
 		let trueTitleStyle;
 		let trueArtistStyle;
+		let trueVoteStyle;
 		let addButtonStyle;
 
 		if (this.props.currentSong) {
@@ -95,23 +121,30 @@ let SongListObject = React.createClass({
 			trueTitleStyle = currentTitleStyle;
 			trueArtistStyle = currentArtistStyle;
 			addButtonStyle = addCurrentStyle;
+			trueVoteStyle = currentVoteStyle;
 
 		} else {
 			trueStyle = songStyle;
 			trueTitleStyle = titleStyle;
 			trueArtistStyle = artistStyle;
 			addButtonStyle = addStyle;
+			trueVoteStyle = voteStyle;
 		}
 
 		return (
-			<div style={trueStyle}>
-
-				<div style={titleAndArtistStyle}> 
-					<p style={trueTitleStyle}>{this.props.name}</p>
-	                <p style={trueArtistStyle}>{this.props.artist}</p>
-	            </div>
-	            <div style={addButtonStyle} onClick={this.addFunction}>Add Song to<br/>Library</div>
-			</div>
+			<div style={{display: "flex", justifyContent: "flex-start"}}>
+				<div style={trueVoteStyle}>
+					{this.state.votes}
+				</div>
+				<div style={trueStyle}>
+					
+					<div style={titleAndArtistStyle}> 
+						<p style={trueTitleStyle}>{this.props.name}</p>
+		                <p style={trueArtistStyle}>{this.props.artist}</p>
+		            </div>
+		            <div style={addButtonStyle} onClick={this.addFunction}>Add Song to<br/>Library</div>
+				</div>
+				</div>
 		);
 	},
 	getInitialState: function() {
@@ -120,8 +153,13 @@ let SongListObject = React.createClass({
 		});
 	},
 	componentWillMount: function() {
-		let userRef = database.ref('users/' + this.props.username + '/savedSongs');
 		let that = this;
+		let userRef = database.ref('users/' + this.props.username + '/savedSongs');
+		let voteRef = database.ref('rooms/' + this.props.roomKey + '/songList/' + this.props.songKey + '/votes').on("value", function(snapshot) {
+			that.setState({
+				votes: snapshot.val()
+			})
+		});
 		userRef.on("child_added", function(snapshot) {
 			if (snapshot.val().name === that.props.name && snapshot.val().artist === that.props.artist) {
 				that.setState({

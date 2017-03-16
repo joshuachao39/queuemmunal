@@ -138,7 +138,7 @@ let Queue = React.createClass({
         }
 
 		return(
-			<div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+			<div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", position: "relative"}}>
 
 				<div style={{overflow: "auto", maxHeight: "65vh", minHeight: "65vh", width: "90%", background: "#FFF", borderRadius: 15}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.songs.length} type="uniform" />
@@ -323,6 +323,8 @@ let Queue = React.createClass({
                                name={this.state.songs[index].name}
                                artist={this.state.songs[index].artist}
                                url={this.state.songs[index].url}
+                               songKey={this.state.songs[index].key}
+                               roomKey={this.props.roomKey}
                                key={key}
                                username={this.props.username}
                                onSaveSuccess={this.showSaveSongNotificationSuccess}
