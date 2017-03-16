@@ -33,6 +33,24 @@ let MusicPlayer = React.createClass({
 			played = 0.05;
 		}
 
+		let upvoteButtonColor;
+		let downvoteButtonColor;
+		if (this.state.canVote) {
+			if (this.state.upvoteStatus == 0) {
+				upvoteButtonColor = "white";
+				downvoteButtonColor = "white";
+			} else if (this.state.upvoteStatus == 1) {
+				upvoteButtonColor = "#FF6D7F";
+				downvoteButtonColor = "#939393";
+			} else {
+				upvoteButtonColor = "#939393";
+				downvoteButtonColor = "#FF6D7F";
+			}
+		} else {
+			upvoteButtonColor = "#939393";
+			downvoteButtonColor = "#939393";
+		}
+
 		return (
 			<div style={{
 					height: this.props.height / 12,
@@ -63,18 +81,53 @@ let MusicPlayer = React.createClass({
 					 onDuration={this.getDuration}
 				/>
 				<div style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", width: "100%", height: "100%", alignItems: "center"}}>
-					<FaCircleDown style={{marginLeft: 10}} size={50} onClick={this.voteButtonPressed}/>
+					<FaCircleDown style={{marginLeft: 10}} size={50} color={downvoteButtonColor} onClick={this.downvoteButtonPressed}/>
 					<div>
 						<p style={{marginBottom: 5, maxWidth: "80vw", textAlign: "center"}}> {songTitle} {artistName} </p>
 						<p style={{marginBottom: 0, color: "#D4D4D4", fontWeight: 400, textAlign: "center"}}> Playing from {this.props.currentRoom} </p>
 					</div>
-					<FaCircleUp style={{marginRight: 10}} size={50} onClick={this.voteButtonPressed}/>
+					<FaCircleUp style={{marginRight: 10}} size={50} color={upvoteButtonColor} onClick={this.upvoteButtonPressed}/>
 				</div>
 			</div>
 		);
 	},
-	voteButtonPressed: function() {
-		console.log("vote button pressed!");
+	upvoteButtonPressed: function() {
+		console.log("song upvoted!");
+		if (this.state.canVote && (this.state.upvoteStatus == 0 || this.state.upvoteStatus == -1)) {
+			if (this.state.upvoteStatus == 0) {
+				let currentSongVoteRef = database.ref('/rooms/' + this.props.roomKey + '/songList/' + this.state.queue[0].key + '/votes');
+				currentSongVoteRef.transaction(function (current_value) {
+				  return (current_value || 0) + 1;
+				});
+			} else {
+				let currentSongVoteRef = database.ref('/rooms/' + this.props.roomKey + '/songList/' + this.state.queue[0].key + '/votes');
+				currentSongVoteRef.transaction(function (current_value) {
+				  return (current_value || 0) + 2;
+				});
+			}
+			this.setState({
+				upvoteStatus: 1
+			})
+		}
+	},
+	downvoteButtonPressed: function() {
+		console.log("song downvoted!");
+		if (this.state.canVote && (this.state.upvoteStatus == 0 || this.state.upvoteStatus == 1)) {
+			if (this.state.upvoteStatus == 0) {
+				let currentSongVoteRef = database.ref('/rooms/' + this.props.roomKey + '/songList/' + this.state.queue[0].key + '/votes');
+				currentSongVoteRef.transaction(function (current_value) {
+				  return (current_value || 0) - 1;
+				});
+			} else {
+				let currentSongVoteRef = database.ref('/rooms/' + this.props.roomKey + '/songList/' + this.state.queue[0].key + '/votes');
+				currentSongVoteRef.transaction(function (current_value) {
+				  return (current_value || 0) - 2;
+				});
+			}
+			this.setState({
+				upvoteStatus: -1
+			})
+		}
 	},
 	// On progress is called everytime we come back to the page
 	onProgress: function(state) {
@@ -102,7 +155,9 @@ let MusicPlayer = React.createClass({
 		return {
 			queue: [],
 			songsLeft: true,
-			played: 0
+			played: 0,
+			upvoteStatus: 0,
+			canVote: false
 		}
 	},
 	playerInitialize: function() {
@@ -157,9 +212,16 @@ let MusicPlayer = React.createClass({
 						break;
 					}
 				}
-				that.setState({
-					queue: currentSongs
-				})
+				if (currentSongs.length == 0) {
+					that.setState({
+						queue: currentSongs,
+						canVote: false
+					})
+				} else {
+					that.setState({
+						queue: currentSongs
+					})
+				}
 			});
 
 			database.ref('rooms/' + this.props.roomKey + "/admin").on("value", function(snapshot) {
@@ -198,9 +260,16 @@ let MusicPlayer = React.createClass({
 					break;
 				}
 			}
-			that.setState({
-				queue: currentSongs
-			})
+			if (currentSongs.length == 0) {
+				that.setState({
+					queue: currentSongs,
+					canVote: false
+				})
+			} else {
+				that.setState({
+					queue: currentSongs
+				})
+			}
 		});
 
 		database.ref('rooms/' + this.props.roomKey + "/admin").on("value", function(snapshot) {
@@ -216,6 +285,10 @@ let MusicPlayer = React.createClass({
 	},
 	songStart() {
 		// you can get rid of this??
+		this.setState({
+			canVote: true,
+			upvoteStatus: 0
+		})
 	},
 	songFinish() {
 		let that = this;
