@@ -189,6 +189,19 @@ let MusicPlayer = React.createClass({
 			this.setState({
 				queue: newSongQueue
 			})
+
+			database.ref('rooms/' + nextProps.roomKey + '/roommates/list').on("value", function(snapshot) {
+	            console.log("Current roommate count is now: " + snapshot.val().length);
+	            that.setState({
+	                roommateCount: snapshot.val().length
+	            })
+	        })
+
+
+
+
+
+
 			roomSongListRef.on("child_added", function(snapshot) {
 				//adding a song in the music player!
 				let currentSongs = that.state.queue;
@@ -238,6 +251,14 @@ let MusicPlayer = React.createClass({
 		let that = this;
 		let roomSongListRef = database.ref('rooms/' + this.props.roomKey + '/songList');
 
+		database.ref('rooms/' + this.props.roomKey + '/roommates/list').on("value", function(snapshot) {
+            console.log(snapshot.val());
+            console.log("Current roommate count is now: " + snapshot.val().length);
+            that.setState({
+                roommateCount: snapshot.val().length
+            })
+        })
+
 		roomSongListRef.on("child_added", function(snapshot) {
 			let currentSongs = that.state.queue;
 			currentSongs.push({
@@ -284,7 +305,21 @@ let MusicPlayer = React.createClass({
 
 	},
 	songStart() {
-		// you can get rid of this??
+		let that = this;
+		database.ref('rooms/' + this.props.roomKey + '/songList/' + this.state.queue[0].key + '/votes').on("value", function(snapshot) {
+			console.log("The vote listener says that the current vote count is: " + snapshot.val());
+			if (snapshot.val() < 0) {
+				if (snapshot.val() <= -1 * (that.state.roommateCount / 2)) {
+					let songsRemaining = that.state.queue;
+					let songToDeleteKey = that.state.queue[0].key;
+					if (songsRemaining.length > 1) {
+						let nextSongKey = that.state.queue[1].key;
+						database.ref('rooms/' + that.props.roomKey + '/songList/' + nextSongKey).update({startTime: firebaseApp.database.ServerValue.TIMESTAMP});
+					}
+					database.ref('rooms/' + that.props.roomKey + '/songList/' + songToDeleteKey).remove();
+				}
+			}
+		})
 		this.setState({
 			canVote: true,
 			upvoteStatus: 0
