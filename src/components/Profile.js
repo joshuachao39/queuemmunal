@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import {connect} from 'react-redux';
 import anonymousProfile from '../assets/anonymousProfile.svg';
 import Switch from 'react-ios-switch';
+import $ from 'jquery';
 import 'react-ios-switch/build/bundle.css';
 
 import { updateAnonymous, updatePictureUrl} from '../redux/actions';
@@ -31,6 +32,39 @@ let buttonStyle = {
 	display: "flex",
 	justifyContent: "center",
 	marginBottom: 15
+}
+
+let uploadPhotoModalStyle = {
+    overlay: {
+        backgroundColor: "rgba(0, 0, 0, 0.75)"
+    },
+    content: {
+        borderRadius: 15,
+        border: "none",
+        background: "#F4F4F8",
+        fontFamily: "Quicksand",
+        top                   : '50%',
+        left                  : '20%',
+        right                 : '20%',
+        bottom                : 'auto',
+        marginRight           : '-20%',
+        transform             : 'translate(-13%, -50%)',
+
+    }
+}
+
+let titleStyle = {
+    width: "100%",
+    height: ($(window).height() / 480) * 25,
+    fontFamily: "Quicksand",
+    fontSize: 18,
+    color: "#3066BE",
+    borderBottom: "1px solid #3066BE",
+    display: "flex",
+    flexFlow: "row nowrap",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20
 }
 
 
@@ -78,20 +112,34 @@ class Profile extends React.Component {
 						  width: "100%",
 						  position: "absolute"
 						}}>
+		
 				<img onClick={this.showUploadModal} className="animated pulse" style={{borderRadius: "50%"}} src={url} role="presentation" width={this.props.width * 0.8} height={this.props.width * 0.8}/>
-
                 <Modal
 					isOpen={this.state.showUploadModal}
-					contentLabel="Add Song Modal">
+					contentLabel="Add Song Modal"
+					shouldCloseOnOverlayClick={true}
+                    onRequestClose={this.close}
+					style={uploadPhotoModalStyle}>
                         <img src={exit} className="exitStyle animated bounceIn" alt="exit" onClick={this.close}/>
-                    Upload Photo
-                    <input type="file" ref={this.getInputRef} onChange={this.handleFileUpload}/>
+                        <div style={{width: "100%"}}>
+                        	<div style={titleStyle}>
+                        		EDIT PROFILE PHOTO
+                        	</div>
+                        </div>
+                        <p style={{fontSize: 16}}>
+                    		Upload Photo
+                    	</p>
+                    	<input 
+                    		type="file" 
+                    		ref={this.getInputRef} 
+                    		onChange={this.handleFileUpload}
+                    	/>
                 </Modal>
 
 
 				<div style={{fontFamily: "Quicksand", fontSize: 36, width: "100%", textAlign: "center"}}>
 					{name}
-					<div style={{marginTop: 20,
+					{/*<div style={{marginTop: 20,
 								 height: 50,
 								 background: "white",
 								 fontSize: 18,
@@ -102,7 +150,7 @@ class Profile extends React.Component {
 						<Switch checked={this.state.isAnonymous}
 								 onChange={this.toggle}
 								 className="switch"/>
-					</div>
+					</div>*/}
 				</div>
 				<div onClick={this.handleClick} style={buttonStyle} className="animated bounceIn">
 					Log Out
