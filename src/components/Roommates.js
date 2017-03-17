@@ -62,7 +62,7 @@ class Roommates extends React.Component {
 		return (
 			<div style={{width: "100%", height: "100%", display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
 
-                <div style={{overflow: "auto", maxHeight: "55vh", minHeight: "55vh", width: "90%", background: "#FFF", borderRadius: 15, marginBottom: 20}}>
+                <div style={{overflow: "auto", maxHeight: "52vh", minHeight: "52vh", width: "90%", background: "#FFF", borderRadius: 15, marginBottom: 20}}>
                     <ReactList itemRenderer={this.renderItem} length={this.state.roommates.length} type="uniform" />
                 </div>
 
