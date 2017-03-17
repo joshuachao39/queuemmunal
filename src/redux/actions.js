@@ -8,6 +8,7 @@ export const UPDATE_ROOM = 'UPDATE_ROOM';
 export const UPDATE_USER = 'UPDATE_USER';
 export const UPDATE_DIMENSIONS = 'UPDATE_DIMENSIONS';
 export const IS_ANONYMOUS = 'IS_ANONYMOUS';
+export const UPDATE_PICTURE_URL = 'UPDATE_PICTURE_URL';
 
 /**
  * action creators
@@ -57,5 +58,11 @@ export function updateAnonymous () {
     };
 }
 
-export default {updateRoom, logOut, logIn, updateContainer, updateAnonymous};
+export function updatePictureUrl (url) {
+    return {
+        type: UPDATE_PICTURE_URL,
+        pictureUrl: url
+    };
+}
 
+export default {updatePictureUrl, updateRoom, logOut, logIn, updateContainer, updateAnonymous};

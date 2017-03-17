@@ -1,4 +1,4 @@
-import {LOG_OUT, LOG_IN, UPDATE_USER, UPDATE_ROOM, UPDATE_DIMENSIONS, IS_ANONYMOUS} from './actions';
+import {LOG_OUT, LOG_IN, UPDATE_USER, UPDATE_ROOM, UPDATE_DIMENSIONS, UPDATE_PICTURE_URL, IS_ANONYMOUS} from './actions';
 
 /**
 * state of the app
@@ -64,6 +64,12 @@ function appReducers (state, action) {
     case IS_ANONYMOUS: {
         return Object.assign ({}, state, {
             isAnonymous: action.isAnonymous
+        });
+    }
+
+    case UPDATE_PICTURE_URL: {
+        return Object.assign ({}, state, {
+            pictureUrl: action.pictureUrl
         });
     }
 
