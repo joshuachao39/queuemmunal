@@ -5,9 +5,12 @@ import {connect} from 'react-redux';
 import anonymousProfile from '../assets/anonymousProfile.svg';
 import Switch from 'react-ios-switch';
 import 'react-ios-switch/build/bundle.css';
-import { updateAnonymous } from '../redux/actions';
+
+import { updateAnonymous, updatePictureUrl} from '../redux/actions';
+
 import exit from '../assets/closeIcon.svg';
-import {storageRef} from '../database/init';
+
+import {storageRef, database} from '../database/init';
 
 let adjectives = ["Brawny", "Terrific", "Shocking", "Furry", "Fierce", "Somber", "Supreme", "Chill", "Infinite", "Secretive", "Knowlegable",
 				  "Accurate", "Humorous", "Smooth", "Quirky", "Quick", "Receptive", "Productive", "Tasteful", "Funny", "Gloomy"];
@@ -63,6 +66,7 @@ class Profile extends React.Component {
 		if (!this.state.isAnonymous) {
 			name = this.props.name;
 			url = this.props.url;
+            console.log ("render:" + this.props.url)
 		}
 
 		return (
@@ -115,9 +119,16 @@ class Profile extends React.Component {
 
     handleFileUpload (e) {
         let file =  this.state.inputRef.files[0];
+        var that = this;
 
         storageRef.child(this.props.name + 'DisplayPic.png').put(file).then(function(snapshot) {
-            console.log (snapshot)
+            let fileUrl = storageRef.child (that.props.name + 'DisplayPic.png').getDownloadURL().then (function (url) {
+                let updates = {};
+                updates['/users/' + that.props.name + '/pictureUrl'] = url;
+                database.ref().update(updates);
+                that.props.updatePictureUrl (url);
+                console.log (url)
+            })
         });
     }
 
@@ -154,6 +165,11 @@ function mapDispatchToProps (dispatch) {
         setAnonymous: (isAnonymous) => {
         	console.log("trying to update isAnonymous"+isAnonymous);
             dispatch (updateAnonymous(isAnonymous));
+        },
+
+        updatePictureUrl: (url) => {
+            console.log ("dispatching : "+ url)
+            dispatch (updatePictureUrl(url));
         }
     }
 }
