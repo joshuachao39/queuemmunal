@@ -60,6 +60,8 @@ let errorStyle = {
 let signUpStyle = {
     fontSize: 15,
     paddingTop: 10,
+    marginTop: 10,
+    fontSize: 16,
     textDecoration: "underline"
 }
 
